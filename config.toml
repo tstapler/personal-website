@@ -6,7 +6,7 @@ theme = "grid-side"
 copyright = "Copyright &#169; by Your Name"
 
 # The theme uses pagination for post, gallery, and project listings.
-#paginate = 12
+paginate = 12
 
 # The theme supports disqus, which will appear only on deployed sites,
 # not locally when run with `hugo server`; as with standard Hugo disqus,
@@ -57,16 +57,16 @@ SectionPagesMenu = "Main"
     [Params.Header]
 
         # This is optional
-        name = "Your Name"
+        name = "Tyler Stapler"
 
         # This is optional
-        description = "Your Description"
+        description = "I'm an up and coming Software Engineer with a desire to create. Check out the rest of my site to see some of my interests."
 
         # This is optional
-        email = "your@email.com"
+        email = "tystapler@gmail.com"
 
         # Not providing this results in a color being used
-        image = "/img/banner.jpg"
+        image = "/img/LA_Skyline_Mountains.jpg"
 
         # This uses the CSS background-position, given the image above is set,
         # useful when you want to adjust where the background-image lands
@@ -90,25 +90,17 @@ SectionPagesMenu = "Main"
         #
         #   e.g. twitter == "fa fa-twitter"
         #
-        [[Params.Footer.List]]
-
-            icon_class = "twitter"
-            icon_link = "#!"
 
         [[Params.Footer.List]]
 
             icon_class = "linkedin"
-            icon_link = "#!"
+            icon_link = "https://www.linkedin.com/in/tstapler"
 
-        [[Params.Footer.List]]
-
-            icon_class = "google-plus"
-            icon_link = "#!"
 
         [[Params.Footer.List]]
 
             icon_class = "github"
-            icon_link = "#!"
+            icon_link = "https://github.com/tstapler"
 
     #
     # Contains the Cells representing the sections of your website. Each cell
@@ -139,7 +131,7 @@ SectionPagesMenu = "Main"
             link = "/post/"
 
             # The image to use as a background-image for the cell
-            image = "/img/car.jpg"
+            image = ""
 
             # This uses the CSS background-position, given the image above is
             # set, useful when you want to adjust where the background-image
@@ -147,7 +139,6 @@ SectionPagesMenu = "Main"
             #image_position = "top"
 
             # The color to use as a fallback if an image is not provided
-            #color = "blue"
 
             # Grays out the image (if provided), the image will be restored
             # to normal color on hover
@@ -160,7 +151,7 @@ SectionPagesMenu = "Main"
             # this to true results in the cell always showing its text
             # and also using a dark overlay to make the white text be more
             # visible
-            #always_show_text = true
+            always_show_text = true
 
             # Grays out the cell and disables click functionality on it
             #disable = true
@@ -169,29 +160,10 @@ SectionPagesMenu = "Main"
 
             name = "Gallery"
             link = "/gallery/"
-            image = "/img/cup.jpg"
+            always_show_text = true
 
         [[Params.Cells.List]]
 
             name = "Projects"
             link = "/project/"
-            image = "/img/drone.jpg"
-
-        [[Params.Cells.List]]
-
-            name = "Custom Post Section Name"
-            link = "/custompost/"
-            image = "/img/food.jpg"
-
-        [[Params.Cells.List]]
-
-            name = "Custom Gallery Section Name"
-            link = "/customgallery/"
-            image = "/img/jars.jpg"
-
-        [[Params.Cells.List]]
-
-            name = "Custom Project Section Name"
-            link = "/customproject/"
-            image = "/img/phone.jpg"
-
+            always_show_text = true
