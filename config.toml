@@ -1,9 +1,9 @@
 # Site settings (baseurl must end with a trailing slash!)
 baseurl = "https://www.example.com/"
 languageCode = "en-us"
-title = "Grid Side"
+title = "Tyler Stapler"
 theme = "grid-side"
-copyright = "Copyright &#169; by Your Name"
+copyright = "Copyright &#169; by Tyler Stapler"
 
 # The theme uses pagination for post, gallery, and project listings.
 paginate = 12
@@ -166,4 +166,10 @@ SectionPagesMenu = "Main"
 
             name = "Projects"
             link = "/project/"
+	    icon = "fa fa-cogs"
+            always_show_text = true
+
+	[[Params.Cells.List]]
+	    name = "Iowa State Portfolio"
+	    link= "/isu-portfolio/"
             always_show_text = true
