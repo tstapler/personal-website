@@ -78,7 +78,7 @@ SectionPagesMenu = "Main"
         email = "tystapler@gmail.com"
 
         # Not providing this results in a color being used
-        image = "/img/LA_Skyline_Mountains.jpg"
+        image = "img/LA_Skyline_Mountains.jpg"
 
         # This uses the CSS background-position, given the image above is set,
         # useful when you want to adjust where the background-image lands
@@ -177,13 +177,13 @@ SectionPagesMenu = "Main"
         [[Params.Cells.List]]
 
             name = "Projects"
-            link = "/projects/"
+            link = "projects/"
 	    icon = "fa fa-cogs"
 	    color = "#455a64"
             always_show_text = true
 
 	[[Params.Cells.List]]
 	    name = "Iowa State Portfolio"
-	    link= "/isu-portfolio/"
+	    link= "isu-portfolio/"
 	    color = "#455a64"
             always_show_text = true

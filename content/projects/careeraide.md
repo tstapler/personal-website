@@ -2,6 +2,7 @@
 title = "Career Aide"
 categories = [ "Iowa State Portfolio" ]
 tags = ["school", "programming-project", "hack-isu"]
+image = "/img/career-aide.jpg"
 +++
 
 # Career Aide
