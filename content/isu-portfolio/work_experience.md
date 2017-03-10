@@ -1,0 +1,64 @@
++++
+title = "Work Experience"
+date = "2017-03-02"
+tags = ["work"]
+categories = [ "Iowa State Portfolio"]
++++
+
+Over the course of college I've gotten the opportunity to work with several great organizations.
+
+# Organizations
+
+<hr>
+
+Company Name: Workiva
+
+Software Engineering Intern
+
+Dates Employed: May 2016 – Present Employment 
+
+Location: Ames, Iowa
+
+Working with the Infrastructure/Reliability Organization to maintain legacy monolithic service and support newer microservices.
+
+Evaluated various logging solutions and developed methods for measuring their reliability
+
+Working with AWS, Go, Google App Engine, Dart, Django, Javascript and Python.
+
+<hr>
+
+Company Name:Emerson Process Management
+
+Software Engineering Intern
+
+Dates Employed: Jan 2015 – Aug 2015 
+
+Location: Marshall Town, IA
+
+Co-Invented technology which is in the process of being patented
+
+Sole maintainer of firmware with 20,000+ Units deployed
+
+Developed for an existing code base of 100k+ of lines of code spread over multiple products. (Embedded C/C++)
+
+Designed and implemented automated test suite for existing product (Python).
+
+Demolished long standing and difficult bugs in code base.
+
+<hr>
+
+Company Name: Iowa State University
+
+Research Assistant
+
+Dates Employed: May 2012 – Jan 2014
+
+Location: Ames, Iowa
+
+Gathered research data
+
+Administered and Updated Lab-group Website
+
+Worked closely with Professor and Grad Students
+
+Solved problems in a methodical, and efficent process
