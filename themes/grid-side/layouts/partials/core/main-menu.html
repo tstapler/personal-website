@@ -21,12 +21,12 @@
                         <ul class="menu flexible-width menu-colors no-list-float">
                             {{ range .Children }}
                                 <li {{ if $currentNode.IsMenuCurrent "Main" . }} class="active" {{ end }}>
-                                    <a href="{{ $baseUrl }}{{ .URL }}">{{ .Name }}</a>
+                                    <a href="{{ .URL }}">{{ .Name }}</a>
                                 </li>
                             {{ end }}
                         </ul>
                     {{ else }}
-                        <a href="{{ $baseUrl }}{{ .URL }}">
+                        <a href="{{ .URL }}">
                             {{ .Pre }}
                             <span>{{ .Name }}</span>
                         </a>
