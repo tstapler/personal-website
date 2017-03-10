@@ -29,11 +29,11 @@ SectionPagesMenu = "Main"
 [[Params.Menus.Main]]
     name = "Projects"
     identifier = "projects"
-    url = "/projects/"
+    url = "projects/"
 [[Params.Menus.Main]]
     name = "ISU Portfolio"
     identifier = "isu-portfolio"
-    url = "/isu-portfolio/"
+    url = "isu-portfolio/"
 
     # 
     # The post, project, and gallery sections can have infinite scroll turned
