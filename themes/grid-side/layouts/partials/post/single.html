@@ -6,8 +6,8 @@
     {{ partial "core/main-menu.html" . }}
 
     <div class="main-content">
-        <div class="center-space">
-            <div class="article-colors">
+        <div class="center-space row">
+            <div class="article-colors col l6 offset-l3">
                 {{ with .Params.image }}
                     <img src="{{ . }}" class="fill-container-width"></img>
                 {{ end }}

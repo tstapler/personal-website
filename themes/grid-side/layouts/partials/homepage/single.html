@@ -26,19 +26,18 @@
                 <div class="row-colors center-align">
                     <h2 class="no-margin">
                         <ul class="horizontal no-bullets no-margin">
-                            <li>{{ partial "homepage/svg-face.html" . }}</li>
                             <li>About Me</li>
                         </ul>
                     </h2>
                 </div>
 
-                <div class="flex-container">
+                <div class="row row-colors">
                     {{ range .Site.Params.cells.list }}
                         <!-- 
                              Note: The link and contents must be here since we 
                              cannot pass .Site.BaseURL as part of the context 
                         -->
-                        <a href="{{ if .disable }}#!{{ else }}{{ $baseUrl }}{{ .link }}{{ end }}" class="flex-item">
+                        <a href="{{ if .disable }}#!{{ else }}{{ $baseUrl }}{{ .link }}{{ end }}" class="col s4">
                             <div class="cell
                                 fill-container
                                 no-padding

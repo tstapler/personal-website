@@ -187,3 +187,8 @@ SectionPagesMenu = "Main"
 	    link= "isu-portfolio/"
 	    color = "#455a64"
             always_show_text = true
+	[[Params.Cells.List]]
+	    name = "Resume"
+	    link= "static/TylerStaplerResumeFall2016V3.pdf"
+	    color = "#455a64"
+            always_show_text = true
