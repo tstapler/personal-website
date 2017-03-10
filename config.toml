@@ -1,5 +1,5 @@
 # Site settings (baseurl must end with a trailing slash!)
-baseurl = "https://www.example.com/"
+baseurl = "https://www.tyler.staplerstation.com/"
 languageCode = "en-us"
 title = "Tyler Stapler"
 theme = "grid-side"
@@ -18,10 +18,22 @@ paginate = 12
 # The menu name must be "Main"
 SectionPagesMenu = "Main"
 
+
+
 [Params]
+
     # When set to true, will use infinite scrolling to load paginated content
     # for posts, galleries, and projects
     infinite_scroll = true
+    
+[[Params.Menus.Main]]
+    name = "Projects"
+    identifier = "projects"
+    url = "/projects/"
+[[Params.Menus.Main]]
+    name = "ISU Portfolio"
+    identifier = "isu-portfolio"
+    url = "/isu-portfolio/"
 
     # 
     # The post, project, and gallery sections can have infinite scroll turned
@@ -122,50 +134,50 @@ SectionPagesMenu = "Main"
     #
     [Params.Cells]
 
-        [[Params.Cells.List]]
+        #[[Params.Cells.List]]
 
-            # The name to use with the cell, shows up on hover
-            name = "Posts"
+        #    # The name to use with the cell, shows up on hover
+        #    name = "Posts"
 
-            # The link to associate with the cell, used when clicked
-            link = "/post/"
+        #    # The link to associate with the cell, used when clicked
+        #    link = "/post/"
 
-            # The image to use as a background-image for the cell
-            image = ""
+        #    # The image to use as a background-image for the cell
+        #    image = ""
 
-            # This uses the CSS background-position, given the image above is
-            # set, useful when you want to adjust where the background-image
-            # lands
-            #image_position = "top"
+        #    # This uses the CSS background-position, given the image above is
+        #    # set, useful when you want to adjust where the background-image
+        #    # lands
+        #    #image_position = "top"
 
-            # The color to use as a fallback if an image is not provided
+        #    # The color to use as a fallback if an image is not provided
 
-            # Grays out the image (if provided), the image will be restored
-            # to normal color on hover
-            #grayscale = true
+        #    # Grays out the image (if provided), the image will be restored
+        #    # to normal color on hover
+        #    #grayscale = true
 
-            # Disables the normal cell highlight on hover
-            #no_highlight = true
+        #    # Disables the normal cell highlight on hover
+        #    #no_highlight = true
             
-            # Normally, a cell only shows text (its name) on hover, setting
-            # this to true results in the cell always showing its text
-            # and also using a dark overlay to make the white text be more
-            # visible
-            always_show_text = true
+        #    # Normally, a cell only shows text (its name) on hover, setting
+        #    # this to true results in the cell always showing its text
+        #    # and also using a dark overlay to make the white text be more
+        #    # visible
+        #    always_show_text = true
 
-            # Grays out the cell and disables click functionality on it
-            #disable = true
+        #    # Grays out the cell and disables click functionality on it
+        #    #disable = true
 
-        [[Params.Cells.List]]
+        # [[Params.Cells.List]]
 
-            name = "Gallery"
-            link = "/gallery/"
-            always_show_text = true
+        #     name = "Gallery"
+        #     link = "/gallery/"
+        #     always_show_text = true
 
         [[Params.Cells.List]]
 
             name = "Projects"
-            link = "/project/"
+            link = "/projects/"
 	    icon = "fa fa-cogs"
             always_show_text = true
 

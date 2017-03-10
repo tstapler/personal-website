@@ -1,7 +1,7 @@
 +++
 title = "CPRE 394 Ethics Paper"
 date = "2014-10-21"
-tags = []
+tags = ["school"]
 categories = [ "Iowa State Portfolio"]
 +++
 
