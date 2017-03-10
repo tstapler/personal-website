@@ -1,5 +1,5 @@
 # Site settings (baseurl must end with a trailing slash!)
-baseurl = "https://www.tyler.staplerstation.com/"
+baseurl = "http://tyler.staplerstation.com/"
 languageCode = "en-us"
 title = "Tyler Stapler"
 theme = "grid-side"
