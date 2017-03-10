@@ -72,7 +72,7 @@ SectionPagesMenu = "Main"
         name = "Tyler Stapler"
 
         # This is optional
-        description = "I'm an up and coming Software Engineer with a desire to create. Check out the rest of my site to see some of my interests."
+        description = "I'm an up and coming Software Engineer with a desire to create. My interests are Distributed Systems and Security. I'm always searching for opportunities to hone my engineering prowess and solve real world software problems. My thirst for knowledge, positivity, and tenacity are all benefits I bring to any team I'm a part of. Check out the rest of my site to see some of my interests and achievements."
 
         # This is optional
         email = "tystapler@gmail.com"
@@ -179,9 +179,11 @@ SectionPagesMenu = "Main"
             name = "Projects"
             link = "/projects/"
 	    icon = "fa fa-cogs"
+	    color = "#455a64"
             always_show_text = true
 
 	[[Params.Cells.List]]
 	    name = "Iowa State Portfolio"
 	    link= "/isu-portfolio/"
+	    color = "#455a64"
             always_show_text = true
