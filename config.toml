@@ -1,5 +1,5 @@
 # Site settings (baseurl must end with a trailing slash!)
-baseurl = "http://tyler.staplerstation.com/"
+# Set baseURL from command line
 languageCode = "en-us"
 title = "Tyler Stapler"
 theme = "espouse"
