@@ -1,0 +1,3 @@
+[submodule "themes/espouse"]
+	path = themes/espouse
+	url = git@github.com:tstapler/espouse
