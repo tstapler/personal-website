@@ -3,6 +3,7 @@ title = "Blackboard Binder"
 categories = [ "Iowa State Portfolio" ]
 tags = ["school", "programming-project", "hack-isu"]
 image = "/img/blackboard-binder.jpg"
+github = "https://github.com/tstapler/blackboard-binder"
 +++
 
 

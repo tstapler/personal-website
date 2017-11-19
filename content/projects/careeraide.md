@@ -3,9 +3,8 @@ title = "Career Aide"
 categories = [ "Iowa State Portfolio" ]
 tags = ["school", "programming-project", "hack-isu"]
 image = "/img/career-aide.jpg"
+github = "https://github.com/tstapler/career-aide"
 +++
-
-# Career Aide
 
 [Career Aide](https://github.com/tstapler/career-aide) is a project I built with my younger brother for Hack ISU Spring 2017.
 

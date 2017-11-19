@@ -2,7 +2,7 @@
 baseurl = "http://tyler.staplerstation.com/"
 languageCode = "en-us"
 title = "Tyler Stapler"
-theme = "grid-side"
+theme = "espouse"
 copyright = "Copyright &#169; by Tyler Stapler"
 
 # The theme uses pagination for post, gallery, and project listings.
@@ -14,52 +14,35 @@ paginate = 12
 # front matter of specific content.
 #disqusShortname = "yourDisqusShortname"
 
-# The theme supports menus with up to one submenu per menu item
-# The menu name must be "Main"
-SectionPagesMenu = "Main"
 
+sectionPagesMenu = "main"
+[[menu.main]]
+name = "Home"
+weight = -1
+identifier = "/"
+url = "/"
+pre = "home icon"
 
+[[menu.main]]
+name = "ISU Portfolio"
+weight = 10
+identifier = "isu-portfolio"
+url = "/isu-portfolio/"
+pre = "book icon"
 
+[[menu.main]]
+name = "Resume"
+weight = 50
+identifier = "url"
+url = "static/TylerStaplerResumeFall2016V3.pdf"
+pre = "file pdf outline icon"
+
+[[menu.main]]
+name = "Projects"
+identifier = "projects"
+url = "/projects/"
+pre = "keyboard icon"
 [Params]
-
-    # When set to true, will use infinite scrolling to load paginated content
-    # for posts, galleries, and projects
-    infinite_scroll = true
-    
-[[Params.Menus.Main]]
-    name = "Projects"
-    identifier = "projects"
-    url = "projects/"
-[[Params.Menus.Main]]
-    name = "ISU Portfolio"
-    identifier = "isu-portfolio"
-    url = "isu-portfolio/"
-
-    # 
-    # The post, project, and gallery sections can have infinite scroll turned
-    # on/off individually. These values override the infinte_scroll option
-    # above.
-    #
-    #[Params.Post]
-    #
-    #   infinite_scroll = false
-    #
-    #[Params.Project]
-    #
-    #   infinite_scroll = false
-    #
-    #[Params.Gallery]
-    #
-    #   infinite_scroll = false
-
-    #
-    # Optionally specify the style for highlight.js to enable it, otherwise
-    # you can use Pygments on the server side.
-    #
-    [Params.Highlight]
-
-        style = "railscasts"
-
     #
     # Contains the main grid cell of your site (such as a picture of yourself)
     # along with your name, description, and email. Any empty field will
@@ -77,118 +60,76 @@ SectionPagesMenu = "Main"
         # This is optional
         email = "tystapler@gmail.com"
 
-        # Not providing this results in a color being used
-        image = "img/LA_Skyline_Mountains.jpg"
+	# A list of technogies you use, supports the following fields:
+	#
+	# name, icon_url, and description
 
-        # This uses the CSS background-position, given the image above is set,
-        # useful when you want to adjust where the background-image lands
-        #image_position = "top"
+    [[Params.Technologies]]
+    name = "Python"
+    icon_url = "img/tech-logos/python-logo-notext.svg"
+    description = "I live and breathe python, it's my go to language for a quick prototype"
 
-        # This must be provided if the image above is not
-        #color = "#FFF"
+    [[Params.Technologies]]
+    name = "Go"
+    icon_url = "img/tech-logos/gopher.svg"
+    description = "I love how you're able to quickly create performant micro services in Go. You could say I'm a Gopher"
 
-    #
+    [[Params.Technologies]]
+    name = "Kubernetes"
+    icon_url = "img/tech-logos/kubernetes.svg"
+
+    [[Params.Technologies]]
+    name = "Dart"
+    icon_url = "img/tech-logos/dart.svg"
+
+    [[Params.Technologies]]
+    name = "Native Script"
+    icon_url = "img/tech-logos/nativescript.svg"
+
+    [[Params.Technologies]]
+    name = "Ruby"
+    icon_url = "img/tech-logos/ruby.svg"
+
+    [[Params.Technologies]]
+    name = "Ansible"
+    icon_url = "img/tech-logos/ansible.svg"
+
+    [[Params.Technologies]]
+    name = "Angular 2"
+    icon_url = "img/tech-logos/angularjs.svg"
+
+    [[Params.Technologies]]
+    name = "Node JS"
+    icon_url = "img/tech-logos/nodejs.svg"
+
+    [[Params.Technologies]]
+    name = "Typescript"
+    icon_url = "img/tech-logos/typescript.svg"
+
+    [[Params.Technologies]]
+    name = "Amazon Web Services"
+    icon_url = "img/tech-logos/aws.svg"
     # Contains the footer of your main page and will also append items to
     # the end of your sidebar in non-homepage pages.
     #
-    [Params.Footer]
+[Params.Footer]
 
-        #
-        # Represents the list of icons and associated links to use in your
-        # footer and sidebar. Your copyright information will always be
-        # shown in the footer.
-        #
-        # The icon class is a font awesome classname.
-        #
-        #   e.g. twitter == "fa fa-twitter"
-        #
+#
+# Represents the list of icons and associated links to use in your
+# footer and sidebar. Your copyright information will always be
+# shown in the footer.
+#
+# The icon class is a semantic ui icon classname.
+#
+#   e.g. twitter == "fa fa-twitter"
+#
 
-        [[Params.Footer.List]]
+[[Params.Footer.List]]
 
-            icon_class = "linkedin"
-            icon_link = "https://www.linkedin.com/in/tstapler"
+    icon_class = "linkedin icon"
+    icon_link = "https://www.linkedin.com/in/tstapler"
 
+[[Params.Footer.List]]
 
-        [[Params.Footer.List]]
-
-            icon_class = "github"
-            icon_link = "https://github.com/tstapler"
-
-    #
-    # Contains the Cells representing the sections of your website. Each cell
-    # contains the name of the cell, an image depicting what the content
-    # represents, and a link to use when the cell is clicked. 
-    #
-    # Not providing an image will use the color specified by 'color' as the
-    # background color (default to #FFF).
-    #
-    # You can embed an icon using 'icon' to specify the classes to use
-    # for the icon (such as 'fa fa-flag' when using font awesome).
-    #
-    # By default, each cell has a grid size of 1/3 (4 out of 12) for large
-    # screens, 1/2 (6 out of 12) for medium screens, and 1 (12 out of 12) for
-    # small screens. To change the cell's size per screen, use the properties
-    # 'cell_large', 'cell_medium', and 'cell_small' respectively with a number
-    # ranging from 1 to 12. Make sure that Cells have nubmers equalling 12
-    # per row.
-    #
-    [Params.Cells]
-
-        #[[Params.Cells.List]]
-
-        #    # The name to use with the cell, shows up on hover
-        #    name = "Posts"
-
-        #    # The link to associate with the cell, used when clicked
-        #    link = "/post/"
-
-        #    # The image to use as a background-image for the cell
-        #    image = ""
-
-        #    # This uses the CSS background-position, given the image above is
-        #    # set, useful when you want to adjust where the background-image
-        #    # lands
-        #    #image_position = "top"
-
-        #    # The color to use as a fallback if an image is not provided
-
-        #    # Grays out the image (if provided), the image will be restored
-        #    # to normal color on hover
-        #    #grayscale = true
-
-        #    # Disables the normal cell highlight on hover
-        #    #no_highlight = true
-            
-        #    # Normally, a cell only shows text (its name) on hover, setting
-        #    # this to true results in the cell always showing its text
-        #    # and also using a dark overlay to make the white text be more
-        #    # visible
-        #    always_show_text = true
-
-        #    # Grays out the cell and disables click functionality on it
-        #    #disable = true
-
-        # [[Params.Cells.List]]
-
-        #     name = "Gallery"
-        #     link = "/gallery/"
-        #     always_show_text = true
-
-        [[Params.Cells.List]]
-
-            name = "Projects"
-            link = "projects/"
-	    icon = "fa fa-cogs"
-	    color = "#455a64"
-            always_show_text = true
-
-	[[Params.Cells.List]]
-	    name = "Iowa State Portfolio"
-	    link= "isu-portfolio/"
-	    color = "#455a64"
-            always_show_text = true
-	[[Params.Cells.List]]
-	    name = "Resume"
-	    link= "static/TylerStaplerResumeFall2016V3.pdf"
-	    color = "#455a64"
-            always_show_text = true
+    icon_class = "github icon"
+    icon_link = "https://github.com/tstapler"
