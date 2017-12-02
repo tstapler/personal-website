@@ -16,6 +16,7 @@ spec:
     spec:
       containers:
         - name: personal-website
-          image: tstapler/personal-website
+          image: "tstapler/personal-website:latest"
           ports:
           - containerPort: 80
+
