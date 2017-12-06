@@ -1,0 +1,55 @@
+==================================================================
+https://keybase.io/tstapler
+--------------------------------------------------------------------
+
+I hereby claim:
+
+  * I am an admin of https://tyler.staplerstation.com
+  * I am tstapler (https://keybase.io/tstapler) on keybase.
+  * I have a public key ASABIssa7Z23vHmqpUL8ulh9UaVVWmR0FwcrmcxUnlHHgwo
+
+To do so, I am signing this object:
+
+{
+  "body": {
+    "key": {
+      "eldest_kid": "01200122cb1aed9db7bc79aaa542fcba587d51a5555a647417072b99cc549e51c7830a",
+      "host": "keybase.io",
+      "kid": "01200122cb1aed9db7bc79aaa542fcba587d51a5555a647417072b99cc549e51c7830a",
+      "uid": "d932404414c685bfad19512861076419",
+      "username": "tstapler"
+    },
+    "merkle_root": {
+      "ctime": 1512534173,
+      "hash": "3ca0061a08adcc5f110bc73460176a9272b643b42ca47646003e79bd7a4d18c57b213db71c8fd925839117755d59d7f14644a8fc0009de0043c964992c02b3d8",
+      "hash_meta": "3cc8b4e9e6415f50a32987084f9bace64c0429befe7a5d3c95d63a6e5b4cd914",
+      "seqno": 1783138
+    },
+    "service": {
+      "hostname": "tyler.staplerstation.com",
+      "protocol": "https:"
+    },
+    "type": "web_service_binding",
+    "version": 1
+  },
+  "client": {
+    "name": "keybase.io go client",
+    "version": "1.0.36"
+  },
+  "ctime": 1512534224,
+  "expire_in": 504576000,
+  "prev": "e22668b1715ea5113497805411ca30acffe5cb0c9ef03a4218d68c5cd3f3ca19",
+  "seqno": 7,
+  "tag": "signature"
+}
+
+which yields the signature:
+
+hKRib2R5hqhkZXRhY2hlZMOpaGFzaF90eXBlCqNrZXnEIwEgASLLGu2dt7x5qqVC/LpYfVGlVVpkdBcHK5nMVJ5Rx4MKp3BheWxvYWTFA1B7ImJvZHkiOnsia2V5Ijp7ImVsZGVzdF9raWQiOiIwMTIwMDEyMmNiMWFlZDlkYjdiYzc5YWFhNTQyZmNiYTU4N2Q1MWE1NTU1YTY0NzQxNzA3MmI5OWNjNTQ5ZTUxYzc4MzBhIiwiaG9zdCI6ImtleWJhc2UuaW8iLCJraWQiOiIwMTIwMDEyMmNiMWFlZDlkYjdiYzc5YWFhNTQyZmNiYTU4N2Q1MWE1NTU1YTY0NzQxNzA3MmI5OWNjNTQ5ZTUxYzc4MzBhIiwidWlkIjoiZDkzMjQwNDQxNGM2ODViZmFkMTk1MTI4NjEwNzY0MTkiLCJ1c2VybmFtZSI6InRzdGFwbGVyIn0sIm1lcmtsZV9yb290Ijp7ImN0aW1lIjoxNTEyNTM0MTczLCJoYXNoIjoiM2NhMDA2MWEwOGFkY2M1ZjExMGJjNzM0NjAxNzZhOTI3MmI2NDNiNDJjYTQ3NjQ2MDAzZTc5YmQ3YTRkMThjNTdiMjEzZGI3MWM4ZmQ5MjU4MzkxMTc3NTVkNTlkN2YxNDY0NGE4ZmMwMDA5ZGUwMDQzYzk2NDk5MmMwMmIzZDgiLCJoYXNoX21ldGEiOiIzY2M4YjRlOWU2NDE1ZjUwYTMyOTg3MDg0ZjliYWNlNjRjMDQyOWJlZmU3YTVkM2M5NWQ2M2E2ZTViNGNkOTE0Iiwic2Vxbm8iOjE3ODMxMzh9LCJzZXJ2aWNlIjp7Imhvc3RuYW1lIjoidHlsZXIuc3RhcGxlcnN0YXRpb24uY29tIiwicHJvdG9jb2wiOiJodHRwczoifSwidHlwZSI6IndlYl9zZXJ2aWNlX2JpbmRpbmciLCJ2ZXJzaW9uIjoxfSwiY2xpZW50Ijp7Im5hbWUiOiJrZXliYXNlLmlvIGdvIGNsaWVudCIsInZlcnNpb24iOiIxLjAuMzYifSwiY3RpbWUiOjE1MTI1MzQyMjQsImV4cGlyZV9pbiI6NTA0NTc2MDAwLCJwcmV2IjoiZTIyNjY4YjE3MTVlYTUxMTM0OTc4MDU0MTFjYTMwYWNmZmU1Y2IwYzllZjAzYTQyMThkNjhjNWNkM2YzY2ExOSIsInNlcW5vIjo3LCJ0YWciOiJzaWduYXR1cmUifaNzaWfEQD3ThvmniJg/9fG93698Y/iXng+ZWz3teS6QB9o1LJCRS/UOQPO5Q0RarK4hKabW3rmtcNBS9g4V4hwqW2qV4gyoc2lnX3R5cGUgpGhhc2iCpHR5cGUIpXZhbHVlxCBmV/n/WPAbAuu5fLHET0530SX4WjdbUlKYVPlSvww286N0YWfNAgKndmVyc2lvbgE=
+
+And finally, I am proving ownership of this host by posting or
+appending to this document.
+
+View my publicly-auditable identity here: https://keybase.io/tstapler
+
+==================================================================
