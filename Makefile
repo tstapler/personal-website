@@ -23,7 +23,8 @@ build-personal:
 
 deploy-personal: build-personal-docker
 	docker push tstapler/personal-website:latest
-	kubectl replace -f deployment/personal-site-deployment.yml
+	kubectl patch deployment personal-website-deployment -p \
+	  "{\"spec\":{\"template\":{\"metadata\":{\"annotations\":{\"date\":\"`date +'%s'`\"}}}}}"
 
 build-iastate:
 	hugo --baseURL http://public.iastate.edu/~tstapler/ -d deployment/dist/$(IOWA_STATE_SITE)
