@@ -1,1 +1,2 @@
-deployment/dist
+deployment/*dist
+node_modules
