@@ -44,6 +44,8 @@ url = "/projects/"
 pre = "keyboard icon"
 [Params]
 gatag="UA-111008601-1"
+github_url="https://github.com/tstapler/personal-website"
+
     #
     # Contains the main grid cell of your site (such as a picture of yourself)
     # along with your name, description, and email. Any empty field will
