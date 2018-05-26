@@ -9,13 +9,16 @@ DOCKER_RUN_COMMAND=docker run -it --rm --name personal-website -p 80:80 $(DOCKER
 HUGO_URL=--baseURL $(SITE_URL)
 HUGO_SERVE=hugo serve $(HUGO_URL)
 HUGO_BUILD=hugo $(HUGO_URL)
+HUGO_BUILD_SITE=$(HUGO_BUILD) $(HUGO_SITE_DIST) 
 HUGO_SITE_DIST=-d $(DEPLOY_DIR)/pre_dist/$(SITE_NAME) 
-
-GULP_RUN=SITE_NAME=$(SITE_NAME) gulp
 
 UPDATE_DIST=rsync -ur $(DEPLOY_DIR)/pre_dist/$(SITE_NAME)/ $(DEPLOY_DIR)/dist/$(SITE_NAME)
 
-BUILD_SITE=$(HUGO_BUILD) $(HUGO_SITE_DIST) && $(GULP_RUN) uncss && $(UPDATE_DIST) && $(GULP_RUN) critical
+GULP_RUN=SITE_NAME=$(SITE_NAME) gulp
+GULP_COMMANDS=$(GULP_RUN) meta-tags
+
+
+BUILD_SITE= $(HUGO_BUILD_SITE) && $(GULP_COMMANDS) && $(UPDATE_DIST)
 
 serve: SITE_URL=http://localhost
 serve:
@@ -33,14 +36,16 @@ build-personal-docker: build-personal
 	docker build $(DEPLOY_DIR) -t $(DOCKER_TAG)
 
 build-personal: SITE_NAME=$(PERSONAL_SITE)
-build-personal: SITE_URL=http://tyler.staplerstation.com/
+build-personal: SITE_URL=https://tyler.staplerstation.com/
 build-personal: 
 	$(BUILD_SITE)
 
 deploy-personal: build-personal-docker
 	docker push tstapler/personal-website:latest
-	kubectl patch deployment personal-website-deployment -p \
-	  "{\"spec\":{\"template\":{\"metadata\":{\"annotations\":{\"date\":\"`date +'%s'`\"}}}}}"
+	helm upgrade --recreate-pods fettered-mind ./deployment/personal-website
+
+create-personal: build-personal-docker
+	helm install --name fettered-mind ./deployment/personal-website
 
 build-iastate: SITE_NAME=$(IOWA_STATE_SITE) 
 build-iastate: SITE_URL=http://public.iastate.edu/~tstapler/

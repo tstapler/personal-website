@@ -7,6 +7,7 @@ var del = require('del');
 var spawn = require('child_process').spawn;
 var sequence = require('run-sequence');
 var tasks = require('gulp-task-listing');
+var inject = require('gulp-inject')
 
 // Basic workflow plugins
 var prefix = require('gulp-autoprefixer');
@@ -21,12 +22,59 @@ var uglify = require('gulp-uglify');
 var critical = require('critical').stream;
 var postcss = require('gulp-postcss');
 var uncss = require('postcss-uncss');
-
+var favicons = require("gulp-favicons"),
+    gutil = require("gulp-util");
+ 
 // Performance testing plugins
 var psi = require('psi');
 
 var dist_folder = 'deployment/dist/' + process.env.SITE_NAME + '/'
 var pre_dist_folder = 'deployment/pre_dist/' + process.env.SITE_NAME + '/'
+
+
+gulp.task("meta-tags", function() {
+  gulp.src(pre_dist_folder + "**/*.html")
+    .pipe(inject(
+      gulp.src([pre_dist_folder + "favicons/favicons.html"]), 
+      {
+        starttag: "<!-- head:html -->",
+        transform: function (filePath, file) {
+          // return file contents as string
+          return file.contents.toString('utf8')
+        }},
+        {
+          name: "head",
+        }
+      ))
+    .pipe(gulp.dest(pre_dist_folder));
+})
+
+gulp.task("favicons", function () {
+  return gulp.src("static/favicons/stapler-logo.png").pipe(favicons({
+    appName: "Tyler Stapler's Personal Website",
+    appDescription: "A showcase of my interests",
+    developerName: "Tyler Stapler",
+    developerURL: "https://tyler.staplerstation.com",
+    background: "#020307",
+    path: "favicons/",
+    url: "https://tyler.staplerstation.com",
+    display: "standalone",
+    orientation: "portrait",
+    start_url: "/?homescreen=1",
+    version: 1.0,
+    logging: true,
+    online: false,
+    html: "favicons.html",
+    pipeHTML: true,
+    replace: true
+  }))
+    .on("error", gutil.log)
+    .pipe(gulp.dest("static/favicons"));
+  });
+
+gulp.task("add-meta", function() {
+  return gulp.src;
+})
 
 // -----------------------------------------------------------------------------
 // UnCSS Task
@@ -43,7 +91,10 @@ gulp.task('uncss', function() {
     uncss({
           html: [
             pre_dist_folder + '**/*.html' 
-          ]
+          ],
+      ignore: [
+        '#particles-js canvas'
+      ]
         })
   ];
   return gulp.src([
@@ -69,7 +120,7 @@ gulp.task('critical', function (cb) {
       minify: true,
       css: [
         dist_folder + 'css/all.css', 
-        dist_folder + 'css/photoGallery.css']
+        dist_folder + 'css/photoGallery.css'],
     }))
     .on('error', function(err) { u.log(u.colors.red(err.message)); })
     .pipe(gulp.dest(dist_folder));
