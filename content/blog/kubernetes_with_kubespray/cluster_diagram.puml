@@ -1,0 +1,18 @@
+@startuml
+
+object "Gaming Computer" as gc {
+	i7 4770k with 8 cores
+	32GB RAM
+}
+
+object "File Server" as fs {
+    AMD A8-7600 4 cores
+    16GB RAM
+}
+
+object VPS {
+    2 Virtual Cores
+    4GB RAM
+}
+
+@enduml

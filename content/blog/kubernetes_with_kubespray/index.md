@@ -1,7 +1,8 @@
 +++ 
 title = "My Kubernetes Home Lab"
-categories = [ "Kubernetes" ]
-tags = ["ansible", "kubernetes", "home-lab", "ceph", "tinc"]
+categories = [ "Kubernetes", "Home Lab"]
+tags = ["ansible", "kubernetes", "ceph", "tinc"]
+date = "12/08/2019"
 +++
 
 [Kubernetes](https://kubernetes.io/) is a highly modular container
@@ -30,7 +31,9 @@ Kubernetes' design goals it to make it easy to run many web applications on chea
 ragtag group of desktops. One of my machines has a i7 Ivy Bridge CPU (8 cores) and
 32 GB of ram and the other has an AMD A8-7600 (4 cores) and 16GB of ram. Once I
 installed Ubuntu on the two computers I had the beginnings of a
-Kubernetes cluster. What I lacked was a static IP for incoming traffic. I really wanted to point my domains at a more stable network connection than whatever apartment I happened to live in. After surveying a couple of hosting providers, I settled on a 2 core 4GB of ram VPS from Vultr which costs me 20 dollars a month. 16 cpu cores, and 52 GB of ram split across three nodes would be plenty of hardware to run a modest Kubernetes cluster.
+Kubernetes cluster. What I lacked was a static IP for incoming traffic. I wanted to point my domains at a more stable network connection than whatever apartment I happened to live in. After surveying a couple of hosting providers, I settled on a 2 core 4GB of ram VPS from Vultr which costs me 20 dollars a month. 16 cpu cores, and 52 GB of ram split across three nodes would be plenty of hardware to run a modest Kubernetes cluster.
+
+{{< image src="cluster_diagram.png" >}}
 
 ## Installation - Kubespray
 
@@ -107,4 +110,4 @@ over time, and the cluster is able to handle my changing requirements at
 the drop of a hat. I deploy services to my cluster using
 [Helm](https://helm.sh/), I keep my helm charts in [this
 repo](https://github.com/tstapler/charts). Building my cluster was a
-blast! I really encourage you to try it too.
+blast! I whole heartedly encourage you to try it too.
