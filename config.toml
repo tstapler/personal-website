@@ -1,10 +1,15 @@
 # Site settings (baseurl must end with a trailing slash!)
 # Set baseURL from command line
 languageCode = "en-us"
-title = "Tyler Stapler"
+title = "Tyler Stapler's Personal Website"
 theme = "espouse"
 copyright = "Copyright &#169; by Tyler Stapler"
 
+assetDir="themes/espouse/static"
+enableEmoji = true
+enableGitInfo = true
+enableRobotsTXT = true
+canonifyURLs = true
 # The theme uses pagination for post, gallery, and project listings.
 paginate = 12
 
@@ -13,7 +18,18 @@ paginate = 12
 # you can specify disqus_identifier, disqus_title, and disqus_url in the
 # front matter of specific content.
 #disqusShortname = "yourDisqusShortname"
+pygmentsCodefences = true
 
+[params]
+  author = "Tyler Stapler"
+  github = "https://github.com/tstapler"
+  facebook = "https://facebook.com/staplz"
+  og_image = "/images/og.png"
+  sitename = "Tyler Stapler's Personal Website"
+  twitter = "@TStaplz"
+
+[permalinks]
+  posts = "/:year/:month/:title/"
 
 sectionPagesMenu = "main"
 [[menu.main]]
@@ -24,18 +40,11 @@ url = "/"
 pre = "home icon"
 
 [[menu.main]]
-name = "ISU Portfolio"
+name = "Blog"
 weight = 10
-identifier = "isu-portfolio"
-url = "/isu-portfolio/"
+identifier = "blog"
+url = "/blog/"
 pre = "book icon"
-
-[[menu.main]]
-name = "Resume"
-weight = 50
-identifier = "url"
-url = "static/TylerStaplerResumeFall2016V3.pdf"
-pre = "file pdf outline icon"
 
 [[menu.main]]
 name = "Projects"
@@ -58,7 +67,7 @@ github_url="https://github.com/tstapler/personal-website"
         name = "Tyler Stapler"
 
         # This is optional
-        description = "I'm an up and coming Software Engineer with a desire to create. My interests are Distributed Systems and Security. I'm always searching for opportunities to hone my engineering prowess and solve real world software problems. My thirst for knowledge, positivity, and tenacity are all benefits I bring to any team I'm a part of. Check out the rest of my site to see some of my interests and achievements."
+        description = "I'm an up and coming Software Engineer with a desire to create. My interests are Distributed Systems and Security. I'm always searching for opportunities to hone my engineering prowess and solve challenging problems with software. My thirst for knowledge, positivity, and tenacity are all benefits I bring to any team I'm a part of. Check out the rest of my site to see some of my interests and achievements."
 
         # This is optional
         email = "tystapler@gmail.com"
@@ -70,12 +79,10 @@ github_url="https://github.com/tstapler/personal-website"
     [[Params.Technologies]]
     name = "Python"
     icon_url = "img/tech-logos/python-logo-notext.svg"
-    description = "I live and breathe python, it's my go to language for a quick prototype"
 
     [[Params.Technologies]]
     name = "Go"
     icon_url = "img/tech-logos/gopher.svg"
-    description = "I love how you're able to quickly create performant micro services in Go. You could say I'm a Gopher"
 
     [[Params.Technologies]]
     name = "Kubernetes"
