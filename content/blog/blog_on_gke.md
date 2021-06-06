@@ -7,7 +7,7 @@ draft = true
 
 Do you run your blog like it's 1999? FTP and GoDaddy your best friends? Well today, we're going to bring you into the new millennium. At the end of this series you'll be writing in style using the hottest technologies like, Kubernetes, Hugo, and Terraform.
 
-I'm writing this guide on linux, so to follow along, you can install it yourself! :) or you can download the awesome WSL to get many of these tools for Windows. 
+I'm writing this guide on linux, so to follow along, you can install it yourself! :) or you can download the awesome WSL TODO: Add WSL link to get many of these tools for Windows. 
 
 To get started we need to do a couple of things:
 

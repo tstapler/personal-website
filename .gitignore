@@ -1,2 +1,5 @@
 deployment/*dist
 node_modules
+public
+resources/_gen
+**/*.parcel-cache

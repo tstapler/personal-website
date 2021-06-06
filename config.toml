@@ -9,7 +9,6 @@ assetDir="themes/espouse/static"
 enableEmoji = true
 enableGitInfo = true
 enableRobotsTXT = true
-canonifyURLs = true
 # The theme uses pagination for post, gallery, and project listings.
 paginate = 12
 
@@ -19,6 +18,11 @@ paginate = 12
 # front matter of specific content.
 #disqusShortname = "yourDisqusShortname"
 pygmentsCodefences = true
+
+[taxonomies]
+  topic = "topics"
+  tag = "tags"
+  technology = "technogies"
 
 [params]
   author = "Tyler Stapler"

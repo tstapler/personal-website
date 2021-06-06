@@ -1,4 +1,4 @@
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ template "personal-website.fullname" . }}
@@ -9,18 +9,54 @@ metadata:
     heritage: {{ .Release.Service }}
 spec:
   replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+        app: {{ template "personal-website.name" . }}
+        release: {{ .Release.Name }}
   template:
     metadata:
       labels:
         app: {{ template "personal-website.name" . }}
         release: {{ .Release.Name }}
     spec:
+      {{- if .Values.internalTLS }}
+      initContainers:
+        - name: certificate-init-container
+          image: alpine:latest
+          command: ["/bin/sh"]
+          args:
+            - "-c"
+            - |
+              apk add --update openssl && \
+              openssl req -x509 -nodes -days 4380 -newkey rsa:2048 \
+              -subj "/CN=$POD_IP" \
+              -keyout /etc/tls/tls.key -out /etc/tls/tls.crt
+          env:
+            - name: NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: POD_IP
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.podIP
+          volumeMounts:
+            - name: tls
+              mountPath: /etc/tls
+      {{- end }}
       containers:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
             - containerPort: {{ .Values.service.internalPort }}
+            {{- if .Values.internalTLS }}
+            - containerPort: 443
+            {{- end }}
           livenessProbe:
             httpGet:
               path: /
@@ -29,9 +65,28 @@ spec:
             httpGet:
               path: /
               port: {{ .Values.service.internalPort }}
+          volumeMounts:
+            - name: tls
+              mountPath: /etc/tls
+            - name: nginx-conf
+              mountPath: /etc/nginx/nginx.conf
+              subPath: nginx.conf
+            - name: nginx-confd
+              mountPath: /etc/nginx/conf.d
           resources:
 {{ toYaml .Values.resources | indent 12 }}
+      volumes:
+        - name: tls
+          emptyDir: {}
+        - name: nginx-conf
+          configMap:
+            name: {{ template "personal-website.fullname" . }}-nginx
+        - name: nginx-confd
+          configMap:
+           name: {{ template "personal-website.fullname" . }}-nginx-confd
+
+
     {{- if .Values.nodeSelector }}
       nodeSelector:
-{{ toYaml .Values.nodeSelector | indent 8 }}
+        {{ toYaml .Values.nodeSelector | nindent 8 }}
     {{- end }}

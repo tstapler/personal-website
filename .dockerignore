@@ -1,1 +1,7 @@
 **/node_modules
+Dockerfile
+public
+Makefile
+node_modules
+deployment/personal-website/
+!deployment/personal-website/files

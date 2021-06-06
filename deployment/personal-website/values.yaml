@@ -3,7 +3,7 @@
 # Declare variables to be passed into your templates.
 replicaCount: 1
 image:
-  repository: tstapler/personal-website
+  repository: core.harbor.staplerstation.com/library/tstapler/personal-website
   tag: latest
   pullPolicy: Always
 service:
@@ -11,6 +11,8 @@ service:
   type: ClusterIP
   externalPort: 80
   internalPort: 80
+
+internalTLS: false
 ingress:
   enabled: true
   # Used to create an Ingress record.
@@ -20,6 +22,7 @@ ingress:
   - hosts:
      - "tyler.staplerstation.com"
     secretName: personal-website-tls
+
 # We usually recommend not to specify default resources and to leave this as a conscious
 # choice for the user. This also increases chances charts run on environments with little
 # resources, such as Minikube. If you do want to specify resources, uncomment the following
