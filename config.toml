@@ -71,7 +71,7 @@ github_url="https://github.com/tstapler/personal-website"
         name = "Tyler Stapler"
 
         # This is optional
-        description = "I'm an up and coming Software Engineer with a desire to create. My interests are Distributed Systems and Security. I'm always searching for opportunities to hone my engineering prowess and solve challenging problems with software. My thirst for knowledge, positivity, and tenacity are all benefits I bring to any team I'm a part of. Check out the rest of my site to see some of my interests and achievements."
+        description = "I'm Software Engineer with a desire to create. My interests are Distributed Systems and Security. I'm always searching for opportunities to hone my engineering prowess and solve challenging problems with software. My thirst for knowledge, positivity, and tenacity are all benefits I bring to any team I'm a part of. Check out the rest of my site to see some of my interests and achievements."
 
         # This is optional
         email = "tystapler@gmail.com"
