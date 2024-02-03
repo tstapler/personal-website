@@ -52,12 +52,12 @@ build-personal:
 	$(BUILD_SITE)
 
 
-DOCKER_TAG=ghcr.io/<your-github-username>/personal-website:latest
+DOCKER_TAG=ghcr.io/tstapler/personal-website:latest
 build-personal-docker: 
 	docker build --network host . -t $(DOCKER_TAG)
 
 github-push: build-personal-docker 
 	docker push $(DOCKER_TAG)
 
-create-personal: build-personal-docker
-	helm install --name fettered-mind ./deployment/personal-website
+create-personal: 
+	helm upgrade --install fettered-mind ./deployment/personal-website
