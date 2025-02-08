@@ -41,3 +41,24 @@
   - Planning and implementation
   - 2025 KVM options investigation
   - Time investment and lessons learned
+
+## Infrastructure Improvements
+- [ ] Container Deployment Strategy
+  - Implement health checks for rollback detection
+  - Configure blue-green deployment strategy
+  - Document implementation process for blog
+  - Note: Auto-updates will be implemented in separate monitoring repo
+
+- [ ] ArgoCD Integration
+  - Install and configure ArgoCD in kubernetes cluster
+  - Setup GitOps workflow
+  - Document setup process and benefits for blog
+
+## Web Design
+- [ ] Bug Fixes
+  - Fix summary overflow issues on summary page
+  
+- [ ] New Features
+  - Implement AI-generated blog post summaries
+  - Test summary generation quality
+  - Add summary display to blog template
