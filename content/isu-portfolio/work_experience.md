@@ -1,9 +1,18 @@
 +++
 title = "Work Experience"
-date = "2017-03-02"
-tags = ["work"]
+description = "Professional journey through software engineering internships and research roles building cloud infrastructure and embedded systems"
+summary = "From firmware optimization to distributed tracing - hands-on experiences shaping enterprise-scale software development skills"
 categories = [ "Iowa State Portfolio"]
-+++
+tags = ["work-experience", "internships", "aws", "kubernetes", "firmware"]
+keywords = ["software engineering internships", "cloud infrastructure development", "embedded systems programming", "distributed tracing implementation", "professional skill growth"]
+date = "2017-03-02"
+
+# Template fields:
+# description = "Overview of professional trajectory"
+# summary = "Highlight technical depth and achievements"
+# tags = Focus on roles and key technologies
+# keywords = Target career development searches
+++++
 
 Over the course of college I've gotten the opportunity to work with several great organizations.
 

@@ -1,9 +1,18 @@
 +++
 title = "Cumulative Reflection"
-date = "2017-03-02"
-tags = ["school"]
+description = "Reflection on five years of academic growth, extracurricular leadership, and professional development at Iowa State University"
+summary = "From marching band to hackathons - how campus experiences shaped technical skills and communication abilities that paved the way for software engineering success"
 categories = [ "Iowa State Portfolio"]
-+++
+tags = ["education", "marching-band", "professional-growth", "teamwork", "leadership"]
+keywords = ["college experience reflection", "engineering student growth", "extracurricular skill development", "ISU marching band impact", "academic to career transition"]
+date = "2017-03-02"
+
+# Template fields:
+# description = "Focus on overall educational journey and value proposition"
+# summary = "Highlight transformative experiences and outcomes"
+# tags = Use existing portfolio tags where possible
+# keywords = Target alumni/student reflection search terms
+++++
 
 When I was an Incoming Freshman, Iowa State's recruiting slogan was "Choose your Adventure". It's not a terrible slogan but at the time I did not appreciate its significance. Five years later, that phrase holds a special gravity for me. As I quickly approach graduation and becoming an full time software engineer it is clear to me that my course work and experiences have been critical to my professional success. I certainly was able to choose my educational adventure and I am proud of how I have grown and changed over the course of college.
 
