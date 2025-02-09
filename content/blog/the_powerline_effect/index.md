@@ -1,8 +1,11 @@
 +++
 title = "Beating Powerline Interference with MoCA (The Powerline Effect)"
-date = "07/04/2020"
+description = "A deep dive into solving network connectivity issues caused by powerline interference using MoCA adapters"
+summary = "Discover how to overcome powerline networking interference from halogen lights and other electrical devices by switching to MoCA adapters for reliable home networking."
 categories = ["Networking", "Home Lab"]
-tags = [ "powerline", "AV2", "MoCA" ]
+tags = ["powerline", "AV2", "MoCA", "networking", "troubleshooting", "home-network", "interference", "performance", "ethernet", "infrastructure"]
+keywords = ["powerline networking", "MoCA adapter", "network interference", "home networking", "powerline vs MoCA", "network troubleshooting"]
+date = "07/04/2020"
 +++
 
 ## My port problem

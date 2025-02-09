@@ -1,7 +1,10 @@
 +++ 
 title = "My Kubernetes Home Lab"
+description = "A comprehensive guide to building a production-grade Kubernetes cluster at home using Kubespray, Ceph storage, and Tinc networking"
+summary = "Learn how to build a powerful home Kubernetes cluster using consumer hardware, Kubespray for deployment, Ceph for distributed storage, and Tinc for secure networking."
 categories = [ "Kubernetes", "Home Lab"]
-tags = ["ansible", "kubernetes", "ceph", "tinc"]
+tags = ["ansible", "kubernetes", "ceph", "tinc", "homelab", "infrastructure", "devops", "distributed-systems", "storage", "networking", "self-hosted"]
+keywords = ["kubernetes homelab", "kubespray tutorial", "ceph storage", "tinc vpn", "home kubernetes cluster", "distributed storage", "self hosted kubernetes"]
 date = "12/08/2019"
 +++
 
