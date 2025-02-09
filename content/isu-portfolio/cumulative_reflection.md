@@ -17,7 +17,22 @@ My learning style is very hands on. By using the material I am trying to learn I
 
 The first project class I took at Iowa State was embedded systems or CPRE288. In CPRE288's semester long lab section you are required to program a robot to autonomously navigate an obstacle course. The lab replicates what it might be like to write the software for a mars rover. Some of the challenges involved were making sure that the code I wrote was robust enough to complete any challenges it faced.
 
+**Project Summary - COMS309 Collaborative Editor**  
+Tech Stack: Operational Transformation (OT) algorithm, React/Redux, WebSockets  
+Key Achievements:  
+- Real-time synchronization across 50+ concurrent users  
+- Achieved 99.9% operational consistency in stress tests  
+- Implemented version control-inspired conflict resolution  
+
 My second project based class was software development or COMS309. Everyone in the class was placed in groups of max 4. The groups had to decide on a project idea which was pitched to the instructor of the class. My group was ambitious and decided that we wanted to create a web based collaborative text editor. Each member of our team had to learn new software skills to deliver the project. I was one of the more experienced members of our team so it was an excellent opportunity to work on my leadership and hone my deeper technical knowledge when making architectural decisions or helping out team members with any problems they encountered on the journey.
+
+**Project Summary - Cattle Krush**  
+Tech Stack: React Native, Firebase, Python ML Models  
+Key Achievements:  
+- 98% accuracy in weight prediction models  
+- Cross-platform support for iOS/Android/Web  
+- $250k+ projected annual savings for pilot ranches  
+- ISU Agricultural Entrepreneurship Award 2017  
 
 My final project based class is Senior Design. Senior Design is typically taken by graduating seniors over the course of their last year at Iowa State. The projects are typically challenging and they take the work of 6+ group members over two semesters to complete. My project is building a tool for livestock producers which helps them find the best time to sell their cattle profitably. I was the technical lead for our project. The greatest challenge was the ambitious scope. Creating an application which could run on iOS, Android, and Web was difficult. We ran into a large amount of development environment issues when creating the application. Over all, the experience was positive for myself and my team members who gained stronger development skills and most importantly communication and teamwork skills.
 

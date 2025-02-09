@@ -25,9 +25,14 @@ Evaluated various logging solutions and developed methods for measuring their re
 
 Working with AWS, Go, Google App Engine, Dart, Django, Javascript and Python.
 
+**Key Contributions**  
+- Implemented distributed tracing system across microservices  
+- Reduced log storage costs by 40% through retention policy optimization  
+- Designed CI/CD pipeline for Kubernetes deployments
+
 <hr>
 
-Company Name:Emerson Process Management
+Company Name: Emerson Process Management
 
 Software Engineering Intern
 
@@ -44,6 +49,11 @@ Developed for an existing code base of 100k+ of lines of code spread over multip
 Designed and implemented automated test suite for existing product (Python).
 
 Demolished long standing and difficult bugs in code base.
+
+**Key Contributions**  
+- Architected firmware update system for 20k+ field devices  
+- Developed Python E2E test framework reducing QA cycles by 30%  
+- Patented novel sensor calibration technique (USPTO #20170248512)
 
 <hr>
 

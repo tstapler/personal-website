@@ -5,6 +5,9 @@ tags = ["school"]
 categories = [ "Iowa State Portfolio"]
 +++
 
+**Project Summary**  
+A full-stack livestock management platform developed for cross-platform deployment (Web/iOS/Android) using React Native and Node.js. The system integrated real-time commodity market data with cattle health monitoring to optimize rancher profitability.
+
 # Why?
 
 Every year farmers across America lose hundreds of thousands of dollars selling their head. Keeping track of each individual head’s feed, weight, age, and health is an overwhelming task to do be hand. On top of this, the Chicago Stock Exchange only provides room for profit a few hours each week.
