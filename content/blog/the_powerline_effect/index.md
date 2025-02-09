@@ -1,12 +1,18 @@
 +++
 title = "Beating Powerline Interference with MoCA (The Powerline Effect)"
-description = "A deep dive into solving network connectivity issues caused by powerline interference using MoCA adapters"
-summary = "Discover how to overcome powerline networking interference from halogen lights and other electrical devices by switching to MoCA adapters for reliable home networking."
+description = "Discover how halogen lighting interference crippled my powerline network and how MoCA adapters restored reliable high-speed connectivity through coaxial wiring"
+summary = "A real-world case study diagnosing and solving mysterious network latency issues caused by powerline interference, with performance benchmarks comparing MoCA vs powerline solutions"
 categories = ["Networking", "Home Lab"]
-tags = ["powerline", "AV2", "MoCA", "networking", "troubleshooting", "home-network", "interference", "performance", "ethernet", "infrastructure"]
-keywords = ["powerline networking", "MoCA adapter", "network interference", "home networking", "powerline vs MoCA", "network troubleshooting"]
+tags = ["powerline", "AV2", "MoCA", "networking", "troubleshooting", "home-network", "interference", "performance"]
+keywords = ["powerline networking problems", "MoCA adapter setup", "diagnosing network interference", "halogen light interference", "latency troubleshooting", "home network optimization"]
 date = "07/04/2020"
-+++
+
+# Template comments for future posts:
+# description = "Keep under 160 chars for SEO - focus on primary keywords and value proposition"
+# summary = "2-3 sentence teaser shown in post listings"
+# categories/tags = Choose existing where possible for consistency
+# keywords = Include long-tail variations and semantic terms
+++++
 
 ## My port problem
 

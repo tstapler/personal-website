@@ -1,12 +1,18 @@
 +++ 
 title = "My Kubernetes Home Lab"
-description = "A comprehensive guide to building a production-grade Kubernetes cluster at home using Kubespray, Ceph storage, and Tinc networking"
-summary = "Learn how to build a powerful home Kubernetes cluster using consumer hardware, Kubespray for deployment, Ceph for distributed storage, and Tinc for secure networking."
+description = "Step-by-step guide to building an enterprise-grade Kubernetes cluster at home using Kubespray, Ceph distributed storage, and Tinc VPN networking"
+summary = "From hardware selection to production deployment - learn how to create a resilient Kubernetes cluster using consumer hardware and open source tooling"
 categories = [ "Kubernetes", "Home Lab"]
-tags = ["ansible", "kubernetes", "ceph", "tinc", "homelab", "infrastructure", "devops", "distributed-systems", "storage", "networking", "self-hosted"]
-keywords = ["kubernetes homelab", "kubespray tutorial", "ceph storage", "tinc vpn", "home kubernetes cluster", "distributed storage", "self hosted kubernetes"]
+tags = ["ansible", "kubernetes", "ceph", "tinc", "homelab", "infrastructure", "devops", "distributed-systems", "storage", "networking"]
+keywords = ["kubernetes cluster setup", "kubespray ansible tutorial", "ceph storage cluster", "tinc vpn configuration", "home server kubernetes", "distributed systems networking"]
 date = "12/08/2019"
-+++
+
+# Template comments for future posts:
+# description = "Focus on specific technical implementation and outcomes"
+# summary = "Highlight the unique aspects (consumer hardware, production-grade)"
+# tags = Use existing category hierarchy where possible
+# keywords = Include both specific technologies and use case terms
+++++
 
 [Kubernetes](https://kubernetes.io/) is a highly modular container
 platform open sourced by Google. Google modeled Kubernetes after
