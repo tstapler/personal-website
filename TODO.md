@@ -31,6 +31,16 @@
   - VLAN separation for control plane traffic
   - Performance impact and benefits
 
+### Academic Experiences
+- [ ] Iowa State Course Impact Review
+  - ISU Hackathons/HackISU experiences
+  - National Cyber Analyst Challenge participation
+  - Linux Essentials course outcomes
+  - Operating Systems course projects
+  - Computer Organization/Design lessons
+  - Cybersecurity course applications
+  - Professional growth through coursework
+
 ### Hardware Reviews & Troubleshooting
 - [ ] Printer & Scanner Adventures
   - Printer firmware downgrade via print job
