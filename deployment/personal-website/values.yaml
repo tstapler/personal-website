@@ -3,7 +3,7 @@
 # Declare variables to be passed into your templates.
 replicaCount: 1
 image:
-  repository: core.harbor.staplerstation.com/library/tstapler/personal-website
+  repository: ghcr.io/tstapler/personal-website
   tag: latest
   pullPolicy: Always
 service:

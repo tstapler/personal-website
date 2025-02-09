@@ -31,8 +31,3 @@ jobs:
         context: .
         push: true
         tags: ghcr.io/${{ github.repository_owner }}/personal-website:latest
-
-    - name: Make Docker container public
-      run: |
-        gh auth login --with-token <<< "${{ secrets.GITHUB_TOKEN }}"
-        gh package set-visibility container ${{ github.repository_owner }}/personal-website --public
