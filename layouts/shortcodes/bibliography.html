@@ -39,7 +39,7 @@
 
 <div class="bibliography">
   <h2>References</h2>
-  {{- range $index, $entry := $scratch.Values -}}
+  {{- range $index, $entry := ($scratch.Get "bib") -}}
   <div id="ref-{{ $entry.id }}" class="bib-entry">
     <span class="bib-number">[{{ add $index 1 }}]</span>
     <div class="bib-content">
