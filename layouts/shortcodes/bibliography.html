@@ -1,22 +1,40 @@
-{{- $scratch := .Page.Scratch.Get "bib" -}}
-{{- if not $scratch -}}
-  {{- .Page.Scratch.Set "bib" dict -}}
-  {{- $scratch = .Page.Scratch.Get "bib" -}}
-{{- end -}}
+{{- $scratch := .Page.Scratch -}}
+{{- $scratch.Delete "bib" -}}
 
-{{- $entries := slice -}}
+{{- $rawEntries := slice -}}
 {{- if .IsNamedParams -}}
   {{- /* Read from file */ -}}
   {{- $bibFile := path.Join "content" .Page.File.Dir (.Get "file") -}}
-  {{- $content := readFile $bibFile -}}
-  {{- $entries = transform.Unmarshal "bibtex" $content -}}
+  {{- $rawEntries = split (readFile $bibFile) "\n" -}}
 {{- else -}}
   {{- /* Parse inline bibtex */ -}}
-  {{- $entries = transform.Unmarshal "bibtex" .Inner -}}
+  {{- $rawEntries = split .Inner "\n" -}}
 {{- end -}}
 
-{{- range $entries -}}
-  {{- $scratch.Set .id . -}}
+{{- $currentEntry := dict -}}
+{{- range $line := $rawEntries -}}
+  {{- $trimmedLine := trim $line " \t{}%" -}}
+  {{- if strings.HasPrefix $trimmedLine "@" -}}
+    {{- if gt (len $currentEntry) 0 -}}
+      {{- $scratch.Add "bib" (slice $currentEntry) -}}
+    {{- end -}}
+    {{- $parts := split $trimmedLine "{" -}}
+    {{- $currentEntry = dict 
+        "type" (replace (index $parts 0) "@" "")
+        "id" (trim (index $parts 1) " ,") 
+    -}}
+  {{- else if and $currentEntry (contains "=" $trimmedLine) -}}
+    {{- $parts := split $trimmedLine "=" -}}
+    {{- $key := trim (index $parts 0) " \t" | lower -}}
+    {{- $value := trim (index $parts 1) " \t," -}}
+    {{- $value = replace $value "{" "" -}}
+    {{- $value = replace $value "}" "" -}}
+    {{- $currentEntry = merge $currentEntry (dict $key $value) -}}
+  {{- end -}}
+{{- end -}}
+
+{{- if gt (len $currentEntry) 0 -}}
+  {{- $scratch.Add "bib" (slice $currentEntry) -}}
 {{- end -}}
 
 <div class="bibliography">
