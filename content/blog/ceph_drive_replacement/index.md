@@ -12,11 +12,14 @@ featured_image = "/img/tech-logos/ceph.svg"
 
 ## When Drives Go Bad: My Ceph Cluster Rescue Mission
 
-Let's be real - storage hardware fails. A lot. When three drives died simultaneously in my Ceph cluster last month, I learned firsthand why proper diagnostics matter. What started as some weird latency spikes turned into a crash course in distributed storage triage. Here's how I navigated the crisis:
+Let's be real - storage hardware fails. A lot. When three drives died simultaneously in my Ceph cluster last month, I
+learned firsthand why proper diagnostics matter. What started as some weird latency spikes turned into a crash course in
+distributed storage triage. Here's how I navigated the crisis:
 
 ### 1. The Smoking Gun: Tracking Down Dead OSDs
 
-My first clue something was wrong? The dashboard showed weird latency spikes during peak hours. Running the classic `ceph osd tree` gave me the lay of the land:
+My first clue something was wrong? The dashboard showed weird latency spikes during peak hours. Running the classic
+`ceph osd tree` gave me the lay of the land:
 
 ```shell
 ❯ sudo ceph osd tree
@@ -45,13 +48,16 @@ ID  CLASS WEIGHT   TYPE NAME          STATUS REWEIGHT PRI-AFF
 ```
 
 This command revealed the cluster layout and OSD statuses. Key observations:
+
 - OSD 4 and 10-11 were `down`
 - Host `Leviathan` had multiple failed drives
 - Weight distribution showed imbalance
 
 ### 2. Hardware Sleuthing: From Logs to Laptop Drives
 
-Here's where things got physical. Ceph's logical OSD IDs don't mean squat when you're standing in front of a rack server with 24 drive bays. My "aha" moment came cross-referencing these outputs:
+Here's where things got physical. Ceph's logical OSD IDs don't mean squat when you're standing in front of a rack server
+with 24 drive bays. My "aha" moment came cross-referencing these outputs:
+
 ```
 ❯ sudo lsblk -o KNAME,MOUNTPOINT,SERIAL
 KNAME MOUNTPOINT               SERIAL
@@ -113,11 +119,13 @@ sdf    P8HAKSMR        Hitachi HUS72403
 ```
 
 Cross-referenced mount points with serial numbers to:
+
 - Identify physical drive locations in the server
 - Confirm which OSDs mapped to failed drives
 - Verify drive health status through SMART tests
 
 ### 3. Confirming Drive Failure
+
 ```
 ❯ sudo smartctl -l selftest /dev/sdb
 smartctl 7.1 2019-12-30 r5022 [x86_64-linux-5.7.10-1-MANJARO] (local build)
@@ -131,23 +139,26 @@ Num  Test_Description    Status                  Remaining  LifeTime(hours)  LBA
 # 3  Vendor (0x71)       Completed without error       00%     33786         -
 ```
 
-
 This SMART test output showed:
+
 - Recent successful short test (LifeTime 14 hours)
 - Older vendor-specific tests passed
 - No immediate hardware errors (completed without error)
 
 ### 4. The Long Haul: Watching Rebuild Progress
 
-This is where patience becomes a virtue. As my cluster slowly rebuilt itself, I learned to love the `ceph -s` command. The numbers told a story of gradual healing:
+This is where patience becomes a virtue. As my cluster slowly rebuilt itself, I learned to love the `ceph -s` command.
+The numbers told a story of gradual healing:
 Key recovery metrics observed:
+
 - Object migration rate (32 MiB/s)
 - Backfill operations progress
 - Cluster capacity changes (47 TiB → 51 TiB)
 - Reduction in degraded objects (1.981% → 1.483%)
 - PG state transitions during recovery
 
-This 
+The output from this command shows the cluster's health from before I replaced one of the drives.
+
 ```
   cluster:
     id:     1d7c1a74-29f3-451b-9774-dd97d07de6a2
@@ -182,6 +193,9 @@ This
     client:   16 MiB/s rd, 789 KiB/s wr, 51 op/s rd, 79 op/s wr
     recovery: 32 MiB/s, 7 keys/s, 14 objects/s
 ```
+
+After replacing the drive, you can see that there are now 16 Ceph OSDs and the number of degraded objects had started to
+recover
 
 ```
 ❯ sudo ceph -s
@@ -221,9 +235,10 @@ This
 
 ## Lessons Learned the Hard Way
 
-- **Hot spares matter**: Having replacement drives on hand would have saved 12 hours of downtime
+- **Hot spares matter**: Having replacement drives on hand would have saved hours of downtime
 - **Monitor your monitors**: The near-full OSD warning almost caused cascading failures
 - **Document drive locations**: A simple rack diagram would have saved 30 minutes of physical inspection
-- **Balance as you grow**: My haphazard drive additions created imbalance that exacerbated the failure
+- **Balance as you grow**: My haphazard drive additions created imbalance that exacerbated the failure. With Ceph specifically, using different sized drives on different hosts cause drive failures to have to relocate more PGs (Placement Groups) than if all the drives were the same size.
 
-The cluster lived to serve another day, but this experience taught me that even "self-healing" systems need human oversight. Next time? I'll be ready with better monitoring and spare drives on standby.
+The cluster lived to serve another day, but this experience taught me that even "self-healing" systems need human
+oversight. Next time? I'll be ready with better monitoring and spare drives on standby.
