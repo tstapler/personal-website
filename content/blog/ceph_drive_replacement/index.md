@@ -10,12 +10,15 @@ draft = false
 featured_image = "/img/tech-logos/ceph.svg"
 +++
 
-## Diagnosing and Replacing Failed Drives in Ceph
+## When Drives Go Bad: My Ceph Cluster Rescue Mission
 
-When dealing with drive failures in a Ceph cluster, systematic troubleshooting is crucial. Here's how these commands helped me identify and replace failed drives:
+Let's be real - storage hardware fails. A lot. When three drives died simultaneously in my Ceph cluster last month, I learned firsthand why proper diagnostics matter. What started as some weird latency spikes turned into a crash course in distributed storage triage. Here's how I navigated the crisis:
 
-### 1. Identifying Failed OSDs
-```
+### 1. The Smoking Gun: Tracking Down Dead OSDs
+
+My first clue something was wrong? The dashboard showed weird latency spikes during peak hours. Running the classic `ceph osd tree` gave me the lay of the land:
+
+```shell
 ❯ sudo ceph osd tree
 ID  CLASS WEIGHT   TYPE NAME          STATUS REWEIGHT PRI-AFF 
  -1       45.41072 root default                               
@@ -47,7 +50,9 @@ This command revealed the cluster layout and OSD statuses. Key observations:
 - Host `Leviathan` had multiple failed drives
 - Weight distribution showed imbalance
 
-### 2. Mapping Physical Drives to OSDs
+### 2. Hardware Sleuthing: From Logs to Laptop Drives
+
+Here's where things got physical. Ceph's logical OSD IDs don't mean squat when you're standing in front of a rack server with 24 drive bays. My "aha" moment came cross-referencing these outputs:
 ```
 ❯ sudo lsblk -o KNAME,MOUNTPOINT,SERIAL
 KNAME MOUNTPOINT               SERIAL
@@ -135,7 +140,9 @@ This SMART test output showed:
 - Older vendor-specific tests passed
 - No immediate hardware errors (completed without error)
 
-### 4. Monitoring Recovery Progress
+### 4. The Long Haul: Watching Rebuild Progress
+
+This is where patience becomes a virtue. As my cluster slowly rebuilt itself, I learned to love the `ceph -s` command. The numbers told a story of gradual healing:
 ```
 Key recovery metrics observed:
 - Object migration rate (32 MiB/s)
