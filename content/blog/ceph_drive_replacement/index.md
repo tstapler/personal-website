@@ -1,35 +1,13 @@
 +++
-# Required Fields
-title = "{{ replaceRE "[-_]" " " .Name  | title }}"  # Keep under 60 characters
-description = ""  # 160 chars max for SEO, focus on primary keywords
-summary = ""  # 2-3 sentence teaser shown in listings
-
-# Category/Tag Schema
-categories = [ "Primary Category" ]  # Use existing categories from _index.md
-tags = [ "existing-tag" ]  # Max 10, lowercase with hyphens
-
-# SEO Optimization
-keywords = [ "primary keyword", "long-tail variation" ]  # 5-8 phrases
-
-# Optional Fields
-date = '{{ time.Now.Format "2006-01-02" }}'
-draft = true  # Set to false when ready to publish
-featured_image = "/img/your-image.jpg"  # Social sharing image
-
-# Template Guidance (Remove before publishing)
-# ------------------------------------------------------------------
-# Description: Include 2-3 primary keywords naturally
-# Categories: Check content/_index.md for existing taxonomy
-# Tags: Prefer existing tags, use hyphen-case
-# Keywords: Use semantic variations and common misspellings
-# Featured Image: Use /img/... path from static directory
-# 
-# Example Good Frontmatter:
-# title: "Automating Kubernetes Deployments"
-# description: "Step-by-step guide to GitOps workflows with ArgoCD and Kustomize"
-# categories = ["DevOps", "Cloud Native"]
-# tags = ["kubernetes", "gitops", "argocd", "ci-cd"]
-# keywords = ["kubernetes deployment", "argoCD tutorial", "gitops workflow"]
+title = "Step-by-Step Guide to Ceph Drive Replacement in Production"
+description = "Walkthrough of diagnosing and replacing failed drives in a Ceph storage cluster with real-world examples"
+summary = "Practical guide to identifying failed OSDs, mapping physical drives, and monitoring recovery in Ceph clusters"
+categories = ["Storage", "Troubleshooting"]
+tags = ["ceph", "drive-replacement", "linux", "storage-cluster", "hardware-failure"]
+keywords = ["Ceph drive replacement", "failed OSD recovery", "Ceph cluster maintenance", "storage troubleshooting", "Ceph SMART monitoring"]
+date = '2025-02-16'
+draft = false
+featured_image = "/img/tech-logos/ceph.svg"
 +++
 
 ## Diagnosing and Replacing Failed Drives in Ceph
