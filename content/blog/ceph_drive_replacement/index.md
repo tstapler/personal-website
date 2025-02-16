@@ -4,9 +4,9 @@ description = "Walkthrough of diagnosing and replacing failed drives in a Ceph s
 summary = "Practical guide to identifying failed OSDs, mapping physical drives, and monitoring recovery in Ceph clusters"
 categories = ["Storage", "Troubleshooting"]
 tags = ["ceph", "drive-replacement", "linux", "storage-cluster", "hardware-failure"]
-keywords = ["Ceph drive replacement", "failed OSD recovery", "Ceph cluster maintenance", "storage troubleshooting", "Ceph SMART monitoring"]
+keywords = ["Ceph drive replacement", "failed OSD recovery", "Ceph cluster maintenance", "storage troubleshooting", "SMART monitoring", "failed"]
 date = '2025-02-16'
-draft = false
+draft = true
 featured_image = "/img/tech-logos/ceph.svg"
 +++
 
@@ -44,7 +44,6 @@ ID  CLASS WEIGHT   TYPE NAME          STATUS REWEIGHT PRI-AFF
  14   hdd  5.45799         osd.14         up  1.00000 1.00000 
 ```
 
-```
 This command revealed the cluster layout and OSD statuses. Key observations:
 - OSD 4 and 10-11 were `down`
 - Host `Leviathan` had multiple failed drives
@@ -113,7 +112,6 @@ sdf    P8HAKSMR        Hitachi HUS72403
 └─sdf2    
 ```
 
-```
 Cross-referenced mount points with serial numbers to:
 - Identify physical drive locations in the server
 - Confirm which OSDs mapped to failed drives
@@ -134,7 +132,6 @@ Num  Test_Description    Status                  Remaining  LifeTime(hours)  LBA
 ```
 
 
-```
 This SMART test output showed:
 - Recent successful short test (LifeTime 14 hours)
 - Older vendor-specific tests passed
@@ -143,13 +140,15 @@ This SMART test output showed:
 ### 4. The Long Haul: Watching Rebuild Progress
 
 This is where patience becomes a virtue. As my cluster slowly rebuilt itself, I learned to love the `ceph -s` command. The numbers told a story of gradual healing:
-```
 Key recovery metrics observed:
 - Object migration rate (32 MiB/s)
 - Backfill operations progress
 - Cluster capacity changes (47 TiB → 51 TiB)
 - Reduction in degraded objects (1.981% → 1.483%)
 - PG state transitions during recovery
+
+This 
+```
   cluster:
     id:     1d7c1a74-29f3-451b-9774-dd97d07de6a2
     health: HEALTH_WARN
