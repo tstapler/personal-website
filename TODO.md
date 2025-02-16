@@ -8,6 +8,7 @@
   - Bricked Cloud Key and SSD after long-term power removal
   - Self-hosting Unifi server on gaming desktop
   - NFT-related issues and solutions
+  - Troubleshooting Bad hardware in building using vaping
 
 ### Infrastructure & Storage
 - [ ] Git Annex Setup
