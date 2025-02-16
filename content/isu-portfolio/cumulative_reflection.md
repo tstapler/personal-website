@@ -12,7 +12,7 @@ date = "2017-03-02"
 # summary = "Highlight transformative experiences and outcomes"
 # tags = Use existing portfolio tags where possible
 # keywords = Target alumni/student reflection search terms
-++++
++++
 
 When I was an Incoming Freshman, Iowa State's recruiting slogan was "Choose your Adventure". It's not a terrible slogan but at the time I did not appreciate its significance. Five years later, that phrase holds a special gravity for me. As I quickly approach graduation and becoming an full time software engineer it is clear to me that my course work and experiences have been critical to my professional success. I certainly was able to choose my educational adventure and I am proud of how I have grown and changed over the course of college.
 

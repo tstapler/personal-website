@@ -1,8 +1,8 @@
 +++ 
 # Required Fields
-title = "{{ replace .Name "-" " " | title }}"  # Keep under 60 characters
+title = "{{ replaceRE "[-_]" " " .Name  | title }}"  # Keep under 60 characters
 description = ""  # 160 chars max for SEO, focus on primary keywords
-summary = """"""  # 2-3 sentence teaser shown in listings
+summary = ""  # 2-3 sentence teaser shown in listings
 
 # Category/Tag Schema
 categories = [ "Primary Category" ]  # Use existing categories from _index.md
@@ -12,7 +12,7 @@ tags = [ "existing-tag" ]  # Max 10, lowercase with hyphens
 keywords = [ "primary keyword", "long-tail variation" ]  # 5-8 phrases
 
 # Optional Fields
-date = {{ .Date.Format "2006-01-02" }}
+date = '{{ time.Now.Format "2006-01-02" }}'
 draft = true  # Set to false when ready to publish
 featured_image = "/img/your-image.jpg"  # Social sharing image
 

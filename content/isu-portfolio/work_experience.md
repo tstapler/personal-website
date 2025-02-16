@@ -12,7 +12,7 @@ date = "2017-03-02"
 # summary = "Highlight technical depth and achievements"
 # tags = Focus on roles and key technologies
 # keywords = Target career development searches
-++++
++++
 
 Over the course of college I've gotten the opportunity to work with several great organizations.
 

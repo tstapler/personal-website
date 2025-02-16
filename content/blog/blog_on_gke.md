@@ -6,13 +6,7 @@ categories = [ "Kubernetes", "Cloud Infrastructure" ]
 tags = ["gcp", "gke", "kubernetes", "hugo", "terraform", "devops", "cdn", "tls"]
 keywords = ["hugo gke deployment", "static site kubernetes", "terraform gcp setup", "managed certificates gke", "cloud cdn configuration", "infrastructure as code blog"]
 draft = true
-
-# Template comments for future posts:
-# description = "Focus on technical implementation details and value props"
-# summary = "Emphasize the unique combination of technologies"
-# tags = Include both technology names and architectural concepts
-# keywords = Target common search combinations for deployment guides
-++++
++++
 
 Do you run your blog like it's 1999? FTP and GoDaddy your best friends? Well today, we're going to bring you into the new millennium. At the end of this series you'll be writing in style using the hottest technologies like, Kubernetes, Hugo, and Terraform.
 

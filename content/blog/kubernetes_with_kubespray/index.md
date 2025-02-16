@@ -12,7 +12,7 @@ date = "12/08/2019"
 # summary = "Highlight the unique aspects (consumer hardware, production-grade)"
 # tags = Use existing category hierarchy where possible
 # keywords = Include both specific technologies and use case terms
-++++
++++
 
 [Kubernetes](https://kubernetes.io/) is a highly modular container
 platform open sourced by Google. Google modeled Kubernetes after

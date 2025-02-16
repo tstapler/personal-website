@@ -13,7 +13,7 @@ github = "https://github.com/tstapler/blackboard-binder"
 # summary = "Emphasize real-world value and student impact"
 # tags = Include both technology stack and project type
 # keywords = Target student productivity searches
-++++
++++
 
 
 Blackboard binder is a tool for managing Blackboard Materials. My team built the application to scratch a personal itch. It has always been painful to manage course materials on blackboard and we wanted to help alleviate the problem. 
