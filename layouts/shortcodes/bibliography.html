@@ -23,7 +23,7 @@
         "type" (replace (index $parts 0) "@" "")
         "id" (trim (index $parts 1) " ,") 
     -}}
-  {{- else if and $currentEntry (contains "=" $trimmedLine) -}}
+  {{- else if and $currentEntry (strings.Contains $trimmedLine "=" ) -}}
     {{- $parts := split $trimmedLine "=" -}}
     {{- $key := trim (index $parts 0) " \t" | lower -}}
     {{- $value := trim (index $parts 1) " \t," -}}
