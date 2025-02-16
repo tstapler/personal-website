@@ -4,25 +4,31 @@ description = "Walkthrough of diagnosing and replacing failed drives in a Ceph s
 summary = "Practical guide to identifying failed OSDs, mapping physical drives, and monitoring recovery in Ceph clusters"
 categories = ["Storage", "Troubleshooting"]
 tags = ["ceph", "drive-replacement", "linux", "storage-cluster", "hardware-failure"]
+featured_image = "/img/tech-logos/ceph.svg"
+related_links = [
+    "[Ceph Documentation](https://docs.ceph.com/)",
+    "[Kubernetes Storage with Ceph](https://kubernetes.io/docs/concepts/storage/storage-classes/#ceph-rbd)",
+    "[SMART Monitoring Wikipedia](https://en.wikipedia.org/wiki/S.M.A.R.T.)"
+]
 keywords = ["Ceph drive replacement", "failed OSD recovery", "Ceph cluster maintenance", "storage troubleshooting", "SMART monitoring", "failed"]
 date = '2025-02-16'
 draft = true
 featured_image = "/img/tech-logos/ceph.svg"
 +++
 
-## When Drives Go Bad: My Ceph Cluster Rescue Mission
+## When Drives Go Bad: My [Ceph](https://ceph.io/en/) Cluster Rescue Mission
 
 Let's be real - storage hardware fails. A lot. When three drives died simultaneously in my Ceph cluster last month, I
 learned firsthand why proper diagnostics matter. What started as some weird latency spikes turned into a crash course in
 distributed storage triage. Here's how I navigated the crisis:
 
-### 1. The Smoking Gun: Tracking Down Dead OSDs
+### 1. The Smoking Gun: Tracking Down Dead [OSDs](https://docs.ceph.com/en/latest/rados/operations/operating/#add-or-remove-an-osd)
 
 My first clue something was wrong? The dashboard showed weird latency spikes during peak hours. Running the classic
 `ceph osd tree` gave me the lay of the land:
 
 ```shell
-❯ sudo ceph osd tree
+❯ sudo ceph osd tree  # [Ceph OSD Tree Documentation](https://docs.ceph.com/en/latest/rados/operations/operating/#monitoring-osds)
 ID  CLASS WEIGHT   TYPE NAME          STATUS REWEIGHT PRI-AFF 
  -1       45.41072 root default                               
  -3              0     host Absis                             
@@ -53,7 +59,7 @@ This command revealed the cluster layout and OSD statuses. Key observations:
 - Host `Leviathan` had multiple failed drives
 - Weight distribution showed imbalance
 
-### 2. Hardware Sleuthing: From Logs to Laptop Drives
+### 2. Hardware Sleuthing: From Logs to Laptop Drives ([lsblk man page](https://man7.org/linux/man-pages/man8/lsblk.8.html))
 
 Here's where things got physical. Ceph's logical OSD IDs don't mean squat when you're standing in front of a rack server
 with 24 drive bays. My "aha" moment came cross-referencing these outputs:
@@ -124,7 +130,7 @@ Cross-referenced mount points with serial numbers to:
 - Confirm which OSDs mapped to failed drives
 - Verify drive health status through SMART tests
 
-### 3. Confirming Drive Failure
+### 3. Confirming Drive Failure with [SMART Tests](https://en.wikipedia.org/wiki/S.M.A.R.T.)
 
 ```
 ❯ sudo smartctl -l selftest /dev/sdb
@@ -233,7 +239,10 @@ recover
 
 ```
 
-## Lessons Learned the Hard Way
+## Lessons Learned the Hard Way [^1][^2]
+
+[^1]: Related Post: [Kubernetes Cluster Setup with Kubespray](/blog/kubernetes_with_kubespray)
+[^2]: Further Reading: [Ceph Hardware Recommendations](https://docs.ceph.com/en/latest/start/hardware-recommendations/)
 
 - **Hot spares matter**: Having replacement drives on hand would have saved hours of downtime
 - **Monitor your monitors**: The near-full OSD warning almost caused cascading failures
