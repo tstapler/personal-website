@@ -5,15 +5,10 @@ summary = "Practical guide to identifying failed OSDs, mapping physical drives, 
 categories = ["Storage", "Troubleshooting"]
 tags = ["ceph", "drive-replacement", "linux", "storage-cluster", "hardware-failure"]
 featured_image = "/img/tech-logos/ceph.svg"
-related_links = [
-    "[Ceph Documentation](https://docs.ceph.com/)",
-    "[Kubernetes Storage with Ceph](https://kubernetes.io/docs/concepts/storage/storage-classes/#ceph-rbd)",
-    "[SMART Monitoring Wikipedia](https://en.wikipedia.org/wiki/S.M.A.R.T.)"
-]
 keywords = ["Ceph drive replacement", "failed OSD recovery", "Ceph cluster maintenance", "storage troubleshooting", "SMART monitoring", "failed"]
 date = '2025-02-16'
-draft = true
-featured_image = "/img/tech-logos/ceph.svg"
+draft = false
+featured_image = "/img/tech-logos/Ceph_Logo_Standard_RGB_120411_fa.png"
 +++
 
 ## When Drives Go Bad: My [Ceph](https://ceph.io/en/) Cluster Rescue Mission
@@ -25,10 +20,10 @@ distributed storage triage. Here's how I navigated the crisis:
 ### 1. The Smoking Gun: Tracking Down Dead [OSDs](https://docs.ceph.com/en/latest/rados/operations/operating/#add-or-remove-an-osd)
 
 My first clue something was wrong? The dashboard showed weird latency spikes during peak hours. Running the classic
-`ceph osd tree` gave me the lay of the land:
+`ceph osd tree` ([Ceph OSD Tree Documentation](https://docs.ceph.com/en/latest/rados/operations/operating/#monitoring-osds)) gave me the lay of the land:
 
 ```shell
-❯ sudo ceph osd tree  # [Ceph OSD Tree Documentation](https://docs.ceph.com/en/latest/rados/operations/operating/#monitoring-osds)
+❯ sudo ceph osd tree
 ID  CLASS WEIGHT   TYPE NAME          STATUS REWEIGHT PRI-AFF 
  -1       45.41072 root default                               
  -3              0     host Absis                             
@@ -62,7 +57,7 @@ This command revealed the cluster layout and OSD statuses. Key observations:
 ### 2. Hardware Sleuthing: From Logs to Laptop Drives ([lsblk man page](https://man7.org/linux/man-pages/man8/lsblk.8.html))
 
 Here's where things got physical. Ceph's logical OSD IDs don't mean squat when you're standing in front of a rack server
-with 24 drive bays. My "aha" moment came cross-referencing these outputs:
+with 12 drive bays. My "aha" moment came cross-referencing these outputs:
 
 ```
 ❯ sudo lsblk -o KNAME,MOUNTPOINT,SERIAL
@@ -151,6 +146,8 @@ This SMART test output showed:
 - Older vendor-specific tests passed
 - No immediate hardware errors (completed without error)
 
+The SMART test showed that the drive had no remaining life and was likely the cause of the failure.
+
 ### 4. The Long Haul: Watching Rebuild Progress
 
 This is where patience becomes a virtue. As my cluster slowly rebuilt itself, I learned to love the `ceph -s` command.
@@ -201,7 +198,7 @@ The output from this command shows the cluster's health from before I replaced o
 ```
 
 After replacing the drive, you can see that there are now 16 Ceph OSDs and the number of degraded objects had started to
-recover
+recover.
 
 ```
 ❯ sudo ceph -s
@@ -239,10 +236,10 @@ recover
 
 ```
 
-## Lessons Learned the Hard Way [^1][^2]
+I had to repeat this process for the other two drives that had failed.
 
-[^1]: Related Post: [Kubernetes Cluster Setup with Kubespray](/blog/kubernetes_with_kubespray)
-[^2]: Further Reading: [Ceph Hardware Recommendations](https://docs.ceph.com/en/latest/start/hardware-recommendations/)
+## Lessons Learned the Hard Way
+
 
 - **Hot spares matter**: Having replacement drives on hand would have saved hours of downtime
 - **Monitor your monitors**: The near-full OSD warning almost caused cascading failures
@@ -251,3 +248,7 @@ recover
 
 The cluster lived to serve another day, but this experience taught me that even "self-healing" systems need human
 oversight. Next time? I'll be ready with better monitoring and spare drives on standby.
+
+## Appendix
+Related Post about how and why I'm using Ceph: [Kubernetes Cluster Setup with Kubespray](/blog/kubernetes_with_kubespray)
+Further Reading: [Ceph Hardware Recommendations](https://docs.ceph.com/en/latest/start/hardware-recommendations/)
