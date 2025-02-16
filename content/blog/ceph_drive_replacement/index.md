@@ -218,3 +218,12 @@ This
     recovery: 22 MiB/s, 2 keys/s, 9 objects/s
 
 ```
+
+## Lessons Learned the Hard Way
+
+- **Hot spares matter**: Having replacement drives on hand would have saved 12 hours of downtime
+- **Monitor your monitors**: The near-full OSD warning almost caused cascading failures
+- **Document drive locations**: A simple rack diagram would have saved 30 minutes of physical inspection
+- **Balance as you grow**: My haphazard drive additions created imbalance that exacerbated the failure
+
+The cluster lived to serve another day, but this experience taught me that even "self-healing" systems need human oversight. Next time? I'll be ready with better monitoring and spare drives on standby.
