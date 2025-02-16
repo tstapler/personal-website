@@ -28,6 +28,34 @@ All PRs must pass:
 - Update documentation as needed
 - Keep commits atomic and well-described
 
+### Shortcode Documentation
+
+#### Bibliography System
+```markdown
+{{</* bibliography file="references.bib" */>}}
+<!-- or inline -->
+{{</* bibliography */>}}
+@article{mykey,
+  title = {Example Title},
+  author = {Author},
+  year = {2023},
+  url = {https://example.com}
+}
+{{</* /bibliography */>}}
+
+Cite with: {{</* cite "mykey" */>}}
+```
+
+Required CSS:
+```css
+.bibliography { margin: 2rem 0; }
+.bib-entry { margin: 1rem 0; display: flex; }
+.bib-number { min-width: 3em; font-weight: bold; }
+.citation { text-decoration: none; color: #0066cc; }
+.citation:hover { text-decoration: underline; }
+.bib-link { margin-left: 0.5rem; }
+```
+
 ## Review Process
 1. Automated checks must pass
 2. Code review required

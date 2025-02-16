@@ -1,0 +1,36 @@
+{{- $scratch := .Page.Scratch.Get "bib" -}}
+{{- if not $scratch -}}
+  {{- .Page.Scratch.Set "bib" dict -}}
+  {{- $scratch = .Page.Scratch.Get "bib" -}}
+{{- end -}}
+
+{{- $entries := slice -}}
+{{- if .IsNamedParams -}}
+  {{- /* Read from file */ -}}
+  {{- $bibFile := path.Join "content" .Page.File.Dir (.Get "file") -}}
+  {{- $content := readFile $bibFile -}}
+  {{- $entries = transform.Unmarshal "bibtex" $content -}}
+{{- else -}}
+  {{- /* Parse inline bibtex */ -}}
+  {{- $entries = transform.Unmarshal "bibtex" .Inner -}}
+{{- end -}}
+
+{{- range $entries -}}
+  {{- $scratch.Set .id . -}}
+{{- end -}}
+
+<div class="bibliography">
+  <h2>References</h2>
+  {{- range $index, $entry := $scratch.Values -}}
+  <div id="ref-{{ $entry.id }}" class="bib-entry">
+    <span class="bib-number">[{{ add $index 1 }}]</span>
+    <div class="bib-content">
+      {{- if $entry.author }}<span class="bib-author">{{ $entry.author }}.</span>{{ end -}}
+      <span class="bib-title">{{ $entry.title }}.</span>
+      {{- if $entry.journal }}<em class="bib-journal">{{ $entry.journal }}</em>{{ end -}}
+      {{- if $entry.year }}<span class="bib-year">({{ $entry.year }})</span>{{ end -}}
+      {{- if $entry.url }} <a href="{{ $entry.url }}" class="bib-link">↗</a>{{ end -}}
+    </div>
+  </div>
+  {{- end -}}
+</div>
