@@ -2,6 +2,11 @@
 draft = true
 +++
 
+## Diagnosing and Replacing Failed Drives in Ceph
+
+When dealing with drive failures in a Ceph cluster, systematic troubleshooting is crucial. Here's how these commands helped me identify and replace failed drives:
+
+### 1. Identifying Failed OSDs
 ```
 ❯ sudo ceph osd tree
 ID  CLASS WEIGHT   TYPE NAME          STATUS REWEIGHT PRI-AFF 
@@ -28,6 +33,13 @@ ID  CLASS WEIGHT   TYPE NAME          STATUS REWEIGHT PRI-AFF
  14   hdd  5.45799         osd.14         up  1.00000 1.00000 
 ```
 
+```
+This command revealed the cluster layout and OSD statuses. Key observations:
+- OSD 4 and 10-11 were `down`
+- Host `Leviathan` had multiple failed drives
+- Weight distribution showed imbalance
+
+### 2. Mapping Physical Drives to OSDs
 ```
 ❯ sudo lsblk -o KNAME,MOUNTPOINT,SERIAL
 KNAME MOUNTPOINT               SERIAL
@@ -89,6 +101,13 @@ sdf    P8HAKSMR        Hitachi HUS72403
 ```
 
 ```
+Cross-referenced mount points with serial numbers to:
+- Identify physical drive locations in the server
+- Confirm which OSDs mapped to failed drives
+- Verify drive health status through SMART tests
+
+### 3. Confirming Drive Failure
+```
 ❯ sudo smartctl -l selftest /dev/sdb
 smartctl 7.1 2019-12-30 r5022 [x86_64-linux-5.7.10-1-MANJARO] (local build)
 Copyright (C) 2002-19, Bruce Allen, Christian Franke, www.smartmontools.org
@@ -103,7 +122,19 @@ Num  Test_Description    Status                  Remaining  LifeTime(hours)  LBA
 
 
 ```
-❯ sudo ceph -s
+This SMART test output showed:
+- Recent successful short test (LifeTime 14 hours)
+- Older vendor-specific tests passed
+- No immediate hardware errors (completed without error)
+
+### 4. Monitoring Recovery Progress
+```
+Key recovery metrics observed:
+- Object migration rate (32 MiB/s)
+- Backfill operations progress
+- Cluster capacity changes (47 TiB → 51 TiB)
+- Reduction in degraded objects (1.981% → 1.483%)
+- PG state transitions during recovery
   cluster:
     id:     1d7c1a74-29f3-451b-9774-dd97d07de6a2
     health: HEALTH_WARN
