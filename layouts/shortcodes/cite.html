@@ -1,11 +1,14 @@
-{{- $entries := .Page.Scratch.Get "bib" -}}
+{{- $scratch := .Page.Scratch -}}
+{{- $scratch.Add "bib" slice -}}
+{{- $entries := $scratch.Get "bib" -}}
 {{- if $entries -}}
-  {{- $entryMap := dict -}}
+  {{- $entryIndex := -1 -}}
   {{- range $idx, $entry := $entries -}}
-    {{- $entryMap = merge $entryMap (dict $entry.id $idx) -}}
+    {{- if eq $entry.id (.Get 0) -}}
+      {{- $entryIndex = $idx -}}
+    {{- end -}}
   {{- end -}}
-  {{- $entryIndex := index $entryMap (.Get 0) -}}
-  {{- if $entryIndex -}}
+  {{- if ge $entryIndex 0 -}}
   <a href="#ref-{{ .Get 0 }}" class="citation" aria-label="Reference {{ .Get 0 }}">[{{ add $entryIndex 1 }}]</a>
   {{- else -}}
   <span class="citation-error">[Citation Error]</span>
