@@ -25,7 +25,7 @@
         "id" (trim (index $parts 1) " ,") 
     -}}
   {{- else if and $currentEntry (strings.Contains $trimmedLine "=" ) -}}
-    {{- $parts := split (trim $trimmedLine) "=" -}}
+    {{- $parts := split (trim $trimmedLine " \t") "=" -}}
     {{- $key := trim (index $parts 0) " \t" | lower -}}
     {{- $value := trim (trim (index $parts 1) " \t,") "\"{}" -}}
     {{- $value = replace $value "{" "" -}}
