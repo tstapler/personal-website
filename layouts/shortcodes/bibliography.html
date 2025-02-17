@@ -19,14 +19,15 @@
       {{- $scratch.Add "bib" (slice $currentEntry) -}}
     {{- end -}}
     {{- $parts := split $trimmedLine "{" -}}
+    {{- $typeParts := split (index $parts 0) "," -}}
     {{- $currentEntry = dict 
-        "type" (replace (index $parts 0) "@" "")
+        "type" (trim (replace (index $typeParts 0) "@" "") " \t")
         "id" (trim (index $parts 1) " ,") 
     -}}
   {{- else if and $currentEntry (strings.Contains $trimmedLine "=" ) -}}
-    {{- $parts := split $trimmedLine "=" -}}
+    {{- $parts := split (trim $trimmedLine) "=" -}}
     {{- $key := trim (index $parts 0) " \t" | lower -}}
-    {{- $value := trim (index $parts 1) " \t," -}}
+    {{- $value := trim (trim (index $parts 1) " \t,") "\"{}" -}}
     {{- $value = replace $value "{" "" -}}
     {{- $value = replace $value "}" "" -}}
     {{- $currentEntry = merge $currentEntry (dict $key $value) -}}
