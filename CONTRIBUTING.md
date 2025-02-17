@@ -51,8 +51,15 @@ Required CSS:
 .bibliography { margin: 2rem 0; }
 .bib-entry { margin: 1rem 0; display: flex; }
 .bib-number { min-width: 3em; font-weight: bold; }
-.citation { text-decoration: none; color: #0066cc; }
-.citation:hover { text-decoration: underline; }
+.citation { 
+  text-decoration: none;
+  color: #0066cc;
+  border-bottom: 1px dotted #0066cc;
+}
+.citation:hover {
+  text-decoration: none;
+  border-bottom-style: solid;
+}
 .bib-link { margin-left: 0.5rem; }
 ```
 
