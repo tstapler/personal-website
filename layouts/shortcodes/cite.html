@@ -4,7 +4,7 @@
 {{- if $entries -}}
   {{- $entryIndex := -1 -}}
   {{- range $idx, $entry := $entries -}}
-    {{- if eq $entry.id (.Get 0) -}}
+    {{- if eq $entry.id .Get 0 -}}
       {{- $entryIndex = $idx -}}
     {{- end -}}
   {{- end -}}
