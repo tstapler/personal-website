@@ -32,9 +32,9 @@ docker:
 deploy:
     FROM earthly/helm:3.12.3
     COPY deployment/personal-website/ ./deployment/personal-website/
-    WITH DOCKER --compose
-        COMPOSE_FILE=docker-compose.yml
-        DOCKER_TAG=$DOCKER_TAG
+    WITH DOCKER \
+        --compose -f docker-compose.yml \
+        --build-arg DOCKER_TAG=$DOCKER_TAG
     RUN helm upgrade --install fettered-mind ./deployment/personal-website
 
 test-local:
