@@ -1,14 +1,20 @@
 +++
 title = "Peeps"
-categories = []
-tags = ["programming-project", "microsoft"]
+description = "Interactive employee recognition trainer using Microsoft Graph API"
+summary = "Outlook-integrated learning tool that helps teams master colleague names and roles through spaced repetition quizzes"
+categories = ["Professional Projects"]
+tags = ["microsoft-graph", "nodejs", "angular", "hackathon"]
+keywords = ["employee onboarding tool", "outlook contacts integration", "name recognition quiz", "microsoft hackathon project", "team building software"]
+featured_image = "/img/peeps-screenshot.jpg"
 +++
 
-Peeps is an application which helps you learn the names of your coworkers.
+Peeps solves a common workplace challenge - remembering colleagues' names and roles. Our Microsoft One Week Hackathon team built this Outlook-integrated solution using Microsoft Graph API to:
 
-Peeps pulls contacts from outlook and quizzes you on their names in faces.
+1. Pull employee photos and organizational data
+2. Generate personalized recognition quizzes
+3. Track learning progress with spaced repetition
 
-Our team created peeps as part of the 2017 Microsoft One Week hackathon
+Rather than static flashcards, Peeps creates dynamic learning paths based on reporting structures and team relationships. Security remained paramount - we implemented Microsoft Identity authentication to protect sensitive organizational data.
 
 **Technologies used**:
   - Node.js

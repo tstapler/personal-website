@@ -1,12 +1,13 @@
 +++
-title = "Blackboard Binder"
-description = "Automated course material management system using Python web scraping to organize Blackboard content"
-summary = "Open source tool solving real student pain points by aggregating and structuring Blackboard course materials through Selenium automation"
-categories = [ "Iowa State Portfolio" ]
-tags = ["web-scraping", "python", "automation", "educational-tools", "school-project"]
-keywords = ["blackboard automation tool", "course material organizer", "python selenium scraper", "open source education tech", "academic productivity hack"]
+title = "Blackboard Binder" 
+description = "Automated course material organizer using Python/Selenium web scraping" 
+summary = "Open source tool solving student organization challenges by aggregating Blackboard materials with browser automation"
+categories = [ "Iowa State Portfolio" ] 
+tags = ["selenium", "python", "automation", "academic-tools"] 
+keywords = ["blackboard automation", "course material organizer", "academic productivity tool", "python web scraping", "open source education tech"]
 featured_image = "/img/blackboard-binder.jpg"
 github = "https://github.com/tstapler/blackboard-binder"
+date = "2018-04-15"
 
 # Template fields: 
 # description = "Focus on technical implementation and problem solved"
