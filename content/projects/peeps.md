@@ -3,7 +3,7 @@ title = "Peeps"
 description = "Interactive employee recognition trainer using Microsoft Graph API"
 summary = "Outlook-integrated learning tool that helps teams master colleague names and roles through spaced repetition quizzes"
 categories = ["Professional Projects"]
-tags = ["microsoft-graph", "nodejs", "angular", "hackathon"]
+tags = ["microsoft-graph", "nodejs", "angular", "hackathon", "express", "redux"]
 keywords = ["employee onboarding tool", "outlook contacts integration", "name recognition quiz", "microsoft hackathon project", "team building software"]
 featured_image = "/img/peeps-screenshot.jpg"
 +++
@@ -22,19 +22,3 @@ Rather than static flashcards, Peeps creates dynamic learning paths based on rep
   - Microsoft Graph API
   - Angular 2
   - Redux
-
-## Inspiration
-
-
-## What it does
-
-
-## How we built it
-
-## Challenges we ran into
-
-## Accomplishments that we're proud of
-
-## What we learned
-
-## What's next for Peeps

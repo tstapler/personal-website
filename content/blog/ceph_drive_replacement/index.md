@@ -1,19 +1,16 @@
 +++
-title = "Step-by-Step Guide to Ceph Drive Replacement in Production"
+title = "When Drives Go Bad: My Ceph Cluster Rescue Mission"
 description = "Walkthrough of diagnosing and replacing failed drives in a Ceph storage cluster with real-world examples"
 summary = "Practical guide to identifying failed OSDs, mapping physical drives, and monitoring recovery in Ceph clusters"
 categories = ["Storage", "Troubleshooting"]
 tags = ["ceph", "drive-replacement", "linux", "storage-cluster", "hardware-failure"]
-featured_image = "/img/tech-logos/ceph.svg"
 keywords = ["Ceph drive replacement", "failed OSD recovery", "Ceph cluster maintenance", "storage troubleshooting", "SMART monitoring", "failed"]
 date = '2025-02-16'
 draft = false
 featured_image = "/img/tech-logos/Ceph_Logo_Standard_RGB_120411_fa.png"
 +++
 
-## When Drives Go Bad: My [Ceph](https://ceph.io/en/) Cluster Rescue Mission
-
-Let's be real - storage hardware fails. A lot. When three drives died simultaneously in my Ceph cluster last month, I
+Let's be real - storage hardware fails. A lot. When three drives died simultaneously in my [Ceph](https://ceph.io/en/) cluster last month, I
 learned firsthand why proper diagnostics matter. What started as some weird latency spikes turned into a crash course in
 distributed storage triage. Here's how I navigated the crisis:
 
@@ -59,7 +56,7 @@ This command revealed the cluster layout and OSD statuses. Key observations:
 Here's where things got physical. Ceph's logical OSD IDs don't mean squat when you're standing in front of a rack server
 with 12 drive bays. My "aha" moment came cross-referencing these outputs:
 
-```
+```shell
 ❯ sudo lsblk -o KNAME,MOUNTPOINT,SERIAL
 KNAME MOUNTPOINT               SERIAL
 sda                            YBKWYRXF
@@ -81,7 +78,7 @@ sdg                            Z1DANJQA
 sdg1  /    
 ```
 
-```
+```shell
 ❯ sudo lsblk -o NAME,SERIAL,MODEL,MOUNTPOINT
 NAME   SERIAL          MODEL            MOUNTPOINT
 loop1                                   /snap/code/40
@@ -127,7 +124,7 @@ Cross-referenced mount points with serial numbers to:
 
 ### 3. Confirming Drive Failure with [SMART Tests](https://en.wikipedia.org/wiki/S.M.A.R.T.)
 
-```
+```shell
 ❯ sudo smartctl -l selftest /dev/sdb
 smartctl 7.1 2019-12-30 r5022 [x86_64-linux-5.7.10-1-MANJARO] (local build)
 Copyright (C) 2002-19, Bruce Allen, Christian Franke, www.smartmontools.org
@@ -162,7 +159,7 @@ Key recovery metrics observed:
 
 The output from this command shows the cluster's health from before I replaced one of the drives.
 
-```
+```shell
   cluster:
     id:     1d7c1a74-29f3-451b-9774-dd97d07de6a2
     health: HEALTH_WARN
@@ -200,7 +197,7 @@ The output from this command shows the cluster's health from before I replaced o
 After replacing the drive, you can see that there are now 16 Ceph OSDs and the number of degraded objects had started to
 recover.
 
-```
+```shell
 ❯ sudo ceph -s
   cluster:
     id:     1d7c1a74-29f3-451b-9774-dd97d07de6a2

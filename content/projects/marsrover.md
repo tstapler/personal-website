@@ -2,7 +2,7 @@
 title = "Mars Rover"
 categories = [ "Iowa State Portfolio" ]
 tags = [ "programming-project", "school" ]
-image = "/img/cpre288.gif"
+featured_image = "/img/cpre288.gif"
 +++
 
 The Mars Rover was the final project for my Computer Engineering 288 Class (Embedded Systems). In the class we learned about programming embedded systems which are small microchips with limited memory and processing power. 
