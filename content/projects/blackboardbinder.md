@@ -5,7 +5,7 @@ summary = "Open source tool solving real student pain points by aggregating and 
 categories = [ "Iowa State Portfolio" ]
 tags = ["web-scraping", "python", "automation", "educational-tools", "school-project"]
 keywords = ["blackboard automation tool", "course material organizer", "python selenium scraper", "open source education tech", "academic productivity hack"]
-image = "/img/blackboard-binder.jpg"
+featured_image = "/img/blackboard-binder.jpg"
 github = "https://github.com/tstapler/blackboard-binder"
 
 # Template fields: 

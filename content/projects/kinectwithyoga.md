@@ -2,7 +2,7 @@
 title = "Kinect With Yoga"
 categories = [ "Iowa State Portfolio" ]
 tags = [ "programming-project" ]
-image = "/img/beach-yoga.jpg"
+featured_image = "/img/beach-yoga.jpg"
 github = "https://github.com/tstapler/kinect-with-yoga"
 +++
 
