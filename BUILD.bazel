@@ -1,6 +1,6 @@
 load("@build_stack_rules_hugo//hugo:rules.bzl", "hugo_site", "hugo_serve")
 load("@rules_pkg//pkg:tar.bzl", "pkg_tar")
-load("@rules_oci//oci:defs.bzl", "container_run", "oci_image")
+load("@rules_oci//oci:defs.bzl", "container_run", "oci_image", "oci_tarball")
 
 hugo_site(
     name = "site",
@@ -71,7 +71,3 @@ pkg_tar(
     package_dir = "/etc/nginx",
 )
 
-oci_image(
-    name = "nginx_image",
-    base = "@distroless_base",
-    )
