@@ -7,7 +7,7 @@ args:
     ARG HUGO_URL = "https://tyler.staplerstation.com/"
 
 base-build:
-    FROM mirror.gcr.io/earthly/hugo:0.101.0
+    FROM mirror.gcr.io/hugomods/hugo:exts
     WORKDIR /project
     COPY . .
     RUN npm install
