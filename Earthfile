@@ -29,7 +29,9 @@ build-local:
 
 docker:
     FROM +base-build
-    COPY deployment/personal-website/files/nginx.conf /etc/nginx/conf.d/default.conf
+    # Copy nginx configurations to correct locations
+    COPY deployment/personal-website/files/default.conf /etc/nginx/conf.d/default.conf
+    COPY deployment/personal-website/files/nginx.conf /etc/nginx/nginx.conf
     RUN hugo --base-buildURL "$HUGO_URL"
     SAVE IMAGE --push "$DOCKER_TAG"
 
