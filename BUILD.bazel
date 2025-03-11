@@ -23,16 +23,19 @@ pkg_tar(
     package_dir = "/usr/share/nginx/html",
 )
 
+pkg_tar(
+    name = "nginx_cache_dir",
+    empty_dirs = ["/var/cache/nginx"],
+)
+
 oci_image(
-    name = "nginx_container", 
-    base = "@distroless_nginx",
+    name = "nginx_container",
+    base = "@distroless_nginx", 
     entrypoint = ["/usr/sbin/nginx", "-g", "daemon off;"],
     tars = [
         ":static_assets",
-        ":nginx_configs", 
-    ],
-    directories = [
-        "/var/cache/nginx",
+        ":nginx_configs",
+        ":nginx_cache_dir",
     ],
     visibility = ["//visibility:public"],
 )
