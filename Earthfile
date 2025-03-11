@@ -5,17 +5,25 @@ args:
     ARG DEPLOY_DIR = "deployment"
     ARG DOCKER_TAG = "mirror.gcr.io/YOUR_PROJECT/YOUR_REPO/personal-website:latest"
     ARG HUGO_URL = "https://tyler.staplerstation.com/"
+    ARG EARTHLY_PARALLELISM = "3"  # Reduce default parallelism
 
 base-build:
     FROM mirror.gcr.io/hugomods/hugo:exts
     WORKDIR /project
+    # Separate dependencies to optimize caching
+    COPY package.json package-lock.json ./
+    RUN npm install --omit=dev
+    # Copy remaining files after dependencies
     COPY . .
-    RUN npm install
+    # Limit memory usage for this stage
+    EARTHLY_WITH_EXEC --memory=512mb
 
 serve:
     FROM +base-build
     ARG HUGO_URL
-    RUN hugo serve -D --base-buildURL "$HUGO_URL" --bind 0.0.0.0
+    # Limit memory and enable cleanup on exit
+    EARTHLY_WITH_EXEC --memory=1gb --cleanup
+    RUN hugo serve -D --base-buildURL "$HUGO_URL" --bind 0.0.0.0 --renderToMemory
 
 build-local:
     FROM +base-build
