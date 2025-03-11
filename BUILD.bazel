@@ -1,4 +1,4 @@
-load("@build_stack_rules_hugo//hugo:rules.bzl", "hugo_site")
+load("@build_stack_rules_hugo//hugo:rules.bzl", "hugo_site", "hugo_serve")
 load("@rules_pkg//pkg:tar.bzl", "pkg_tar")
 load("@rules_oci//oci:defs.bzl", "oci_image")
 
@@ -9,13 +9,13 @@ hugo_site(
     layouts = glob(["layouts/**"]),
     static = glob(["static/**"]),
     theme = "//themes/espouse",
-    args = [
-        "--destination", "$(@D)/public",  # Use bazel output directory
-        "--cleanDestinationDir",  # Ensure clean builds
-    ],
     quiet = False,
-    tags = ["requires-network"],  # Allow network access for themes
 )
+
+hugo_serve(
+    name = "serve",
+    dep = [":site"],
+    )
 
 pkg_tar(
     name = "static_assets",
