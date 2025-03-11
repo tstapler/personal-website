@@ -16,13 +16,13 @@ base-build:
     # Copy remaining files after dependencies
     COPY . .
     # Limit memory usage for this stage
-    WITH (--memory=512mb)
+    WITH --memory=512mb
 
 serve:
     FROM +base-build
     ARG HUGO_URL
     # Limit memory usage
-    WITH (--memory=1gb)
+    WITH --memory=1gb
     RUN hugo serve -D --base-buildURL "$HUGO_URL" --bind 0.0.0.0 --renderToMemory
 
 build-local:
