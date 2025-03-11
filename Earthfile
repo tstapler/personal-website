@@ -16,13 +16,13 @@ base-build:
     # Copy remaining files after dependencies
     COPY . .
     # Limit memory usage for this stage
-    EARTHLY_WITH_EXEC --memory=512mb
+    WITH (--memory=512mb)
 
 serve:
     FROM +base-build
     ARG HUGO_URL
-    # Limit memory and enable cleanup on exit
-    EARTHLY_WITH_EXEC --memory=1gb --cleanup
+    # Limit memory usage
+    WITH (--memory=1gb)
     RUN hugo serve -D --base-buildURL "$HUGO_URL" --bind 0.0.0.0 --renderToMemory
 
 build-local:
