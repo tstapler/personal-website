@@ -3,11 +3,11 @@ VERSION 0.7
 args:
     ARG SITE_NAME = "staplerstation"
     ARG DEPLOY_DIR = "deployment"
-    ARG DOCKER_TAG = "ghcr.io/tstapler/personal-website:latest"
+    ARG DOCKER_TAG = "mirror.gcr.io/YOUR_PROJECT/YOUR_REPO/personal-website:latest"
     ARG HUGO_URL = "https://tyler.staplerstation.com/"
 
 base-build:
-    FROM earthly/hugo:0.101.0
+    FROM mirror.gcr.io/earthly/hugo:0.101.0
     WORKDIR /project
     COPY . .
     RUN npm install
@@ -38,7 +38,7 @@ docker:
 #    RUN helm upgrade --install fettered-mind ./deployment/personal-website
 
 test-local:
-    FROM nginx:alpine
+    FROM mirror.gcr.io/library/nginx:alpine
     COPY deployment/personal-website/files/nginx.conf /etc/nginx/conf.d/default.conf
     COPY +build-local/public /usr/share/nginx/html
     EXPOSE 80
