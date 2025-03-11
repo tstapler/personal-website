@@ -5,4 +5,4 @@ module(
 
 bazel_dep(name = "rules_hugo", version = "0.0.9")
 bazel_dep(name = "rules_pkg", version = "0.9.1")
-bazel_dep(name = "io_bazel_rules_docker")
+bazel_dep(name = "rules_oci", version = "1.4.0")
