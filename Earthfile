@@ -11,7 +11,7 @@ base-build:
     FROM mirror.gcr.io/hugomods/hugo:exts
     WORKDIR /project
     # Separate dependencies to optimize caching
-    COPY package.json package-lock.json ./
+    COPY package.json ./
     RUN npm install --omit=dev
     # Copy remaining files after dependencies
     COPY . .
