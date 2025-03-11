@@ -1,0 +1,8 @@
+module(
+    name = "personal-website",
+    version = "0.1.0",
+)
+
+bazel_dep(name = "rules_hugo")
+bazel_dep(name = "rules_pkg")
+bazel_dep(name = "io_bazel_rules_docker")
