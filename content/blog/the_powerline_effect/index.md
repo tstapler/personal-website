@@ -5,7 +5,7 @@ summary = "A real-world case study diagnosing and solving mysterious network lat
 categories = ["Networking", "Home Lab"]
 tags = ["powerline", "AV2", "MoCA", "networking", "troubleshooting", "home-network", "interference", "performance"]
 keywords = ["powerline networking problems", "MoCA adapter setup", "diagnosing network interference", "halogen light interference", "latency troubleshooting", "home network optimization"]
-date = "07/04/2020"
+date = "2020-07-04"
 
 # Template comments for future posts:
 # description = "Keep under 160 chars for SEO - focus on primary keywords and value proposition"
