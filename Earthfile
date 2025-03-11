@@ -10,10 +10,21 @@ args:
 base-build:
     FROM mirror.gcr.io/hugomods/hugo:exts
     WORKDIR /project
-    # Separate dependencies to optimize caching
+    
+    # Install Chrome dependencies for Puppeteer
+    RUN apk add --update --no-cache \
+        udev \
+        ttf-freefont \
+        chromium
+    
+    # Install required global dependencies
+    RUN npm install -g critical@3.1.0 gulp@4.0.2 fancy-log@2.0.0
+    
+    # Install project dependencies
     COPY package.json ./
-    RUN npm install --omit=dev
-    # Copy remaining files after dependencies
+    RUN npm install --omit=dev puppeteer
+    
+    # Copy source files
     COPY . .
 
 serve:
@@ -32,7 +43,13 @@ docker:
     # Copy nginx configurations to correct locations
     COPY deployment/personal-website/files/default.conf /etc/nginx/conf.d/default.conf
     COPY deployment/personal-website/files/nginx.conf /etc/nginx/nginx.conf
-    RUN hugo --base-buildURL "$HUGO_URL"
+    # Build with production environment
+    RUN HUGO_ENV=production hugo --baseURL "$HUGO_URL"
+    
+    # Run post-processing tasks
+    RUN gulp critical
+    RUN gulp compress
+    
     SAVE IMAGE --push "$DOCKER_TAG"
 
 #deploy:
