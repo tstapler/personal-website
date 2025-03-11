@@ -34,14 +34,35 @@ oci_image(
     visibility = ["//visibility:public"],
 )
 
-# New runnable test target
-container_run(
-    name = "nginx_test",
+# Loadable docker image tarball
+oci_tarball(
+    name = "nginx_image",
     image = ":nginx_container",
-    # Map host port 8080 to container port 80
-    ports = ["8080:80"],
-    # Add any other docker run flags here
-    # args = ["--env", "FOO=BAR"],
+    repo_tags = ["ghcr.io/$USER/personal-website:latest"],
+)
+
+# Runnable target to test locally
+genrule(
+    name = "nginx_test",
+    srcs = [":nginx_image"],
+    outs = ["run_nginx.sh"],
+    cmd = """echo '#!/bin/bash
+docker load -i $(location :nginx_image)
+docker run -p 8080:80 ghcr.io/$USER/personal-website:latest' > $@
+    """,
+    executable = True,
+)
+
+# Push target for CI
+genrule(
+    name = "docker_push",
+    srcs = [":nginx_image"],
+    outs = ["push.sh"],
+    cmd = """echo '#!/bin/bash
+docker load -i $(location :nginx_image)
+docker push ghcr.io/$USER/personal-website:latest' > $@
+    """,
+    executable = True,
 )
 
 pkg_tar(
