@@ -1,0 +1,47 @@
+load("@rules_hugo//hugo:defs.bzl", "hugo_site")
+load("@rules_pkg//pkg:tar.bzl", "pkg_tar")
+load("@rules_oci//oci:defs.bzl", "oci_image", "oci_pull")
+
+hugo_site(
+    name = "site",
+    config = "config.toml", 
+    content = [
+        "//content",
+        "//layouts",
+        "//static",
+        "//themes/espouse",
+    ],
+)
+
+pkg_tar(
+    name = "static_assets",
+    srcs = [":site"],
+    package_dir = "/usr/share/nginx/html",
+)
+
+oci_image(
+    name = "nginx_container",
+    base = "@distroless-static//:base",
+    entrypoint = ["/nginx", "-g", "daemon off;"],
+    tars = [
+        ":static_assets",
+        ":nginx_configs",
+    ],
+    visibility = ["//visibility:public"],
+)
+
+pkg_tar(
+    name = "nginx_configs",
+    srcs = [
+        "//deployment/personal-website/files:default.conf",
+        "//deployment/personal-website/files:nginx.conf",
+    ],
+    package_dir = "/etc/nginx",
+)
+
+oci_pull(
+    name = "distroless-static",
+    digest = "sha256:32cd222ecef0bbce46e8f61cde90aebdfc4cb9d1e56107d9325f0f6d63eb6d6f",
+    image = "gcr.io/distroless/static-debian12",
+    platforms = ["linux/amd64"],
+)
