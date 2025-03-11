@@ -1,6 +1,6 @@
 load("@build_stack_rules_hugo//hugo:rules.bzl", "hugo_site", "hugo_serve")
 load("@rules_pkg//pkg:tar.bzl", "pkg_tar")
-load("@rules_oci//oci:defs.bzl", "oci_image", "oci_tarball")
+load("@rules_oci//oci:defs.bzl", "oci_image", "oci_load", "oci_push")
 
 hugo_site(
     name = "site",
@@ -34,35 +34,19 @@ oci_image(
     visibility = ["//visibility:public"],
 )
 
-# Loadable docker image tarball
-oci_tarball(
-    name = "nginx_image",
+# Load target for local testing
+oci_load(
+    name = "nginx_load",
     image = ":nginx_container",
     repo_tags = ["ghcr.io/$USER/personal-website:latest"],
 )
 
-# Runnable target to test locally
-genrule(
-    name = "nginx_test",
-    srcs = [":nginx_image"],
-    outs = ["run_nginx.sh"],
-    cmd = """echo '#!/bin/bash
-docker load -i $(location :nginx_image)
-docker run -p 8080:80 ghcr.io/$USER/personal-website:latest' > $@
-    """,
-    executable = True,
-)
-
 # Push target for CI
-genrule(
+oci_push(
     name = "docker_push",
-    srcs = [":nginx_image"],
-    outs = ["push.sh"],
-    cmd = """echo '#!/bin/bash
-docker load -i $(location :nginx_image)
-docker push ghcr.io/$USER/personal-website:latest' > $@
-    """,
-    executable = True,
+    image = ":nginx_container",
+    repository = "ghcr.io/$USER/personal-website",
+    remote_tags = ["latest"],
 )
 
 pkg_tar(
