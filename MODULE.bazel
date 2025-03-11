@@ -5,18 +5,55 @@ module(
 )
 
 # Hugo rules
-archive_override(
-    module_name = "rules_hugo",
-    version = "0.0.9",
-    urls = ["https://github.com/stackb/rules_hugo/releases/download/v0.0.9/rules_hugo-v0.0.9.tar.gz"],
-    strip_prefix = "rules_hugo-v0.0.9",
-    sha256 = "9e3f8f19bd29ec0c5b70adf5a4243b5a5e5d4912e5a2a4b3d6d95a3b1358e6e",
+bazel_dep(name = "build_stack_rules_hugo", version = "0.0.9")
+
+# RULES_HUGO_SHA256 = "8df370f374dc72701b65b7c8a8add8ccb8423a845e973993fa9c68f8b516c9be"
+# RULES_HUGO_COMMIT = "294a8ec626a394011d35397108c930be631ab9fa"
+# archive_override(
+#     module_name="rules_hugo",
+#     url = "https://github.com/stackb/rules_hugo/archive/%s.zip" % RULES_HUGO_COMMIT,
+#     sha256 = RULES_HUGO_SHA256,
+#     strip_prefix = "rules_hugo-%s" % RULES_HUGO_COMMIT
+# )
+
+local_path_override(
+    module_name = "build_stack_rules_hugo",
+    path = "../rules_hugo",
+)
+
+# Register Hugo toolchain
+hugo_register_toolchains = use_extension("@build_stack_rules_hugo//hugo:extensions.bzl", "hugo_register_toolchains")
+use_repo(hugo_register_toolchains, "hugo")
+
+hugo = use_extension(
+    "@@build_stack_rules_hugo//hugo:internal/extensions.bzl",
+    "hugo_extension",
+)
+
+hugo.hugo(
+    name = "hugo",
+    version = "0.145.0",
+    extended = True,
 )
 
 # Other dependencies
-bazel_dep(name = "rules_pkg", version = "0.9.1")
-bazel_dep(name = "rules_oci", version = "1.4.0")
+bazel_dep(name = "rules_pkg", version = "1.0.1")
+bazel_dep(name = "rules_oci", version = "2.2.2")
 
-# Register Hugo toolchain
-hugo_register_toolchains = use_extension("@rules_hugo//hugo:extensions.bzl", "hugo_register_toolchains")
-use_repo(hugo_register_toolchains, "hugo")
+
+oci = use_extension("@rules_oci//oci:extensions.bzl", "oci")
+
+# Declare external images you need to pull, for example:
+oci.pull(
+    name = "distroless_base",
+    # 'latest' is not reproducible, but it's convenient.
+    # During the build we print a WARNING message that includes recommended 'digest' and 'platforms'
+    # values which you can use here in place of 'tag' to pin for reproducibility.
+    tag = "latest",
+    image = "gcr.io/distroless/base",
+    platforms = ["linux/amd64"],
+)
+
+# For each oci.pull call, repeat the "name" here to expose them as dependencies.
+use_repo(oci, "distroless_base")
+
