@@ -5,7 +5,7 @@ summary = "From hardware selection to production deployment - learn how to creat
 categories = [ "Kubernetes", "Home Lab"]
 tags = ["ansible", "kubernetes", "ceph", "tinc", "homelab", "infrastructure", "devops", "distributed-systems", "storage", "networking"]
 keywords = ["kubernetes cluster setup", "kubespray ansible tutorial", "ceph storage cluster", "tinc vpn configuration", "home server kubernetes", "distributed systems networking"]
-date = "12/08/2019"
+date = "2019-12-08"
 
 # Template comments for future posts:
 # description = "Focus on specific technical implementation and outcomes"

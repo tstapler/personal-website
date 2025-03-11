@@ -3,7 +3,7 @@ title = "Must construct additonal hard drives"
 categories = [ "Kubernetes", "Ceph"]
 tags = ["ceph", "kubernetes" ]
 draft = true
-date = "02/08/2020"
+date = "2020-02-08"
 +++
 
 # Overview

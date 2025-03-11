@@ -4,7 +4,7 @@ title = "Time flies when you're running Kubernetes"
 categories = ["Kubernetes", "Home Lab"]
 tags = ["ceph", "kubernetes", "certs", "kubeadm"]
 draft = true 
-date = "20/08/2019"
+date = "2019-08-20"
 +++
 
 Have you ever come home to lights that won't turn on? Typically, the
