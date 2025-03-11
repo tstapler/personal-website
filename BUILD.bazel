@@ -41,12 +41,35 @@ oci_load(
     repo_tags = ["ghcr.io/$USER/personal-website:latest"],
 )
 
+# Filegroup to access the tarball output
+filegroup(
+    name = "nginx_image_tarball",
+    srcs = [":nginx_load"],
+    output_group = "tarball",
+)
+
+# Runnable target to test locally
+genrule(
+    name = "nginx_test",
+    srcs = [":nginx_image_tarball"],
+    outs = ["run_nginx.sh"],
+    cmd = """echo '#!/bin/bash
+docker load -i $(location :nginx_image_tarball)
+docker run -p 8080:80 ghcr.io/$USER/personal-website:latest' > $@
+    """,
+    executable = True,
+)
+
 # Push target for CI
-oci_push(
+genrule(
     name = "docker_push",
-    image = ":nginx_container",
-    repository = "ghcr.io/$USER/personal-website",
-    remote_tags = ["latest"],
+    srcs = [":nginx_image_tarball"],
+    outs = ["push.sh"],
+    cmd = """echo '#!/bin/bash
+docker load -i $(location :nginx_image_tarball)
+docker push ghcr.io/$USER/personal-website:latest' > $@
+    """,
+    executable = True,
 )
 
 pkg_tar(

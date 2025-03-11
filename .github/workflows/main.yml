@@ -32,6 +32,4 @@ jobs:
       run: bazel build //:nginx_image
       
     - name: Load and push image
-      run: |
-        bazel build //:docker_push
-        ./bazel-bin/push.sh
+      run: bazel run //:docker_push
