@@ -11,26 +11,16 @@ base-build:
     FROM mirror.gcr.io/hugomods/hugo:exts
     WORKDIR /project
     
-    # Install Chrome dependencies for Puppeteer
-    RUN apk add --update --no-cache \
-        udev \
-        ttf-freefont \
-        chromium
-    
-    # Install required global dependencies
-    RUN npm install -g critical@3.1.0 gulp@4.0.2 fancy-log@2.0.0
-    
     # Install project dependencies
     COPY package.json ./
-    RUN npm install --omit=dev puppeteer
-    
+
     # Copy source files
     COPY . .
 
 serve:
     FROM +base-build
     ARG HUGO_URL
-    RUN hugo serve -D --base-buildURL "$HUGO_URL" --bind 0.0.0.0 --renderToMemory
+    RUN hugo serve --buildDrafts --baseURL "$HUGO_URL" --bind 0.0.0.0 --renderToMemory
 
 build-local:
     FROM +base-build
