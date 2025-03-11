@@ -24,12 +24,15 @@ pkg_tar(
 )
 
 oci_image(
-    name = "nginx_container",
-    base = "@distroless_base",
-    entrypoint = ["/nginx", "-g", "daemon off;"],
+    name = "nginx_container", 
+    base = "@distroless_nginx",
+    entrypoint = ["/usr/sbin/nginx", "-g", "daemon off;"],
     tars = [
         ":static_assets",
-        ":nginx_configs",
+        ":nginx_configs", 
+    ],
+    directories = [
+        "/var/cache/nginx",
     ],
     visibility = ["//visibility:public"],
 )
