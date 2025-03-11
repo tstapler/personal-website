@@ -1,6 +1,6 @@
 load("@build_stack_rules_hugo//hugo:rules.bzl", "hugo_site", "hugo_serve")
 load("@rules_pkg//pkg:tar.bzl", "pkg_tar")
-load("@rules_oci//oci:defs.bzl", "oci_image")
+load("@rules_oci//oci:defs.bzl", "container_run", "oci_image")
 
 hugo_site(
     name = "site",
@@ -32,6 +32,16 @@ oci_image(
         ":nginx_configs",
     ],
     visibility = ["//visibility:public"],
+)
+
+# New runnable test target
+container_run(
+    name = "nginx_test",
+    image = ":nginx_container",
+    # Map host port 8080 to container port 80
+    ports = ["8080:80"],
+    # Add any other docker run flags here
+    # args = ["--env", "FOO=BAR"],
 )
 
 pkg_tar(
