@@ -5,11 +5,16 @@ load("@rules_oci//oci:defs.bzl", "oci_image")
 hugo_site(
     name = "site",
     config = "config.toml", 
-    content =         glob(["content/**"]),
-    layouts =         glob(["layouts/**"]),
-    static =         glob(["static/**"]),
+    content = glob(["content/**"]),
+    layouts = glob(["layouts/**"]),
+    static = glob(["static/**"]),
     theme = "//themes/espouse",
+    args = [
+        "--destination", "$(@D)/public",  # Use bazel output directory
+        "--cleanDestinationDir",  # Ensure clean builds
+    ],
     quiet = False,
+    tags = ["requires-network"],  # Allow network access for themes
 )
 
 pkg_tar(

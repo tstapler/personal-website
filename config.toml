@@ -8,7 +8,7 @@ copyright = "Copyright &#169; by Tyler Stapler"
 assetDir="themes/espouse/static"
 enableEmoji = true
 ignoreLogs = ['warning-goldmark-raw-html']
-enableGitInfo = true
+enableGitInfo = false
 enableRobotsTXT = true
 # The theme uses pagination for post, gallery, and project listings.
 [pagination]
