@@ -12,14 +12,14 @@ base-build:
     WORKDIR /project
     # Separate dependencies to optimize caching
     COPY package.json package-lock.json ./
-    RUN --memory=512mb npm install --omit=dev
+    RUN npm install --omit=dev
     # Copy remaining files after dependencies
     COPY . .
 
 serve:
     FROM +base-build
     ARG HUGO_URL
-    RUN --memory=1gb hugo serve -D --base-buildURL "$HUGO_URL" --bind 0.0.0.0 --renderToMemory
+    RUN hugo serve -D --base-buildURL "$HUGO_URL" --bind 0.0.0.0 --renderToMemory
 
 build-local:
     FROM +base-build
