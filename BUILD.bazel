@@ -38,7 +38,7 @@ oci_image(
 oci_load(
     name = "nginx_load",
     image = ":nginx_container",
-    repo_tags = ["ghcr.io/$USER/personal-website:latest"],
+    repo_tags = ["ghcr.io/tstapler/personal-website:latest"],
 )
 
 # Filegroup to access the tarball output
@@ -55,7 +55,7 @@ genrule(
     outs = ["run_nginx.sh"],
     cmd = """echo '#!/bin/bash
 docker load -i $(location :nginx_image_tarball)
-docker run -p 8080:80 ghcr.io/$USER/personal-website:latest' > $@
+docker run -p 1314:80 ghcr.io/tstapler/personal-website:latest' > $@
     """,
     executable = True,
 )
@@ -67,7 +67,7 @@ genrule(
     outs = ["push.sh"],
     cmd = """echo '#!/bin/bash
 docker load -i $(location :nginx_image_tarball)
-docker push ghcr.io/$USER/personal-website:latest' > $@
+docker push ghcr.io/tstapler/personal-website:latest' > $@
     """,
     executable = True,
 )

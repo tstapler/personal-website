@@ -24,17 +24,16 @@ local_path_override(
 # Register Hugo toolchain
 hugo_register_toolchains = use_extension("@build_stack_rules_hugo//hugo:extensions.bzl", "hugo_register_toolchains")
 use_repo(hugo_register_toolchains, "hugo")
+#hugo_rules = use_extension(
+#    "@@build_stack_rules_hugo//hugo:internal/extensions.bzl",
+#    "hugo_extension",
+#)
 
-hugo = use_extension(
-    "@@build_stack_rules_hugo//hugo:internal/extensions.bzl",
-    "hugo_extension",
-)
-
-hugo.hugo(
-    name = "hugo",
-    version = "0.145.0",
-    extended = True,
-)
+#hugo_rules.hugo(
+#    name = "hugo",
+#    version = "0.145.0",
+#    extended = True,
+#)
 
 # Other dependencies
 bazel_dep(name = "rules_pkg", version = "1.0.1")
