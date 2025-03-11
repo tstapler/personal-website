@@ -1,8 +1,22 @@
 module(
     name = "personal-website",
     version = "0.1.0",
+    compatibility_level = 1,
 )
 
-bazel_dep(name = "rules_hugo", version = "0.0.9")
+# Hugo rules
+archive_override(
+    module_name = "rules_hugo",
+    version = "0.0.9",
+    urls = ["https://github.com/stackb/rules_hugo/releases/download/v0.0.9/rules_hugo-v0.0.9.tar.gz"],
+    strip_prefix = "rules_hugo-v0.0.9",
+    sha256 = "9e3f8f19bd29ec0c5b70adf5a4243b5a5e5d4912e5a2a4b3d6d95a3b1358e6e",
+)
+
+# Other dependencies
 bazel_dep(name = "rules_pkg", version = "0.9.1")
 bazel_dep(name = "rules_oci", version = "1.4.0")
+
+# Register Hugo toolchain
+hugo_register_toolchains = use_extension("@rules_hugo//hugo:extensions.bzl", "hugo_register_toolchains")
+use_repo(hugo_register_toolchains, "hugo")
