@@ -21,6 +21,8 @@ serve:
     FROM +base-build
     ARG HUGO_URL
     RUN hugo serve --buildDrafts --baseURL "$HUGO_URL" --bind 0.0.0.0 --renderToMemory
+    EXPOSE 1313
+    SAVE IMAGE --push "$DOCKER_TAG"
 
 build-local:
     FROM +base-build
