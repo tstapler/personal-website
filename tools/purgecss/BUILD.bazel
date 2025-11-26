@@ -1,0 +1,15 @@
+load("@rules_python//python:defs.bzl", "py_binary")
+
+py_binary(
+    name = "analyze",
+    srcs = ["analyze.py"],
+    main = "analyze.py",
+    visibility = ["//visibility:public"],
+)
+
+py_binary(
+    name = "prune",
+    srcs = ["prune.py"],
+    main = "prune.py",
+    visibility = ["//visibility:public"],
+)
