@@ -39,17 +39,18 @@ use_repo(hugo_register_toolchains, "hugo")
 bazel_dep(name = "rules_pkg", version = "1.0.1")
 bazel_dep(name = "rules_oci", version = "2.2.2")
 
-
 oci = use_extension("@rules_oci//oci:extensions.bzl", "oci")
 
 # Declare external images you need to pull, for example:
 oci.pull(
-    name = "distroless_nginx",
-    tag = "latest",
-    image = "gcr.io/distroless/nginx",
-    platforms = ["linux/amd64"],
+    name = "chainguard_nginx",
+    digest = "sha256:50b986b188c26457d060c9e16665b51d2e5e252019ba4e921cb990c71cd24802",
+    image = "cgr.dev/chainguard/nginx",
+    platforms = [
+        "linux/amd64",
+        "linux/arm64",
+    ],
 )
 
 # For each oci.pull call, repeat the "name" here to expose them as dependencies.
-use_repo(oci, "distroless_nginx")
-
+use_repo(oci, "chainguard_nginx", "chainguard_nginx_linux_amd64", "chainguard_nginx_linux_arm64")

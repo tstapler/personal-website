@@ -21,6 +21,7 @@ pkg_tar(
     name = "static_assets",
     srcs = [":site"],
     package_dir = "/usr/share/nginx/html",
+    strip_prefix = "/site",
 )
 
 pkg_tar(
@@ -30,7 +31,7 @@ pkg_tar(
 
 oci_image(
     name = "nginx_container",
-    base = "@distroless_nginx", 
+    base = "@chainguard_nginx",
     entrypoint = ["/usr/sbin/nginx", "-g", "daemon off;"],
     tars = [
         ":static_assets",
@@ -79,8 +80,27 @@ docker push ghcr.io/tstapler/personal-website:latest' > $@
 )
 
 pkg_tar(
-    name = "nginx_configs",
-    srcs = glob(["deployment/personal-website/files/**"]),
+    name = "nginx_main_config",
+    srcs = ["deployment/personal-website/files/nginx.conf"],
     package_dir = "/etc/nginx",
+    strip_prefix = "deployment/personal-website/files",
+)
+
+pkg_tar(
+    name = "nginx_server_configs",
+    srcs = [
+        "deployment/personal-website/files/default.conf",
+        # ssl.conf excluded - requires TLS certs, handled by Kubernetes ingress
+    ],
+    package_dir = "/etc/nginx/conf.d",
+    strip_prefix = "deployment/personal-website/files",
+)
+
+pkg_tar(
+    name = "nginx_configs",
+    deps = [
+        ":nginx_main_config",
+        ":nginx_server_configs",
+    ],
 )
 
