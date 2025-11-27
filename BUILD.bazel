@@ -17,11 +17,110 @@ hugo_serve(
     dep = [":site"],
     )
 
+# === Optimization Pipeline ===
+
+# Step 1: PurgeCSS - Remove unused CSS
+genrule(
+    name = "site_purgecss",
+    srcs = [":site"],
+    outs = ["site_optimized/all.css"],
+    cmd = """
+        # The :site rule outputs to a directory
+        SITE_DIR="$(location :site)"
+        CSS_INPUT="$$SITE_DIR/all.css"
+        CSS_OUTPUT=$@
+
+        if [ ! -f "$$CSS_INPUT" ]; then
+            echo "Error: CSS file not found at $$CSS_INPUT"
+            exit 1
+        fi
+
+        python3 $(location //tools/purgecss:prune) \
+            "$$SITE_DIR" \
+            "$$CSS_INPUT" \
+            "$$CSS_OUTPUT"
+    """,
+    tools = ["//tools/purgecss:prune"],
+)
+
+# Step 2: Copy site files and replace CSS with pruned version
+genrule(
+    name = "site_with_pruned_css",
+    srcs = [
+        ":site",
+        ":site_purgecss",
+    ],
+    outs = ["site_pruned.tar"],
+    cmd = """
+        SITE_DIR=$$(dirname $(location :site))
+        TEMP_DIR=$$(mktemp -d)
+
+        # Copy entire site to temp directory
+        cp -r "$$SITE_DIR"/* "$$TEMP_DIR/"
+
+        # Replace all.css with pruned version
+        cp $(location :site_purgecss) "$$TEMP_DIR/all.css"
+
+        # Create tarball
+        tar -czf $@ -C "$$TEMP_DIR" .
+    """,
+)
+
+# Step 3: Create optimized site with gzip, output in format pkg_tar can consume
+genrule(
+    name = "site_optimized",
+    srcs = [":site_with_pruned_css"],
+    outs = ["site_optimized_dir.tar"],
+    cmd = """
+        # Extract pruned site
+        TEMP_DIR=$$(mktemp -d)
+        tar -xzf $(location :site_with_pruned_css) -C "$$TEMP_DIR"
+
+        # Gzip text files (HTML, CSS, JS, XML, JSON)
+        find "$$TEMP_DIR" -type f \\( -name "*.html" -o -name "*.css" -o -name "*.js" -o -name "*.xml" -o -name "*.json" \\) \
+            -exec sh -c 'gzip -k -9 "$$1"' _ {} \\;
+
+        # Package as uncompressed tar that pkg_tar can extract
+        tar -cf $@ -C "$$TEMP_DIR" .
+
+        echo "✅ Optimized site created with PurgeCSS + Gzip compression"
+    """,
+)
+
+# === End Optimization Pipeline ===
+
+# Package site files for nginx (unoptimized)
 pkg_tar(
     name = "static_assets",
     srcs = [":site"],
     package_dir = "/usr/share/nginx/html",
     strip_prefix = "/site",
+)
+
+# Create final optimized assets layer with proper structure for OCI
+genrule(
+    name = "static_assets_optimized",
+    srcs = [":site_optimized"],
+    outs = ["static_assets_optimized-layer.tar"],
+    cmd = """
+        # Create proper directory structure
+        LAYER_DIR=$$(mktemp -d)
+        mkdir -p "$$LAYER_DIR/usr/share/nginx/html"
+
+        # Extract optimized site to temp location
+        EXTRACT_DIR=$$(mktemp -d)
+        tar -xf $(location :site_optimized) -C "$$EXTRACT_DIR"
+
+        # Copy files from site/ subdirectory to html/ (stripping the extra site/ level)
+        if [ -d "$$EXTRACT_DIR/site" ]; then
+            cp -r "$$EXTRACT_DIR/site"/. "$$LAYER_DIR/usr/share/nginx/html/"
+        else
+            cp -r "$$EXTRACT_DIR"/. "$$LAYER_DIR/usr/share/nginx/html/"
+        fi
+
+        # Create tarball with proper ownership (matching pkg_tar)
+        tar -cf $@ --owner=0 --group=0 --numeric-owner -C "$$LAYER_DIR" .
+    """,
 )
 
 pkg_tar(
@@ -54,6 +153,49 @@ filegroup(
     srcs = [":nginx_load"],
     output_group = "tarball",
 )
+
+# === Optimized Container Targets ===
+
+# Optimized nginx container with PurgeCSS + Gzip
+oci_image(
+    name = "nginx_container_optimized",
+    base = "@chainguard_nginx",
+    entrypoint = ["/usr/sbin/nginx", "-g", "daemon off;"],
+    tars = [
+        ":static_assets_optimized",
+        ":nginx_configs",
+        ":nginx_cache_dir",
+    ],
+    visibility = ["//visibility:public"],
+)
+
+# Load target for optimized container
+oci_load(
+    name = "nginx_load_optimized",
+    image = ":nginx_container_optimized",
+    repo_tags = ["ghcr.io/tstapler/personal-website:optimized"],
+)
+
+# Filegroup to access the optimized tarball output
+filegroup(
+    name = "nginx_image_tarball_optimized",
+    srcs = [":nginx_load_optimized"],
+    output_group = "tarball",
+)
+
+# Runnable target to test optimized container locally
+genrule(
+    name = "nginx_test_optimized",
+    srcs = [":nginx_image_tarball_optimized"],
+    outs = ["run_nginx_optimized.sh"],
+    cmd = """echo '#!/bin/bash
+docker load -i $(location :nginx_image_tarball_optimized)
+docker run -p 1314:80 ghcr.io/tstapler/personal-website:optimized' > $@
+    """,
+    executable = True,
+)
+
+# === End Optimized Container Targets ===
 
 # Runnable target to test locally
 genrule(
