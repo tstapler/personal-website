@@ -52,13 +52,14 @@ genrule(
     ],
     outs = ["site_pruned.tar"],
     cmd = """
-        SITE_DIR=$$(dirname $(location :site))
+        SITE_DIR="$(location :site)"
         TEMP_DIR=$$(mktemp -d)
 
-        # Copy entire site to temp directory
-        cp -r "$$SITE_DIR"/* "$$TEMP_DIR/"
+        # Copy entire site to temp directory using tar (dereference symlinks with -h)
+        tar -C "$$SITE_DIR" -chf - . | tar -C "$$TEMP_DIR" -xf -
 
-        # Replace all.css with pruned version
+        # Remove original all.css and copy pruned version
+        rm -f "$$TEMP_DIR/all.css"
         cp $(location :site_purgecss) "$$TEMP_DIR/all.css"
 
         # Create tarball
@@ -107,16 +108,8 @@ genrule(
         LAYER_DIR=$$(mktemp -d)
         mkdir -p "$$LAYER_DIR/usr/share/nginx/html"
 
-        # Extract optimized site to temp location
-        EXTRACT_DIR=$$(mktemp -d)
-        tar -xf $(location :site_optimized) -C "$$EXTRACT_DIR"
-
-        # Copy files from site/ subdirectory to html/ (stripping the extra site/ level)
-        if [ -d "$$EXTRACT_DIR/site" ]; then
-            cp -r "$$EXTRACT_DIR/site"/. "$$LAYER_DIR/usr/share/nginx/html/"
-        else
-            cp -r "$$EXTRACT_DIR"/. "$$LAYER_DIR/usr/share/nginx/html/"
-        fi
+        # Extract optimized site directly to html directory
+        tar -xf $(location :site_optimized) -C "$$LAYER_DIR/usr/share/nginx/html"
 
         # Create tarball with proper ownership (matching pkg_tar)
         tar -cf $@ --owner=0 --group=0 --numeric-owner -C "$$LAYER_DIR" .
