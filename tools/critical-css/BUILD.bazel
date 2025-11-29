@@ -24,3 +24,12 @@ py_binary(
     ],
     visibility = ["//visibility:public"],
 )
+
+py_binary(
+    name = "extract",
+    srcs = ["extract.py"],
+    deps = [
+        requirement("playwright"),
+    ],
+    visibility = ["//visibility:public"],
+)
