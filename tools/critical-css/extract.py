@@ -4,12 +4,122 @@ Extract critical (above-the-fold) CSS using Playwright.
 
 This script loads a page in headless Chromium and extracts only the CSS
 rules that apply to elements visible in the initial viewport.
+
+For file:// URLs, this script automatically inlines external stylesheets
+to work around browser CORS restrictions.
 """
 
 import sys
 import argparse
+import tempfile
 from pathlib import Path
+from urllib.parse import urlparse, urljoin
 from playwright.sync_api import sync_playwright
+from bs4 import BeautifulSoup
+
+
+def prepare_file_url_with_inlined_styles(file_url: str) -> str:
+    """
+    Prepare a file:// URL by creating a temporary HTML file with inlined stylesheets.
+
+    This works around browser CORS restrictions that prevent loading external
+    stylesheets from file:// URLs.
+
+    Args:
+        file_url: file:// URL pointing to an HTML file
+
+    Returns:
+        file:// URL to temporary HTML file with inlined stylesheets
+    """
+    # Parse file URL to get file path
+    parsed = urlparse(file_url)
+    if parsed.scheme != 'file':
+        # Not a file URL, return as-is
+        return file_url
+
+    # Get the file path from the URL
+    html_path = Path(parsed.path)
+    if not html_path.exists():
+        print(f"⚠️  Warning: File not found: {html_path}")
+        return file_url
+
+    print(f"Processing file:// URL: {html_path}")
+
+    # Read and parse HTML
+    html_content = html_path.read_text()
+    soup = BeautifulSoup(html_content, 'html.parser')
+
+    # Find all external stylesheet links
+    stylesheet_links = soup.find_all('link', rel='stylesheet')
+
+    if not stylesheet_links:
+        print("No external stylesheets found, using original file")
+        return file_url
+
+    print(f"Found {len(stylesheet_links)} external stylesheet(s)")
+
+    # Inline each stylesheet
+    inlined_count = 0
+    for link in stylesheet_links:
+        href = link.get('href', '')
+        if not href:
+            continue
+
+        # Resolve relative paths
+        if href.startswith('/'):
+            # Absolute path from HTML file's directory root
+            # For file URLs, treat as relative to HTML file's parent
+            css_path = html_path.parent / href.lstrip('/')
+        elif href.startswith('http://') or href.startswith('https://'):
+            # External URL - skip for now (can't inline remote files easily)
+            print(f"  Skipping remote stylesheet: {href}")
+            continue
+        else:
+            # Relative path
+            css_path = html_path.parent / href
+
+        # Read CSS file if it exists
+        if not css_path.exists():
+            print(f"  ⚠️  Stylesheet not found: {css_path}")
+            continue
+
+        try:
+            css_content = css_path.read_text()
+
+            # Create inline style tag
+            style_tag = soup.new_tag('style')
+            style_tag['data-inlined-from'] = href
+            style_tag.string = f"\n{css_content}\n"
+
+            # Replace link with inline style
+            link.replace_with(style_tag)
+            inlined_count += 1
+            print(f"  ✅ Inlined: {href} ({len(css_content)} bytes)")
+
+        except Exception as e:
+            print(f"  ❌ Error inlining {href}: {e}")
+
+    if inlined_count == 0:
+        print("No stylesheets were inlined, using original file")
+        return file_url
+
+    # Write modified HTML to temporary file
+    temp_file = tempfile.NamedTemporaryFile(
+        mode='w',
+        suffix='.html',
+        delete=False,
+        encoding='utf-8'
+    )
+    temp_file.write(str(soup))
+    temp_file.close()
+
+    temp_path = Path(temp_file.name)
+    temp_url = temp_path.as_uri()
+
+    print(f"✅ Created temporary HTML with {inlined_count} inlined stylesheet(s)")
+    print(f"   Temporary file: {temp_path}")
+
+    return temp_url
 
 
 def extract_critical_css(
@@ -22,7 +132,7 @@ def extract_critical_css(
     Extract critical CSS for a given URL and viewport size.
 
     Args:
-        url: URL to extract critical CSS from
+        url: URL to extract critical CSS from (supports file:// URLs)
         viewport_width: Viewport width in pixels
         viewport_height: Viewport height in pixels
         output_path: Optional path to save extracted CSS
@@ -32,6 +142,11 @@ def extract_critical_css(
     """
     print(f"Extracting critical CSS for {url}")
     print(f"Viewport: {viewport_width}x{viewport_height}")
+
+    # Prepare file:// URLs by inlining external stylesheets
+    prepared_url = prepare_file_url_with_inlined_styles(url)
+    if prepared_url != url:
+        print(f"Using prepared URL: {prepared_url}")
 
     with sync_playwright() as p:
         # Launch headless Chromium
@@ -44,9 +159,9 @@ def extract_critical_css(
 
         page = context.new_page()
 
-        # Navigate to URL
-        print(f"Navigating to {url}...")
-        page.goto(url, wait_until='networkidle')
+        # Navigate to URL (use prepared URL if different)
+        print(f"Navigating to {prepared_url}...")
+        page.goto(prepared_url, wait_until='networkidle')
 
         # Wait for any dynamic content to settle
         page.wait_for_timeout(1000)

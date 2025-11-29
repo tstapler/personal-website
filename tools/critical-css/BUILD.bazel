@@ -30,6 +30,7 @@ py_binary(
     srcs = ["extract.py"],
     deps = [
         requirement("playwright"),
+        requirement("beautifulsoup4"),
     ],
     visibility = ["//visibility:public"],
 )
