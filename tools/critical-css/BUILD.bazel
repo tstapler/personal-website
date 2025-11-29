@@ -33,3 +33,12 @@ py_binary(
     ],
     visibility = ["//visibility:public"],
 )
+
+py_binary(
+    name = "inline",
+    srcs = ["inline.py"],
+    deps = [
+        requirement("beautifulsoup4"),
+    ],
+    visibility = ["//visibility:public"],
+)
