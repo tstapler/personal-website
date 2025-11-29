@@ -67,15 +67,78 @@ genrule(
     """,
 )
 
-# Step 3: Create optimized site with gzip, output in format pkg_tar can consume
+# Step 3: Extract critical CSS from homepage
 genrule(
-    name = "site_optimized",
+    name = "critical_css",
     srcs = [":site_with_pruned_css"],
-    outs = ["site_optimized_dir.tar"],
+    outs = ["critical.css"],
     cmd = """
         # Extract pruned site
         TEMP_DIR=$$(mktemp -d)
         tar -xzf $(location :site_with_pruned_css) -C "$$TEMP_DIR"
+
+        # Convert to file:// URL for extraction
+        HOMEPAGE="$$TEMP_DIR/index.html"
+        if [ ! -f "$$HOMEPAGE" ]; then
+            echo "Error: Homepage not found at $$HOMEPAGE"
+            exit 1
+        fi
+
+        # Extract critical CSS using multi-viewport approach
+        $(location //tools/critical-css:extract) \
+            --multi-viewport \
+            "file://$$HOMEPAGE" \
+            -o $@
+
+        echo "✅ Critical CSS extracted from homepage"
+    """,
+    tools = ["//tools/critical-css:extract"],
+)
+
+# Step 4: Inline critical CSS into all HTML files
+genrule(
+    name = "site_with_critical_css",
+    srcs = [
+        ":site_with_pruned_css",
+        ":critical_css",
+    ],
+    outs = ["site_critical.tar"],
+    cmd = """
+        # Extract pruned site
+        SITE_DIR=$$(mktemp -d)
+        tar -xzf $(location :site_with_pruned_css) -C "$$SITE_DIR"
+
+        # Create output directory and copy entire site
+        OUTPUT_DIR=$$(mktemp -d)
+        cp -r "$$SITE_DIR/." "$$OUTPUT_DIR/"
+
+        # Make all files writable so inline script can overwrite HTML files
+        chmod -R u+w "$$OUTPUT_DIR"
+
+        # Inline critical CSS into all HTML files (overwrites the copied HTML files)
+        $(location //tools/critical-css:inline) \
+            "$$SITE_DIR" \
+            $(location :critical_css) \
+            --output "$$OUTPUT_DIR" \
+            --pattern "**/*.html"
+
+        # Create tarball
+        tar -czf $@ -C "$$OUTPUT_DIR" .
+
+        echo "✅ Critical CSS inlined into all HTML files"
+    """,
+    tools = ["//tools/critical-css:inline"],
+)
+
+# Step 5: Create optimized site with gzip, output in format pkg_tar can consume
+genrule(
+    name = "site_optimized",
+    srcs = [":site_with_critical_css"],
+    outs = ["site_optimized_dir.tar"],
+    cmd = """
+        # Extract site with critical CSS
+        TEMP_DIR=$$(mktemp -d)
+        tar -xzf $(location :site_with_critical_css) -C "$$TEMP_DIR"
 
         # Gzip text files (HTML, CSS, JS, XML, JSON)
         find "$$TEMP_DIR" -type f \\( -name "*.html" -o -name "*.css" -o -name "*.js" -o -name "*.xml" -o -name "*.json" \\) \
@@ -84,7 +147,7 @@ genrule(
         # Package as uncompressed tar that pkg_tar can extract
         tar -cf $@ -C "$$TEMP_DIR" .
 
-        echo "✅ Optimized site created with PurgeCSS + Gzip compression"
+        echo "✅ Optimized site created with PurgeCSS + Critical CSS + Gzip compression"
     """,
 )
 
