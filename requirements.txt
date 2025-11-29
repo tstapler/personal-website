@@ -1,1 +1,9 @@
-Pygments==2.2.0
+# Syntax highlighting for Hugo
+Pygments==2.18.0
+
+# Browser automation for critical CSS extraction
+playwright==1.49.1
+
+# HTML/CSS parsing for critical CSS processing
+beautifulsoup4==4.12.3
+cssutils==2.11.1

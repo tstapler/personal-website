@@ -40,6 +40,27 @@ bazel_dep(name = "rules_pkg", version = "1.0.1")
 bazel_dep(name = "rules_oci", version = "2.2.2")
 bazel_dep(name = "rules_python", version = "0.40.0")
 
+# Python toolchain
+python = use_extension("@rules_python//python/extensions:python.bzl", "python")
+python.toolchain(python_version = "3.11")
+
+# Configure uv as dependency manager (dev tool)
+uv = use_extension(
+    "@rules_python//python/uv:uv.bzl",
+    "uv",
+    dev_dependency = True,
+)
+uv.configure(version = "0.6.2")
+
+# Python pip dependencies (using uv under the hood)
+pip = use_extension("@rules_python//python/extensions:pip.bzl", "pip")
+pip.parse(
+    hub_name = "personal_website_py_deps",
+    python_version = "3.11",
+    requirements_lock = "//:requirements_lock.txt",
+)
+use_repo(pip, "personal_website_py_deps")
+
 oci = use_extension("@rules_oci//oci:extensions.bzl", "oci")
 
 # Declare external images you need to pull, for example:

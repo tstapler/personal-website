@@ -1,0 +1,26 @@
+load("@personal_website_py_deps//:requirements.bzl", "requirement")
+load("@rules_python//python:defs.bzl", "py_binary", "py_library")
+
+py_library(
+    name = "critical_css_lib",
+    srcs = ["__init__.py"],
+    visibility = ["//visibility:public"],
+)
+
+py_binary(
+    name = "install_browsers",
+    srcs = ["install_browsers.py"],
+    deps = [
+        requirement("playwright"),
+    ],
+    visibility = ["//visibility:public"],
+)
+
+py_binary(
+    name = "test_browser",
+    srcs = ["test_browser.py"],
+    deps = [
+        requirement("playwright"),
+    ],
+    visibility = ["//visibility:public"],
+)
