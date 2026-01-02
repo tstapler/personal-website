@@ -1,6 +1,33 @@
-# Blog TODOs
+# Personal Website TODOs
 
-## Planned Blog Posts
+## Technical Tasks
+
+### Web Design & User Experience
+- [ ] Fix summary overflow issues on summary page (HIGH PRIORITY)
+  - **Bug**: [docs/bugs/open/summary-overflow.md](docs/bugs/open/summary-overflow.md)
+  - **Task**: [docs/tasks/web-improvements.md#task-1-summary-overflow-bug-fix](docs/tasks/web-improvements.md#task-1-summary-overflow-bug-fix)
+  - **Impact**: Critical user experience issue affecting blog listing pages
+
+- [ ] Implement AI-generated blog post summaries
+  - **Task**: [docs/tasks/web-improvements.md#task-2-ai-generated-blog-summaries](docs/tasks/web-improvements.md#task-2-ai-generated-blog-summaries)
+  - **Dependencies**: Summary overflow bug fix required first
+  - **Features**: Summary generation, quality testing, template integration
+
+### Infrastructure & Deployment
+- [ ] Container Deployment Strategy
+  - **Task**: [docs/tasks/web-improvements.md#task-3-container-deployment-health-checks](docs/tasks/web-improvements.md#task-3-container-deployment-health-checks)
+  - **Features**: Health checks, rollback detection, blue-green deployment
+  - **Documentation**: Implementation process for blog post
+  - **Note**: Auto-updates will be implemented in separate monitoring repo
+
+- [ ] ArgoCD Integration
+  - Install and configure ArgoCD in kubernetes cluster
+  - Setup GitOps workflow
+  - Document setup process and benefits for blog
+
+## Content Planning
+
+### Planned Blog Posts
 
 ### Home Lab & Networking
 - [ ] Unifi Security Gateway Issues
