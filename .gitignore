@@ -4,3 +4,29 @@ public
 resources/_gen
 **/*.parcel-cache
 .aider*
+
+# Build artifacts and test results
+test-results/
+*.png
+*.jpg
+*.jpeg
+validation-results.json
+performance-metrics.json
+screenshots/
+
+# Build outputs
+.hugo_build.lock
+dist/
+
+# Hugo build artifacts
+bazel-bin/
+bazel-out/
+bazel-testlogs/
+
+# Development cache
+.cache/
+.pnpm-store/
+.yarn-integrity/
+
+# IDE files
+.ijwb/
