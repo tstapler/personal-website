@@ -1,0 +1,14 @@
+# AI Summary Generation Requirements (updated with litellm)
+# Install with: pip install -r requirements-ai.txt
+
+# Core unified AI interface
+litellm>=1.40.0
+
+# Optional additional providers
+# anthropic>=0.8.0  # Included in litellm, available for direct use
+# cohere>=5.5.0  # Included in litellm, available for direct use
+
+# Development and testing
+pytest>=7.0.0
+pytest-asyncio>=0.21.0
+pytest-cov>=4.0.0
