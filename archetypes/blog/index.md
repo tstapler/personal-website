@@ -16,6 +16,11 @@ date = '{{ time.Now.Format "2006-01-02" }}'
 draft = true  # Set to false when ready to publish
 featured_image = "/img/your-image.jpg"  # Social sharing image
 
+# AI Summary Fields
+ai_summary = ""  # AI-generated summary (auto-populated by build script)
+ai_summary_provider = ""  # Which AI provider generated the summary (openai, local, etc.)
+ai_generated = false  # Set to true when summary is AI-generated
+
 # Template Guidance (Remove before publishing)
 # ------------------------------------------------------------------
 # Description: Include 2-3 primary keywords naturally
