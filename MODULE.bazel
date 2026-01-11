@@ -6,7 +6,7 @@ module(
 
 # Hugo rules
 bazel_dep(name = "build_stack_rules_hugo", version = "0.0.9")
-bazel_dep(name = "bazel_skylib", version = "1.7.1", repo_name = "bazel_skylib")
+
 
 git_override(
     module_name = "build_stack_rules_hugo",
