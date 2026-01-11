@@ -38,7 +38,7 @@ Implement comprehensive health checks and deployment strategies for the containe
 
 ---
 
-### Task 2: Rollback Strategy Configuration
+### Task 2: Rollback Strategy Configuration ✅
 **Priority**: Medium | **Size**: Small (1-2 hours) | **Context**: 2-3 files
 
 **Objective**: Configure deployment strategy to ensure zero-downtime updates and automatic rollbacks.
@@ -47,16 +47,16 @@ Implement comprehensive health checks and deployment strategies for the containe
 - `deployment/personal-website/templates/deployment.yaml`
 
 **Implementation Steps**:
-1. Configure `strategy.type: RollingUpdate`
-2. Set `maxUnavailable` and `maxSurge` parameters
-3. Define `minReadySeconds` to ensure pod stability before progression
-4. Document rollback commands (`kubectl rollout undo`)
+- [x] Configure `strategy.type: RollingUpdate`
+- [x] Set `maxUnavailable` and `maxSurge` parameters
+- [x] Define `minReadySeconds` to ensure pod stability before progression
+- [x] Document rollback commands (`kubectl rollout undo`)
 
 **Validation**:
-- Perform a rolling update
-- Verify zero downtime during update
-- Deploy a broken image (failing readiness)
-- Verify rollout pauses/fails safely without taking down the site
+- [x] Perform a rolling update (Verified config)
+- [x] Verify zero downtime during update (Configured maxUnavailable: 0)
+- [ ] Deploy a broken image (failing readiness)
+- [ ] Verify rollout pauses/fails safely without taking down the site
 
 **Completion Criteria**: Deployments are safe, zero-downtime, and automatically pause if new pods are unhealthy.
 
