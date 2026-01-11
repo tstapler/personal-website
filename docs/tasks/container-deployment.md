@@ -17,8 +17,9 @@ Implement comprehensive health checks and deployment strategies for the containe
 **Objective**: Add application-level health check endpoints and configure Kubernetes probes.
 
 **Files Required**:
-- `deployment/personal-website/personal-site.yaml` (deployment config)
+- `deployment/personal-website/templates/deployment.yaml` (Helm deployment template)
 - `deployment/personal-website/files/nginx.conf` (nginx config for health endpoint)
+- `deployment/personal-website/values.yaml` (configuration)
 - `Dockerfile` (if needed for health check script)
 
 **Implementation Steps**:
@@ -43,7 +44,7 @@ Implement comprehensive health checks and deployment strategies for the containe
 **Objective**: Configure deployment strategy to ensure zero-downtime updates and automatic rollbacks.
 
 **Files Required**:
-- `deployment/personal-website/personal-site.yaml`
+- `deployment/personal-website/templates/deployment.yaml`
 
 **Implementation Steps**:
 1. Configure `strategy.type: RollingUpdate`
@@ -73,11 +74,11 @@ Implement comprehensive health checks and deployment strategies for the containe
 
 ### For Task 1 (Health Checks)
 - Review Nginx `stub_status` module or simple static file serving for health.
-- Check `deployment/personal-website/personal-site.yaml` for current container spec.
+- Check `deployment/personal-website/templates/deployment.yaml` for current container spec.
 
 ### For Task 2 (Rollback Strategy)
 - Understand Kubernetes Deployment strategies.
-- Review current replica count in `personal-site.yaml`.
+- Review current replica count in `values.yaml` or `deployment.yaml`.
 
 ## Links
 
