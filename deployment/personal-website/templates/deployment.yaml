@@ -59,12 +59,16 @@ spec:
             {{- end }}
           livenessProbe:
             httpGet:
-              path: /
+              path: /healthz
               port: {{ .Values.service.internalPort }}
+            initialDelaySeconds: 5
+            periodSeconds: 10
           readinessProbe:
             httpGet:
-              path: /
+              path: /healthz
               port: {{ .Values.service.internalPort }}
+            initialDelaySeconds: 5
+            periodSeconds: 10
           volumeMounts:
             - name: tls
               mountPath: /etc/tls
