@@ -2,6 +2,12 @@
 
 ## Deployment Strategy
 
+### Cloudflare Pages Deployment
+- **Edge Network**: Static content is served via Cloudflare's global edge network for low latency.
+- **Build Pipeline**: Reuses the existing Bazel `//:site_optimized` target.
+- **Parallel Deployment**: Runs alongside the Kubernetes deployment during the transition phase.
+- **Preview Deployments**: Every Pull Request generates a unique preview URL for validation.
+
 ### Blue-Green Deployment
 - Production and staging environments run in parallel
 - Zero-downtime deployments through traffic switching

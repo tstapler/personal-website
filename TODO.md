@@ -15,12 +15,22 @@
   - **Features**: Summary generation, quality testing, template integration
   - **Status**: ✅ COMPLETED 2025-01-10
 
+- [x] **Feature: Cloudflare Deployment** <!-- id: cloudflare-deployment -->
+  - **Task**: [docs/tasks/cloudflare-deployment.md](docs/tasks/cloudflare-deployment.md)
+  - **Goal**: Migrate to Cloudflare Pages for edge performance
+  - **Status**: ✅ COMPLETED
+  - **Subtasks**:
+    - [x] Task 1.1: Create Cloudflare Workflow (`.github/workflows/cloudflare.yml`)
+    - [x] Task 2.1: Configure Wrangler (`wrangler.toml`)
+    - [x] Task 3.1: Documentation & Cleanup (`README.md`, `ARCHITECTURE.md`)
+
 ### Infrastructure & Deployment
 - [ ] Container Deployment Strategy
   - **Task**: [docs/tasks/container-deployment.md](docs/tasks/container-deployment.md)
   - **Features**: Health checks, rollback detection, blue-green deployment
   - **Documentation**: Implementation process for blog post
   - **Note**: Auto-updates will be implemented in separate monitoring repo
+  - **Status**: ⏳ Pending (Next Priority)
 
 - [ ] ArgoCD Integration
   - Install and configure ArgoCD in kubernetes cluster
@@ -59,7 +69,8 @@
 ### Storage & Networking
 - [ ] Ceph Cluster Network Optimization
   - VLAN separation for control plane traffic
-  - Performance impact and benefits
+  - Performance impact and ben
+efits
 
 ### Academic Experiences
 - [ ] Iowa State Course Impact Review
@@ -81,29 +92,3 @@
   - Planning and implementation
   - 2025 KVM options investigation
   - Time investment and lessons learned
-
-## Infrastructure Improvements
-- [ ] Container Deployment Strategy
-  - Implement health checks for rollback detection
-  - Configure blue-green deployment strategy
-  - Document implementation process for blog
-  - Note: Auto-updates will be implemented in separate monitoring repo
-
-- [ ] ArgoCD Integration
-  - Install and configure ArgoCD in kubernetes cluster
-  - Setup GitOps workflow
-  - Document setup process and benefits for blog
-
-## Web Design
-- [x] Bug Fixes
-  - Fix summary overflow issues on summary page
-  
-- [x] New Features
-  - Implement AI-generated blog post summaries
-  - Test summary generation quality
-  - Add summary display to blog template
-
-- [ ] **Feature: Cloudflare Deployment** <!-- id: cloudflare-deployment -->
-    - [ ] Task 1.1: Create Cloudflare Workflow (`.github/workflows/cloudflare.yml`)
-    - [ ] Task 2.1: Configure Wrangler (`wrangler.toml`)
-    - [ ] Task 3.1: Documentation & Cleanup (`README.md`, `ARCHITECTURE.md`)
