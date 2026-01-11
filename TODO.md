@@ -102,3 +102,8 @@
   - Implement AI-generated blog post summaries
   - Test summary generation quality
   - Add summary display to blog template
+
+- [ ] **Feature: Cloudflare Deployment** <!-- id: cloudflare-deployment -->
+    - [ ] Task 1.1: Create Cloudflare Workflow (`.github/workflows/cloudflare.yml`)
+    - [ ] Task 2.1: Configure Wrangler (`wrangler.toml`)
+    - [ ] Task 3.1: Documentation & Cleanup (`README.md`, `ARCHITECTURE.md`)
