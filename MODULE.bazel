@@ -6,19 +6,12 @@ module(
 
 # Hugo rules
 bazel_dep(name = "build_stack_rules_hugo", version = "0.0.9")
+bazel_dep(name = "bazel_skylib", version = "1.7.1")
 
-# RULES_HUGO_SHA256 = "8df370f374dc72701b65b7c8a8add8ccb8423a845e973993fa9c68f8b516c9be"
-# RULES_HUGO_COMMIT = "294a8ec626a394011d35397108c930be631ab9fa"
-# archive_override(
-#     module_name="rules_hugo",
-#     url = "https://github.com/stackb/rules_hugo/archive/%s.zip" % RULES_HUGO_COMMIT,
-#     sha256 = RULES_HUGO_SHA256,
-#     strip_prefix = "rules_hugo-%s" % RULES_HUGO_COMMIT
-# )
-
-local_path_override(
+git_override(
     module_name = "build_stack_rules_hugo",
-    path = "../rules_hugo",
+    remote = "https://github.com/tstapler/rules_hugo.git",
+    commit = "2eaf0a6f0fb62c06828417d4606353dd0c168e20",
 )
 
 # Register Hugo toolchain
