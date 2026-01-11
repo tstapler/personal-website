@@ -1,9 +1,9 @@
-# AI Summary Implementation - Complete
+# AI Summary Implementation
 
 ## Objective
 Implement a generic AI summary generation system for Hugo blog posts with support for multiple providers and easy extensibility for future AI services.
 
-## Status: ✅ COMPLETED
+## Status: 🚧 IN PROGRESS
 
 ### Implementation Results
 
@@ -47,20 +47,23 @@ All prerequisites have been addressed:
 **Time**: 2 hours ✅
 **Dependencies**: None - Independent implementation
 
-### Task 2.2: Template Integration (READY)
+### Task 2.2: Template Integration ✅
 **Files**: 2-3 files (Hugo templates, build scripts)
 **Estimated Time**: 2 hours
 **Dependencies**: Task 2.1 complete
+**Status**: ✅ COMPLETED (Basic integration in list.html)
 
 ### Task 2.3: Build Pipeline Integration ✅
 **Files**: 2 files (generate-ai-summaries.sh, config management)
 **Time**: 1 hour ✅
 **Dependencies**: None
 
-### Task 2.4: CSS Styling (READY)
+### Task 2.4: CSS Styling (PENDING)
 **Files**: 1-2 files (CSS templates)
 **Estimated Time**: 1 hour
 **Dependencies**: Task 2.2 complete
+**Status**: ⏳ PENDING
+**Objective**: Add styling for `.ai-summary` and `.ai-summary-indicator` classes to distinguish AI content.
 
 ## Validation
 
