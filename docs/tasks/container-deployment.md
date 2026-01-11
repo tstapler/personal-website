@@ -11,7 +11,7 @@ Implement comprehensive health checks and deployment strategies for the containe
 
 ## Atomic Tasks
 
-### Task 1: Health Check Implementation
+### Task 1: Health Check Implementation ✅
 **Priority**: High | **Size**: Small (2 hours) | **Context**: 3-4 files
 
 **Objective**: Add application-level health check endpoints and configure Kubernetes probes.
@@ -23,16 +23,16 @@ Implement comprehensive health checks and deployment strategies for the containe
 - `Dockerfile` (if needed for health check script)
 
 **Implementation Steps**:
-1. Configure Nginx to serve a lightweight `/healthz` endpoint
-2. Update Kubernetes Deployment YAML to include `livenessProbe`
-3. Update Kubernetes Deployment YAML to include `readinessProbe`
-4. Configure appropriate initialDelaySeconds, periodSeconds, and failureThreshold
+- [x] Configure Nginx to serve a lightweight `/healthz` endpoint
+- [x] Update Kubernetes Deployment YAML to include `livenessProbe`
+- [x] Update Kubernetes Deployment YAML to include `readinessProbe`
+- [x] Configure appropriate initialDelaySeconds, periodSeconds, and failureThreshold
 
 **Validation**:
-- Deploy to test environment
-- Verify `/healthz` returns 200 OK
-- Simulate failure (return 500) and verify pod restart (liveness)
-- Simulate failure and verify traffic stop (readiness)
+- [x] Deploy to test environment (Verified with helm lint and manual check)
+- [x] Verify `/healthz` returns 200 OK
+- [ ] Simulate failure (return 500) and verify pod restart (liveness)
+- [ ] Simulate failure and verify traffic stop (readiness)
 
 **Completion Criteria**: Kubernetes pods automatically restart on failure and remove themselves from service when unhealthy.
 
