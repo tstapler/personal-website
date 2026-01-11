@@ -26,7 +26,7 @@ jobs:
         password: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Install Bazel
-      uses: bazelbuild/setup-bazelisk@v2
+      uses: bazelbuild/setup-bazelisk@v3
       
     - name: Build image
       run: bazel build //:nginx_image

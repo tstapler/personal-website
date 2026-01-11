@@ -20,7 +20,7 @@ jobs:
           submodules: recursive
 
       - name: Install Bazel
-        uses: bazelbuild/setup-bazelisk@v2
+        uses: bazelbuild/setup-bazelisk@v3
 
       - name: Build Site
         run: bazel build //:site_optimized
