@@ -33,9 +33,13 @@
   - **Status**: ✅ COMPLETED 2025-01-11
 
 - [ ] ArgoCD Integration
-  - Install and configure ArgoCD in kubernetes cluster
-  - Setup GitOps workflow
-  - Document setup process and benefits for blog
+  - **Task**: [docs/tasks/argocd-integration.md](docs/tasks/argocd-integration.md)
+  - **Goal**: Implement GitOps for automated cluster state management
+  - **Status**: ⏳ PENDING
+  - **Subtasks**:
+    - [ ] Task 1.1: Install ArgoCD
+    - [ ] Task 1.2: Configure Access & CLI
+    - [ ] Task 2.1: Create Website Application Manifest
 
 ## Content Planning
 
