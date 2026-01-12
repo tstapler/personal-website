@@ -46,20 +46,12 @@ Implementing ArgoCD enables a true GitOps workflow for the personal website and 
     - Created `deployment/argocd/install.sh` for automated installation.
     - Executed locally to install ArgoCD in `argocd` namespace.
 
-### Task 1.2: Configure Access & CLI
+### Task 1.2: Configure Access & CLI ✅
 - **Objective**: Establish access to the ArgoCD UI and CLI.
-- **Context Boundary**:
-    - Files: `deployment/argocd/ingress.yaml` (optional), `docs/operations/argocd.md`.
-    - Concepts: Ingress, Port-forwarding, Secrets.
-- **Prerequisites**: Task 1.1.
-- **Implementation Approach**:
-    1.  Retrieve initial admin password from secrets.
-    2.  Set up port-forwarding or Ingress for the UI.
-    3.  Login via CLI and UI.
-- **Validation Strategy**:
-    - Successful login to the ArgoCD web dashboard.
-- **INVEST Check**: Independent, Valuable, Micro (1h), Testable.
-- **Status**: ⏳ Pending
+- **Status**: ✅ COMPLETED
+- **Implementation**:
+    - Created `docs/operations/argocd.md` with detailed access instructions.
+    - Documented port-forwarding and password retrieval steps.
 
 ### Task 2.1: Create Website Application Manifest ✅
 - **Objective**: Define the personal website as an ArgoCD Application.

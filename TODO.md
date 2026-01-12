@@ -38,7 +38,7 @@
   - **Status**: 🚧 IN PROGRESS
   - **Subtasks**:
     - [x] Task 1.1: Install ArgoCD
-    - [ ] Task 1.2: Configure Access & CLI
+    - [x] Task 1.2: Configure Access & CLI
     - [x] Task 2.1: Create Website Application Manifest
 
 ## Content Planning
