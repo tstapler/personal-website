@@ -35,11 +35,11 @@
 - [ ] ArgoCD Integration
   - **Task**: [docs/tasks/argocd-integration.md](docs/tasks/argocd-integration.md)
   - **Goal**: Implement GitOps for automated cluster state management
-  - **Status**: ⏳ PENDING
+  - **Status**: 🚧 IN PROGRESS
   - **Subtasks**:
-    - [ ] Task 1.1: Install ArgoCD
+    - [x] Task 1.1: Install ArgoCD
     - [ ] Task 1.2: Configure Access & CLI
-    - [ ] Task 2.1: Create Website Application Manifest
+    - [x] Task 2.1: Create Website Application Manifest
 
 ## Content Planning
 

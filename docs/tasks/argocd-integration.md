@@ -39,20 +39,12 @@ Implementing ArgoCD enables a true GitOps workflow for the personal website and 
 
 ## Atomic Task Decomposition
 
-### Task 1.1: Install ArgoCD
+### Task 1.1: Install ArgoCD ✅
 - **Objective**: Deploy ArgoCD to the Kubernetes cluster using Helm or Manifests.
-- **Context Boundary**:
-    - Files: `deployment/argocd/install.yaml` (or script), `deployment/argocd/values.yaml`.
-    - Concepts: Kubernetes, Helm, ArgoCD.
-- **Prerequisites**: `kubectl` access to the cluster.
-- **Implementation Approach**:
-    1.  Create `argocd` namespace.
-    2.  Apply the stable ArgoCD install manifest or use the Helm chart.
-    3.  Verify all pods are running.
-- **Validation Strategy**:
-    - `kubectl get pods -n argocd` shows all pods Running.
-- **INVEST Check**: Independent, Valuable, Small (1h), Testable.
-- **Status**: ⏳ Pending
+- **Status**: ✅ COMPLETED
+- **Implementation**:
+    - Created `deployment/argocd/install.sh` for automated installation.
+    - Executed locally to install ArgoCD in `argocd` namespace.
 
 ### Task 1.2: Configure Access & CLI
 - **Objective**: Establish access to the ArgoCD UI and CLI.
@@ -69,22 +61,12 @@ Implementing ArgoCD enables a true GitOps workflow for the personal website and 
 - **INVEST Check**: Independent, Valuable, Micro (1h), Testable.
 - **Status**: ⏳ Pending
 
-### Task 2.1: Create Website Application Manifest
+### Task 2.1: Create Website Application Manifest ✅
 - **Objective**: Define the personal website as an ArgoCD Application.
-- **Context Boundary**:
-    - Files: `deployment/argocd/applications/personal-website.yaml`.
-    - Concepts: ArgoCD Application CRD.
-- **Prerequisites**: Task 1.2.
-- **Implementation Approach**:
-    1.  Create an `Application` manifest pointing to the `deployment/personal-website` path in the repo.
-    2.  Configure sync policy (manual first, then automated).
-    3.  Apply the manifest.
-- **Validation Strategy**:
-    - App appears in ArgoCD UI.
-    - Sync status becomes "Synced".
-    - Health status becomes "Healthy".
-- **INVEST Check**: Independent, Valuable, Small (1-2h), Testable.
-- **Status**: ⏳ Pending
+- **Status**: ✅ COMPLETED
+- **Implementation**:
+    - Created `deployment/argocd/applications/personal-website.yaml`.
+    - Applied manifest to cluster.
 
 ## Dependency Visualization
 
