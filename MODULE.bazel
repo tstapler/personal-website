@@ -11,7 +11,7 @@ bazel_dep(name = "build_stack_rules_hugo", version = "0.0.9")
 git_override(
     module_name = "build_stack_rules_hugo",
     remote = "https://github.com/tstapler/rules_hugo.git",
-    commit = "2eaf0a6f0fb62c06828417d4606353dd0c168e20",
+    commit = "f568451999daafa1db31c274eff0946ce84a5e01",
 )
 
 # Register Hugo toolchain
