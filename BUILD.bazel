@@ -10,6 +10,7 @@ hugo_site(
     static = glob(["static/**"]),
     theme = "//themes/espouse",
     quiet = False,
+    visibility = ["//visibility:public"],
 )
 
 hugo_serve(
