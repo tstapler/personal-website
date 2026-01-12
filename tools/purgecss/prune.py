@@ -18,22 +18,12 @@ def load_analysis(analysis_file):
         return json.load(f)
 
 
-def extract_html_classes_and_ids(html_content):
-    """Extract all class names and IDs from HTML content."""
-    classes = set()
-    ids = set()
-
-    # Find class attributes
-    class_pattern = r'class=["\']([\w\s\-_]+)["\']'
-    for match in re.finditer(class_pattern, html_content):
-        classes.update(match.group(1).split())
-
-    # Find id attributes
-    id_pattern = r'id=["\']([\w\-_]+)["\']'
-    for match in re.finditer(id_pattern, html_content):
-        ids.add(match.group(1))
-
-    return classes, ids
+def extract_tokens(content):
+    """Extract all potential class/id tokens from content using broad regex."""
+    # Broad match for any potential selector name (User provided nuanced regex)
+    # Matches tokens that don't end in a colon (to avoid CSS properties/JS keys)
+    pattern = r'[^<>"\'`\s]*[^<>"\'`\s:]'
+    return set(re.findall(pattern, content))
 
 
 def is_safelisted(selector, safelist_patterns):
@@ -77,19 +67,37 @@ def prune_css(css_content, used_classes, used_ids, safelist_patterns):
                 keep_rule = True
                 break
 
-            # Check if selector is used
-            if selector.startswith('.'):
-                class_name = selector[1:].split(':')[0].split('[')[0]
-                if class_name in used_classes or is_safelisted(selector, safelist_patterns):
-                    keep_rule = True
+            # Algorithm:
+            # 1. Clean selector of pseudos/attributes
+            # 2. Regex find all classes and IDs
+            # 3. Check if ALL found classes/IDs are used or safelisted
+            
+            # Remove attributes [type="..."] to avoid matching inside them
+            clean_selector = re.sub(r'\[.*?\]', '', selector)
+            # Remove pseudo-classes/elements :hover, ::before
+            clean_selector = clean_selector.split(':')[0]
+
+            # Find all classes and IDs
+            found_classes = re.findall(r'\.([a-zA-Z0-9_-]+)', clean_selector)
+            found_ids = re.findall(r'#([a-zA-Z0-9_-]+)', clean_selector)
+
+            # Verify classes
+            classes_ok = True
+            for cls in found_classes:
+                if cls not in used_classes and not is_safelisted(cls, safelist_patterns):
+                    classes_ok = False
                     break
-            elif selector.startswith('#'):
-                id_name = selector[1:].split(':')[0].split('[')[0]
-                if id_name in used_ids or is_safelisted(selector, safelist_patterns):
-                    keep_rule = True
+            
+            # Verify IDs
+            ids_ok = True
+            for id_val in found_ids:
+                if id_val not in used_ids and not is_safelisted(id_val, safelist_patterns):
+                    ids_ok = False
                     break
-            else:
-                # Element selectors, pseudo-elements - keep them
+
+            # If all parts of the selector are valid, keep the rule
+            # Note: If no classes/IDs found (e.g. "div", "body"), both flags remain True
+            if classes_ok and ids_ok:
                 keep_rule = True
                 break
 
@@ -124,20 +132,27 @@ def prune_css(css_content, used_classes, used_ids, safelist_patterns):
 
 
 def collect_used_selectors(site_dir):
-    """Scan site HTML to collect all used classes and IDs."""
+    """Scan site HTML and JS to collect all used classes and IDs."""
     site_path = Path(site_dir)
 
     all_classes = set()
     all_ids = set()
 
-    for html_file in site_path.rglob('*.html'):
-        try:
-            content = html_file.read_text(encoding='utf-8')
-            classes, ids = extract_html_classes_and_ids(content)
-            all_classes.update(classes)
-            all_ids.update(ids)
-        except Exception as e:
-            print(f"Warning: Could not read {html_file}: {e}", file=sys.stderr)
+    # Scan both HTML and JS files
+    extensions = ['*.html', '*.js']
+    
+    for ext in extensions:
+        for file_path in site_path.rglob(ext):
+            try:
+                content = file_path.read_text(encoding='utf-8')
+                tokens = extract_tokens(content)
+                
+                # Add all tokens to both classes and IDs sets
+                # This is the "nuanced" approach: treat every token as potentially both
+                all_classes.update(tokens)
+                all_ids.update(tokens)
+            except Exception as e:
+                print(f"Warning: Could not read {file_path}: {e}", file=sys.stderr)
 
     return all_classes, all_ids
 
