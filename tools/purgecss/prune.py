@@ -175,6 +175,7 @@ def main():
         r'^input$',
         r'^label$',
         r'^labels$',
+        r'^labeled$',
         r'^message$',
         r'^messages$',
         r'^icon$',
