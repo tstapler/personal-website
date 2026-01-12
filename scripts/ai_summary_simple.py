@@ -98,6 +98,43 @@ class SummaryGenerator:
             logger.error(f"Summary generation error: {e}")
             return f"Error: {str(e)}"
 
+    def _add_ai_frontmatter(self, content: str, summary: str) -> str:
+        """Add AI summary to frontmatter"""
+        lines = content.split('\n')
+        frontmatter_end = 0
+        content_start = 0
+        
+        # Find frontmatter boundaries
+        for i, line in enumerate(lines):
+            if line.strip() == '+++':
+                frontmatter_end = i + 1
+                break
+            elif line.strip() == '---' and i > 0:
+                content_start = i + 1
+        
+        # Build new content with AI summary
+        new_content = []
+        
+        # Add existing frontmatter
+        new_content.extend(lines[:frontmatter_end])
+        
+        # Check if summary already exists
+        ai_summary_exists = any("ai_summary:" in line for line in lines[frontmatter_end:content_start])
+        
+        if not ai_summary_exists:
+            # Insert AI summary fields
+            new_content.extend([
+                'ai_summary: f""{summary}""',
+                'ai_summary_provider: "openai"',
+                'ai_summary_style: "concise"',
+                'ai_summary_length: len(summary.split()) if summary else 0',
+                'ai_generated: true'
+            ])
+        
+        new_content.extend(lines[frontmatter_end:])
+        
+        return '\n'.join(new_content)
+
 def main():
     """Simple CLI for summary generation"""
     parser = argparse.ArgumentParser()
@@ -121,43 +158,6 @@ def main():
             f.write(content)
         
         print(f"Updated: {args.content}")
-
-def _add_ai_frontmatter(self, content: str, summary: str) -> str:
-    """Add AI summary to frontmatter"""
-    lines = content.split('\n')
-    frontmatter_end = 0
-    content_start = 0
-    
-    # Find frontmatter boundaries
-    for i, line in enumerate(lines):
-        if line.strip() == '+++':
-            frontmatter_end = i + 1
-            break
-        elif line.strip() == '---' and i > 0:
-            content_start = i + 1
-    
-    # Build new content with AI summary
-    new_content = []
-    
-    # Add existing frontmatter
-    new_content.extend(lines[:frontmatter_end])
-    
-    # Check if summary already exists
-    ai_summary_exists = any("ai_summary:" in line for line in lines[frontmatter_end:content_start])
-    
-    if not ai_summary_exists:
-        # Insert AI summary fields
-        new_content.extend([
-            'ai_summary: f""{summary}""',
-            'ai_summary_provider: "openai"',
-            'ai_summary_style: "concise"',
-            'ai_summary_length: len(summary.split()) if summary else 0',
-            'ai_generated: true'
-        ])
-    
-    new_content.extend(lines[frontmatter_end:])
-    
-    return '\n'.join(new_content)
 
 if __name__ == "__main__":
     main()
