@@ -32,7 +32,7 @@ jobs:
       run: bazel run //tools/critical-css:install_browsers
       
     - name: Build image
-      run: bazel build //:nginx_image
+      run: bazel build //:nginx_image_tarball
       
     - name: Load and push image
       run: bazel run //:docker_push
