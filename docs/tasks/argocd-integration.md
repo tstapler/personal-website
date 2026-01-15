@@ -60,6 +60,22 @@ Implementing ArgoCD enables a true GitOps workflow for the personal website and 
     - Created `deployment/argocd/applications/personal-website.yaml`.
     - Applied manifest to cluster.
 
+### Task 2.2: Verify Application Sync & Health (1h)
+- **Objective**: Confirm the application is successfully synced and healthy in ArgoCD.
+- **Status**: ⏳ Pending
+- **Implementation**:
+    - Check sync status via CLI or UI.
+    - Verify website accessibility.
+    - Troubleshoot any sync errors.
+
+### Task 2.3: Document GitOps Workflow (1h)
+- **Objective**: Document how to deploy changes using the new GitOps workflow.
+- **Status**: ⏳ Pending
+- **Implementation**:
+    - Create `docs/operations/gitops-workflow.md`.
+    - Explain how to update image versions or config.
+    - Explain how to sync manually if needed.
+
 ## Dependency Visualization
 
 ```
@@ -70,6 +86,10 @@ Implementing ArgoCD enables a true GitOps workflow for the personal website and 
            +---> [Task 1.2: Configure Access]
                    |
                    +---> [Task 2.1: Create Website App]
+                           |
+                           +---> [Task 2.2: Verify Sync]
+                                   |
+                                   +---> [Task 2.3: Document Workflow]
 ```
 
 ## Context Preparation Guide
