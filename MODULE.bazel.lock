@@ -20,6 +20,8 @@
     "https://bcr.bazel.build/modules/apple_support/1.21.1/MODULE.bazel": "5809fa3efab15d1f3c3c635af6974044bac8a4919c62238cce06acee8a8c11f1",
     "https://bcr.bazel.build/modules/apple_support/1.24.2/MODULE.bazel": "0e62471818affb9f0b26f128831d5c40b074d32e6dda5a0d3852847215a41ca4",
     "https://bcr.bazel.build/modules/apple_support/1.24.2/source.json": "2c22c9827093250406c5568da6c54e6fdf0ef06238def3d99c71b12feb057a8d",
+    "https://bcr.bazel.build/modules/aspect_bazel_lib/2.0.0/MODULE.bazel": "e118477db5c49419a88d78ebc7a2c2cea9d49600fe0f490c1903324a2c16ecd9",
+    "https://bcr.bazel.build/modules/aspect_bazel_lib/2.11.0/MODULE.bazel": "cb1ba9f9999ed0bc08600c221f532c1ddd8d217686b32ba7d45b0713b5131452",
     "https://bcr.bazel.build/modules/aspect_bazel_lib/2.14.0/MODULE.bazel": "2b31ffcc9bdc8295b2167e07a757dbbc9ac8906e7028e5170a3708cecaac119f",
     "https://bcr.bazel.build/modules/aspect_bazel_lib/2.19.3/MODULE.bazel": "253d739ba126f62a5767d832765b12b59e9f8d2bc88cc1572f4a73e46eb298ca",
     "https://bcr.bazel.build/modules/aspect_bazel_lib/2.22.5/MODULE.bazel": "004ba890363d05372a97248c37205ae64b6fa31047629cd2c0895a9d0c7779e8",
@@ -27,8 +29,15 @@
     "https://bcr.bazel.build/modules/aspect_bazel_lib/2.7.2/MODULE.bazel": "780d1a6522b28f5edb7ea09630748720721dfe27690d65a2d33aa7509de77e07",
     "https://bcr.bazel.build/modules/aspect_bazel_lib/2.7.7/MODULE.bazel": "491f8681205e31bb57892d67442ce448cda4f472a8e6b3dc062865e29a64f89c",
     "https://bcr.bazel.build/modules/aspect_bazel_lib/2.8.1/MODULE.bazel": "812d2dd42f65dca362152101fbec418029cc8fd34cbad1a2fde905383d705838",
+    "https://bcr.bazel.build/modules/aspect_rules_js/2.0.0/MODULE.bazel": "b45b507574aa60a92796e3e13c195cd5744b3b8aff516a9c0cb5ae6a048161c5",
     "https://bcr.bazel.build/modules/aspect_rules_js/2.1.0/MODULE.bazel": "f747a24e13bc3c35c712580fc4e30186c54d80d21997b9503e29705e4d864533",
-    "https://bcr.bazel.build/modules/aspect_rules_js/2.1.0/source.json": "3a43843c6bd0ac65d118e72f504ff553a1ba1e65fec91938e5546effb4245104",
+    "https://bcr.bazel.build/modules/aspect_rules_js/2.6.2/MODULE.bazel": "ed2a871f4ab8fbde0cab67c425745069d84ea64b64313fa1a2954017326511f5",
+    "https://bcr.bazel.build/modules/aspect_rules_js/2.6.2/source.json": "59933fb8ddabd9740a3c12ff5552f06f2b8d68c3633883c681c757bf227c3763",
+    "https://bcr.bazel.build/modules/aspect_rules_ts/3.7.0/MODULE.bazel": "5aace216caf88638950ef061245d23c36f57c8359e56e97f02a36f70bb09c50f",
+    "https://bcr.bazel.build/modules/aspect_rules_ts/3.7.0/source.json": "4a8115ea69dd796353232ff27a7e93e6d7d1ad43bea1eb33c6bd3acfa656bf2e",
+    "https://bcr.bazel.build/modules/aspect_tools_telemetry/0.2.6/MODULE.bazel": "cafb8781ad591bc57cc765dca5fefab08cf9f65af363d162b79d49205c7f8af7",
+    "https://bcr.bazel.build/modules/aspect_tools_telemetry/0.2.8/MODULE.bazel": "aa975a83e72bcaac62ee61ab12b788ea324a1d05c4aab28aadb202f647881679",
+    "https://bcr.bazel.build/modules/aspect_tools_telemetry/0.2.8/source.json": "786cbc49377fb6bf4859aec5b1c61f8fc26b08e9fdb929e2dde2e1e2a406bd24",
     "https://bcr.bazel.build/modules/bazel_features/1.1.1/MODULE.bazel": "27b8c79ef57efe08efccbd9dd6ef70d61b4798320b8d3c134fd571f78963dbcd",
     "https://bcr.bazel.build/modules/bazel_features/1.10.0/MODULE.bazel": "f75e8807570484a99be90abcd52b5e1f390362c258bcb73106f4544957a48101",
     "https://bcr.bazel.build/modules/bazel_features/1.11.0/MODULE.bazel": "f9382337dd5a474c3b7d334c2f83e50b6eaedc284253334cf823044a26de03e8",
@@ -48,6 +57,7 @@
     "https://bcr.bazel.build/modules/bazel_features/1.4.1/MODULE.bazel": "e45b6bb2350aff3e442ae1111c555e27eac1d915e77775f6fdc4b351b758b5d7",
     "https://bcr.bazel.build/modules/bazel_features/1.9.0/MODULE.bazel": "885151d58d90d8d9c811eb75e3288c11f850e1d6b481a8c9f766adee4712358b",
     "https://bcr.bazel.build/modules/bazel_features/1.9.1/MODULE.bazel": "8f679097876a9b609ad1f60249c49d68bfab783dd9be012faf9d82547b14815a",
+    "https://bcr.bazel.build/modules/bazel_lib/3.0.0-beta.1/MODULE.bazel": "407729e232f611c3270005b016b437005daa7b1505826798ea584169a476e878",
     "https://bcr.bazel.build/modules/bazel_lib/3.0.0/MODULE.bazel": "22b70b80ac89ad3f3772526cd9feee2fa412c2b01933fea7ed13238a448d370d",
     "https://bcr.bazel.build/modules/bazel_lib/3.0.0/source.json": "895f21909c6fba01d7c17914bb6c8e135982275a1b18cdaa4e62272217ef1751",
     "https://bcr.bazel.build/modules/bazel_skylib/1.0.3/MODULE.bazel": "bcb0fd896384802d1ad283b4e4eb4d718eebd8cb820b0a2c3a347fb971afd9d8",
@@ -116,6 +126,8 @@
     "https://bcr.bazel.build/modules/rules_apple/3.16.0/MODULE.bazel": "0d1caf0b8375942ce98ea944be754a18874041e4e0459401d925577624d3a54a",
     "https://bcr.bazel.build/modules/rules_apple/4.1.0/MODULE.bazel": "76e10fd4a48038d3fc7c5dc6e63b7063bbf5304a2e3bd42edda6ec660eebea68",
     "https://bcr.bazel.build/modules/rules_apple/4.1.0/source.json": "8ee81e1708756f81b343a5eb2b2f0b953f1d25c4ab3d4a68dc02754872e80715",
+    "https://bcr.bazel.build/modules/rules_browsers/0.3.0/MODULE.bazel": "b63b98ddf2a597751f9fa36806bf243b9dc6ee33ffef52ad05ac1efe750a3987",
+    "https://bcr.bazel.build/modules/rules_browsers/0.3.0/source.json": "2b5e2982719ed9ffcdc4498c5d298077f34fb90160ebbee91d62b6316c8b14fe",
     "https://bcr.bazel.build/modules/rules_cc/0.0.1/MODULE.bazel": "cb2aa0747f84c6c3a78dad4e2049c154f08ab9d166b1273835a8174940365647",
     "https://bcr.bazel.build/modules/rules_cc/0.0.10/MODULE.bazel": "ec1705118f7eaedd6e118508d3d26deba2a4e76476ada7e0e3965211be012002",
     "https://bcr.bazel.build/modules/rules_cc/0.0.13/MODULE.bazel": "0e8529ed7b323dad0775ff924d2ae5af7640b23553dfcd4d34344c7e7a867191",
@@ -171,8 +183,10 @@
     "https://bcr.bazel.build/modules/rules_license/0.0.7/MODULE.bazel": "088fbeb0b6a419005b89cf93fe62d9517c0a2b8bb56af3244af65ecfe37e7d5d",
     "https://bcr.bazel.build/modules/rules_license/1.0.0/MODULE.bazel": "a7fda60eefdf3d8c827262ba499957e4df06f659330bbe6cdbdb975b768bb65c",
     "https://bcr.bazel.build/modules/rules_license/1.0.0/source.json": "a52c89e54cc311196e478f8382df91c15f7a2bfdf4c6cd0e2675cc2ff0b56efb",
+    "https://bcr.bazel.build/modules/rules_nodejs/6.2.0/MODULE.bazel": "ec27907f55eb34705adb4e8257952162a2d4c3ed0f0b3b4c3c1aad1fac7be35e",
     "https://bcr.bazel.build/modules/rules_nodejs/6.3.0/MODULE.bazel": "45345e4aba35dd6e4701c1eebf5a4e67af4ed708def9ebcdc6027585b34ee52d",
     "https://bcr.bazel.build/modules/rules_nodejs/6.3.2/MODULE.bazel": "42e8d5254b6135f890fecca7c8d7f95a7d27a45f8275b276f66ec337767530ef",
+    "https://bcr.bazel.build/modules/rules_nodejs/6.5.2/MODULE.bazel": "7f9ea68a0ce6d82905ce9f74e76ab8a8b4531ed4c747018c9d76424ad0b3370d",
     "https://bcr.bazel.build/modules/rules_nodejs/6.7.3/MODULE.bazel": "c22a48b2a0dbf05a9dc5f83837bbc24c226c1f6e618de3c3a610044c9f336056",
     "https://bcr.bazel.build/modules/rules_nodejs/6.7.3/source.json": "a3f966f4415a8a6545e560ee5449eac95cc633f96429d08e87c87775c72f5e09",
     "https://bcr.bazel.build/modules/rules_oci/2.2.2/MODULE.bazel": "f2afa49fbed0edb709b79d21d55db562f70450ca1a8527ff7b56fdf792bf26f7",
@@ -180,9 +194,12 @@
     "https://bcr.bazel.build/modules/rules_pkg/0.7.0/MODULE.bazel": "df99f03fc7934a4737122518bb87e667e62d780b610910f0447665a7e2be62dc",
     "https://bcr.bazel.build/modules/rules_pkg/1.0.1/MODULE.bazel": "5b1df97dbc29623bccdf2b0dcd0f5cb08e2f2c9050aab1092fd39a41e82686ff",
     "https://bcr.bazel.build/modules/rules_pkg/1.0.1/source.json": "bd82e5d7b9ce2d31e380dd9f50c111d678c3bdaca190cb76b0e1c71b05e1ba8a",
+    "https://bcr.bazel.build/modules/rules_playwright/0.5.3/MODULE.bazel": "105db08158a3f32302a03252e5eec5e9ee01a2674d3ecda94ad2c41a30001217",
+    "https://bcr.bazel.build/modules/rules_playwright/0.5.3/source.json": "54f2c76d6e6bb0593b89077091e97cf29d8b1129a93497b49d6ca3f07d842e4b",
     "https://bcr.bazel.build/modules/rules_proto/4.0.0/MODULE.bazel": "a7a7b6ce9bee418c1a760b3d84f83a299ad6952f9903c67f19e4edd964894e06",
     "https://bcr.bazel.build/modules/rules_proto/5.3.0-21.7/MODULE.bazel": "e8dff86b0971688790ae75528fe1813f71809b5afd57facb44dad9e8eca631b7",
     "https://bcr.bazel.build/modules/rules_proto/6.0.0-rc1/MODULE.bazel": "1e5b502e2e1a9e825eef74476a5a1ee524a92297085015a052510b09a1a09483",
+    "https://bcr.bazel.build/modules/rules_proto/6.0.0/MODULE.bazel": "b531d7f09f58dce456cd61b4579ce8c86b38544da75184eadaf0a7cb7966453f",
     "https://bcr.bazel.build/modules/rules_proto/6.0.2/MODULE.bazel": "ce916b775a62b90b61888052a416ccdda405212b6aaeb39522f7dc53431a5e73",
     "https://bcr.bazel.build/modules/rules_proto/7.1.0/MODULE.bazel": "002d62d9108f75bb807cd56245d45648f38275cb3a99dcd45dfb864c5d74cb96",
     "https://bcr.bazel.build/modules/rules_proto/7.1.0/source.json": "39f89066c12c24097854e8f57ab8558929f9c8d474d34b2c00ac04630ad8940e",
@@ -237,19 +254,26 @@
   "moduleExtensions": {
     "@@aspect_rules_js+//npm:extensions.bzl%pnpm": {
       "general": {
-        "bzlTransitiveDigest": "DKqpI+6s4YhLT+SNvX4gGyJDtHgGg7wHNDPQazX/E/M=",
-        "usagesDigest": "0bnQ+rfWPgPBwIzrmxLJ+o/WAhUldmvdunr9wh8cgSk=",
+        "bzlTransitiveDigest": "M9yaJca4JhoWtMdcDqIkmwWKQI5X+4hDvZLDdmFdHwk=",
+        "usagesDigest": "eUpYX8pB+IqiKTJkY9MvjSyeFPt2+VbYMW7VMO5XmEA=",
         "recordedInputs": [
           "REPO_MAPPING:aspect_bazel_lib+,bazel_lib bazel_lib+",
           "REPO_MAPPING:aspect_bazel_lib+,bazel_skylib bazel_skylib+",
           "REPO_MAPPING:aspect_bazel_lib+,bazel_tools bazel_tools",
+          "REPO_MAPPING:aspect_bazel_lib+,tar.bzl tar.bzl+",
           "REPO_MAPPING:aspect_rules_js+,aspect_bazel_lib aspect_bazel_lib+",
+          "REPO_MAPPING:aspect_rules_js+,aspect_rules_js aspect_rules_js+",
+          "REPO_MAPPING:aspect_rules_js+,aspect_tools_telemetry_report aspect_tools_telemetry++telemetry+aspect_tools_telemetry_report",
           "REPO_MAPPING:aspect_rules_js+,bazel_features bazel_features+",
           "REPO_MAPPING:aspect_rules_js+,bazel_skylib bazel_skylib+",
           "REPO_MAPPING:aspect_rules_js+,bazel_tools bazel_tools",
           "REPO_MAPPING:bazel_features+,bazel_features_globals bazel_features++version_extension+bazel_features_globals",
           "REPO_MAPPING:bazel_features+,bazel_features_version bazel_features++version_extension+bazel_features_version",
-          "REPO_MAPPING:bazel_lib+,bazel_tools bazel_tools"
+          "REPO_MAPPING:bazel_lib+,bazel_skylib bazel_skylib+",
+          "REPO_MAPPING:bazel_lib+,bazel_tools bazel_tools",
+          "REPO_MAPPING:tar.bzl+,aspect_bazel_lib aspect_bazel_lib+",
+          "REPO_MAPPING:tar.bzl+,bazel_skylib bazel_skylib+",
+          "REPO_MAPPING:tar.bzl+,tar.bzl tar.bzl+"
         ],
         "generatedRepoSpecs": {
           "pnpm": {
@@ -275,6 +299,7 @@
               "lifecycle_hooks": [],
               "extra_build_content": "load(\"@aspect_rules_js//js:defs.bzl\", \"js_binary\")\njs_binary(name = \"pnpm\", data = glob([\"package/**\"]), entry_point = \"package/dist/pnpm.cjs\", visibility = [\"//visibility:public\"])",
               "extract_full_archive": true,
+              "exclude_package_contents": [],
               "system_tar": "auto"
             }
           },
@@ -297,7 +322,55 @@
               "bins": {},
               "package_visibility": [
                 "//visibility:public"
+              ],
+              "exclude_package_contents": []
+            }
+          }
+        }
+      }
+    },
+    "@@aspect_rules_ts+//ts:extensions.bzl%ext": {
+      "general": {
+        "bzlTransitiveDigest": "MOUgUrplFvvV9vC2zwv3M95ea3RgKVFjiidHnrCrWr8=",
+        "usagesDigest": "9ZU2j0dASaaUehGdhpSjgDufaa0frOWz7iqMGCmOYvw=",
+        "recordedInputs": [
+          "REPO_MAPPING:aspect_rules_ts+,aspect_rules_ts aspect_rules_ts+",
+          "REPO_MAPPING:aspect_rules_ts+,aspect_tools_telemetry_report aspect_tools_telemetry++telemetry+aspect_tools_telemetry_report",
+          "REPO_MAPPING:aspect_rules_ts+,bazel_tools bazel_tools",
+          "FILE:@@rules_browsers+//package.json 84dc1ba9b1c667a25894e97218bd8f247d54f24bb694efb397a881be3c06a4c5"
+        ],
+        "generatedRepoSpecs": {
+          "npm_rules_browsers_typescript": {
+            "repoRuleId": "@@aspect_rules_ts+//ts/private:npm_repositories.bzl%http_archive_version",
+            "attributes": {
+              "version": "",
+              "version_from": "@@rules_browsers+//:package.json",
+              "integrity": "",
+              "urls": [
+                "https://registry.npmjs.org/typescript/-/typescript-{}.tgz"
               ]
+            }
+          }
+        }
+      }
+    },
+    "@@aspect_tools_telemetry+//:extension.bzl%telemetry": {
+      "general": {
+        "bzlTransitiveDigest": "gA7tPEdJXhskzPIEUxjX9IdDrM6+WjfbgXJ8Ez47umk=",
+        "usagesDigest": "CaPe6Jdgid5iuCDefJmLeZJdATVEIfDiqXR1rOSxcNg=",
+        "recordedInputs": [
+          "REPO_MAPPING:aspect_tools_telemetry+,aspect_bazel_lib aspect_bazel_lib+",
+          "REPO_MAPPING:aspect_tools_telemetry+,bazel_skylib bazel_skylib+"
+        ],
+        "generatedRepoSpecs": {
+          "aspect_tools_telemetry_report": {
+            "repoRuleId": "@@aspect_tools_telemetry+//:extension.bzl%tel_repository",
+            "attributes": {
+              "deps": {
+                "aspect_rules_js": "2.6.2",
+                "aspect_rules_ts": "3.7.0",
+                "aspect_tools_telemetry": "0.2.8"
+              }
             }
           }
         }
@@ -305,7 +378,7 @@
     },
     "@@build_stack_rules_hugo+//hugo/internal:extensions.bzl%hugo_extension": {
       "general": {
-        "bzlTransitiveDigest": "uYL3JaXs8PIzmieVLURl/2mR2ZU61kzyf9WhYZmK+bk=",
+        "bzlTransitiveDigest": "mSbrRr6rJf+NRJeNnuUcrvIHMOuVnrc9vkXQWAxfmZE=",
         "usagesDigest": "jK284kGAZdFlURyym8l/rBsahCNkHFZspIN/iELVJQM=",
         "recordedInputs": [
           "REPO_MAPPING:build_stack_rules_hugo+,bazel_tools bazel_tools"
@@ -354,6 +427,215 @@
               "strip_prefix": "pybind11-2.12.0",
               "urls": [
                 "https://github.com/pybind/pybind11/archive/v2.12.0.zip"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "@@rules_browsers+//browsers:extensions.bzl%browsers": {
+      "general": {
+        "bzlTransitiveDigest": "6QMCx97Hwh2hyQPqZEA9AKAxbpygF41+K8xJfeqJYm8=",
+        "usagesDigest": "5JVoZtbONwADw4kJZQeaDz4LFO1O5UfVTJS3x4qimDU=",
+        "recordedInputs": [],
+        "generatedRepoSpecs": {
+          "rules_browsers_chrome_linux": {
+            "repoRuleId": "@@rules_browsers+//browsers/private:browser_repo.bzl%browser_repo",
+            "attributes": {
+              "sha256": "4bc6d611d55dc96b213c8605cb8ac27d3c21973bf8b663df4cbf756c989e6745",
+              "urls": [
+                "https://storage.googleapis.com/chrome-for-testing-public/143.0.7482.0/linux64/chrome-headless-shell-linux64.zip"
+              ],
+              "named_files": {
+                "CHROME-HEADLESS-SHELL": "chrome-headless-shell-linux64/chrome-headless-shell"
+              },
+              "exclude_patterns": [
+                "**/*.log"
+              ],
+              "exports_files": [
+                "chrome-headless-shell-linux64/chrome-headless-shell"
+              ]
+            }
+          },
+          "rules_browsers_chrome_mac": {
+            "repoRuleId": "@@rules_browsers+//browsers/private:browser_repo.bzl%browser_repo",
+            "attributes": {
+              "sha256": "830cc2aafedbe7c9fe671c9898046f8900c06da89d12653ddc3ef26084d2f516",
+              "urls": [
+                "https://storage.googleapis.com/chrome-for-testing-public/143.0.7482.0/mac-x64/chrome-headless-shell-mac-x64.zip"
+              ],
+              "named_files": {
+                "CHROME-HEADLESS-SHELL": "chrome-headless-shell-mac-x64/chrome-headless-shell"
+              },
+              "exclude_patterns": [
+                "**/*.log"
+              ],
+              "exports_files": [
+                "chrome-headless-shell-mac-x64/chrome-headless-shell"
+              ]
+            }
+          },
+          "rules_browsers_chrome_mac_arm": {
+            "repoRuleId": "@@rules_browsers+//browsers/private:browser_repo.bzl%browser_repo",
+            "attributes": {
+              "sha256": "5b5792f5c2d05c3f1f782346910869b61a37b9003f212315b19f4e46710cf8b9",
+              "urls": [
+                "https://storage.googleapis.com/chrome-for-testing-public/143.0.7482.0/mac-arm64/chrome-headless-shell-mac-arm64.zip"
+              ],
+              "named_files": {
+                "CHROME-HEADLESS-SHELL": "chrome-headless-shell-mac-arm64/chrome-headless-shell"
+              },
+              "exclude_patterns": [
+                "**/*.log"
+              ],
+              "exports_files": [
+                "chrome-headless-shell-mac-arm64/chrome-headless-shell"
+              ]
+            }
+          },
+          "rules_browsers_chrome_win64": {
+            "repoRuleId": "@@rules_browsers+//browsers/private:browser_repo.bzl%browser_repo",
+            "attributes": {
+              "sha256": "19bdbf6e1579b6c056b74709520ac9df573f4e80e4f026cc2360a29443cf6c0c",
+              "urls": [
+                "https://storage.googleapis.com/chrome-for-testing-public/143.0.7482.0/win64/chrome-headless-shell-win64.zip"
+              ],
+              "named_files": {
+                "CHROME-HEADLESS-SHELL": "chrome-headless-shell-win64/chrome-headless-shell.exe"
+              },
+              "exclude_patterns": [
+                "**/*.log"
+              ],
+              "exports_files": [
+                "chrome-headless-shell-win64/chrome-headless-shell.exe"
+              ]
+            }
+          },
+          "rules_browsers_chromedriver_linux": {
+            "repoRuleId": "@@rules_browsers+//browsers/private:browser_repo.bzl%browser_repo",
+            "attributes": {
+              "sha256": "ea41e7a217d878c00e9d66a0724ff54be7d02d08adb7f6458b7d8487b6fbcd84",
+              "urls": [
+                "https://storage.googleapis.com/chrome-for-testing-public/143.0.7482.0/linux64/chromedriver-linux64.zip"
+              ],
+              "named_files": {
+                "CHROMEDRIVER": "chromedriver-linux64/chromedriver"
+              },
+              "exclude_patterns": [],
+              "exports_files": [
+                "chromedriver-linux64/chromedriver"
+              ]
+            }
+          },
+          "rules_browsers_chromedriver_mac": {
+            "repoRuleId": "@@rules_browsers+//browsers/private:browser_repo.bzl%browser_repo",
+            "attributes": {
+              "sha256": "aede9b67301b930ff9c673df28429aa82ce05c105a4ccbef7e0cd30a97ae429d",
+              "urls": [
+                "https://storage.googleapis.com/chrome-for-testing-public/143.0.7482.0/mac-x64/chromedriver-mac-x64.zip"
+              ],
+              "named_files": {
+                "CHROMEDRIVER": "chromedriver-mac-x64/chromedriver"
+              },
+              "exclude_patterns": [],
+              "exports_files": [
+                "chromedriver-mac-x64/chromedriver"
+              ]
+            }
+          },
+          "rules_browsers_chromedriver_mac_arm": {
+            "repoRuleId": "@@rules_browsers+//browsers/private:browser_repo.bzl%browser_repo",
+            "attributes": {
+              "sha256": "5adf89a3e8edc6755920f4cfe2fe0515d40684878ef5201da5e02a9d491c4003",
+              "urls": [
+                "https://storage.googleapis.com/chrome-for-testing-public/143.0.7482.0/mac-arm64/chromedriver-mac-arm64.zip"
+              ],
+              "named_files": {
+                "CHROMEDRIVER": "chromedriver-mac-arm64/chromedriver"
+              },
+              "exclude_patterns": [],
+              "exports_files": [
+                "chromedriver-mac-arm64/chromedriver"
+              ]
+            }
+          },
+          "rules_browsers_chromedriver_win64": {
+            "repoRuleId": "@@rules_browsers+//browsers/private:browser_repo.bzl%browser_repo",
+            "attributes": {
+              "sha256": "a3dfe62b3e9e7a42bd324c07dcbbcc3a733a736b2a59f0e93b9250b88103ab73",
+              "urls": [
+                "https://storage.googleapis.com/chrome-for-testing-public/143.0.7482.0/win64/chromedriver-win64.zip"
+              ],
+              "named_files": {
+                "CHROMEDRIVER": "chromedriver-win64/chromedriver.exe"
+              },
+              "exclude_patterns": [],
+              "exports_files": [
+                "chromedriver-win64/chromedriver.exe"
+              ]
+            }
+          },
+          "rules_browsers_firefox_linux": {
+            "repoRuleId": "@@rules_browsers+//browsers/private:browser_repo.bzl%browser_repo",
+            "attributes": {
+              "sha256": "c66a48222ff67d51560240d321895c6926c9b3af345cbf688ced8517781d88d1",
+              "urls": [
+                "https://archive.mozilla.org/pub/firefox/releases/144.0/linux-x86_64/en-US/firefox-144.0.tar.xz"
+              ],
+              "named_files": {
+                "FIREFOX": "firefox/firefox"
+              },
+              "exclude_patterns": [],
+              "exports_files": [
+                "firefox/firefox"
+              ]
+            }
+          },
+          "rules_browsers_firefox_mac": {
+            "repoRuleId": "@@rules_browsers+//browsers/private:browser_repo.bzl%browser_repo",
+            "attributes": {
+              "sha256": "1e444b80921bc999d56c05a7decc1eaf88c0297cac5b90416299af2c77f5ecc9",
+              "urls": [
+                "https://archive.mozilla.org/pub/firefox/releases/144.0/mac/en-US/Firefox%20144.0.dmg"
+              ],
+              "named_files": {
+                "FIREFOX": "Firefox.app/Contents/MacOS/firefox"
+              },
+              "exclude_patterns": [],
+              "exports_files": [
+                "Firefox.app/Contents/MacOS/firefox"
+              ]
+            }
+          },
+          "rules_browsers_firefox_mac_arm": {
+            "repoRuleId": "@@rules_browsers+//browsers/private:browser_repo.bzl%browser_repo",
+            "attributes": {
+              "sha256": "1e444b80921bc999d56c05a7decc1eaf88c0297cac5b90416299af2c77f5ecc9",
+              "urls": [
+                "https://archive.mozilla.org/pub/firefox/releases/144.0/mac/en-US/Firefox%20144.0.dmg"
+              ],
+              "named_files": {
+                "FIREFOX": "Firefox.app/Contents/MacOS/firefox"
+              },
+              "exclude_patterns": [],
+              "exports_files": [
+                "Firefox.app/Contents/MacOS/firefox"
+              ]
+            }
+          },
+          "rules_browsers_firefox_win64": {
+            "repoRuleId": "@@rules_browsers+//browsers/private:browser_repo.bzl%browser_repo",
+            "attributes": {
+              "sha256": "d1e8a7c061e25a41c8dfa85e3aee8e86e9263c69104d80906c978c8d0556563a",
+              "urls": [
+                "https://archive.mozilla.org/pub/firefox/releases/144.0/win64/en-US/Firefox%20Setup%20144.0.exe"
+              ],
+              "named_files": {
+                "FIREFOX": "core/firefox.exe"
+              },
+              "exclude_patterns": [],
+              "exports_files": [
+                "core/firefox.exe"
               ]
             }
           }
@@ -420,7 +702,7 @@
     "@@rules_nodejs+//nodejs:extensions.bzl%node": {
       "general": {
         "bzlTransitiveDigest": "4pUxCNc22K4I+6+4Nxu52Hur12tFRfa1JMsN5mdDv60=",
-        "usagesDigest": "lwVw8YUNa8oYjF8JwucQAPJkZ1NrD7fn3AF/a0l2hFA=",
+        "usagesDigest": "Z5Ze6hPcrDZxDZcMXtYqLC7i1p9JCggT4ZjZs8ylkbU=",
         "recordedInputs": [],
         "generatedRepoSpecs": {
           "nodejs_linux_amd64": {
@@ -1207,156 +1489,25 @@
     "@@rules_python+//python/uv:uv.bzl%uv": {
       "general": {
         "bzlTransitiveDigest": "ijW9KS7qsIY+yBVvJ+Nr1mzwQox09j13DnE3iIwaeTM=",
-        "usagesDigest": "Ymgj/9o5h/Sg7/DTUw+njRzCNnJQbXUScbIxvhU3cV0=",
+        "usagesDigest": "B/mAxYlrftJu4GYJNA3xazmr/pQLkAoZ3GdTzNQIzyo=",
         "recordedInputs": [
           "REPO_MAPPING:rules_python+,bazel_tools bazel_tools",
           "REPO_MAPPING:rules_python+,platforms platforms"
         ],
         "generatedRepoSpecs": {
-          "uv_0_6_2_aarch64_apple_darwin": {
-            "repoRuleId": "@@rules_python+//python/uv/private:uv_repository.bzl%uv_repository",
-            "attributes": {
-              "version": "0.6.2",
-              "platform": "aarch64-apple-darwin",
-              "urls": [
-                "https://github.com/astral-sh/uv/releases/download/0.6.2/uv-aarch64-apple-darwin.tar.gz"
-              ],
-              "sha256": "4af802a1216053650dd82eee85ea4241994f432937d41c8b0bc90f2639e6ae14"
-            }
-          },
-          "uv_0_6_2_aarch64_unknown_linux_gnu": {
-            "repoRuleId": "@@rules_python+//python/uv/private:uv_repository.bzl%uv_repository",
-            "attributes": {
-              "version": "0.6.2",
-              "platform": "aarch64-unknown-linux-gnu",
-              "urls": [
-                "https://github.com/astral-sh/uv/releases/download/0.6.2/uv-aarch64-unknown-linux-gnu.tar.gz"
-              ],
-              "sha256": "ca4c08724764a2b6c8f2173c4e3ca9dcde0d9d328e73b4d725cfb6b17a925eed"
-            }
-          },
-          "uv_0_6_2_powerpc64_unknown_linux_gnu": {
-            "repoRuleId": "@@rules_python+//python/uv/private:uv_repository.bzl%uv_repository",
-            "attributes": {
-              "version": "0.6.2",
-              "platform": "powerpc64-unknown-linux-gnu",
-              "urls": [
-                "https://github.com/astral-sh/uv/releases/download/0.6.2/uv-powerpc64-unknown-linux-gnu.tar.gz"
-              ],
-              "sha256": "de17553549280fd877452dd1f7f9d0a604e3544bfad007b8ec0b9943f103796f"
-            }
-          },
-          "uv_0_6_2_powerpc64le_unknown_linux_gnu": {
-            "repoRuleId": "@@rules_python+//python/uv/private:uv_repository.bzl%uv_repository",
-            "attributes": {
-              "version": "0.6.2",
-              "platform": "powerpc64le-unknown-linux-gnu",
-              "urls": [
-                "https://github.com/astral-sh/uv/releases/download/0.6.2/uv-powerpc64le-unknown-linux-gnu.tar.gz"
-              ],
-              "sha256": "f341fd4874d2d007135626a0657d1478f331a78991d8a1a06aaa0d52fbe16183"
-            }
-          },
-          "uv_0_6_2_s390x_unknown_linux_gnu": {
-            "repoRuleId": "@@rules_python+//python/uv/private:uv_repository.bzl%uv_repository",
-            "attributes": {
-              "version": "0.6.2",
-              "platform": "s390x-unknown-linux-gnu",
-              "urls": [
-                "https://github.com/astral-sh/uv/releases/download/0.6.2/uv-s390x-unknown-linux-gnu.tar.gz"
-              ],
-              "sha256": "17fd89bd8de75da9c91baf918b8079c1f1f92bb6a398f0cfbc5ddefe0c7f0ee5"
-            }
-          },
-          "uv_0_6_2_x86_64_apple_darwin": {
-            "repoRuleId": "@@rules_python+//python/uv/private:uv_repository.bzl%uv_repository",
-            "attributes": {
-              "version": "0.6.2",
-              "platform": "x86_64-apple-darwin",
-              "urls": [
-                "https://github.com/astral-sh/uv/releases/download/0.6.2/uv-x86_64-apple-darwin.tar.gz"
-              ],
-              "sha256": "2b9e78b2562aea93f13e42df1177cb07c59a4d4f1c8ff8907d0c31f3a5e5e8db"
-            }
-          },
-          "uv_0_6_2_x86_64_pc_windows_msvc": {
-            "repoRuleId": "@@rules_python+//python/uv/private:uv_repository.bzl%uv_repository",
-            "attributes": {
-              "version": "0.6.2",
-              "platform": "x86_64-pc-windows-msvc",
-              "urls": [
-                "https://github.com/astral-sh/uv/releases/download/0.6.2/uv-x86_64-pc-windows-msvc.zip"
-              ],
-              "sha256": "5f33c3cc5c183775cc51b3e661a0d2ce31142d32a50406a67c7ad0321fc841d9"
-            }
-          },
-          "uv_0_6_2_x86_64_unknown_linux_gnu": {
-            "repoRuleId": "@@rules_python+//python/uv/private:uv_repository.bzl%uv_repository",
-            "attributes": {
-              "version": "0.6.2",
-              "platform": "x86_64-unknown-linux-gnu",
-              "urls": [
-                "https://github.com/astral-sh/uv/releases/download/0.6.2/uv-x86_64-unknown-linux-gnu.tar.gz"
-              ],
-              "sha256": "37ea31f099678a3bee56f8a757d73551aad43f8025d377a8dde80dd946c1b7f2"
-            }
-          },
           "uv": {
             "repoRuleId": "@@rules_python+//python/uv/private:uv_toolchains_repo.bzl%uv_toolchains_repo",
             "attributes": {
               "toolchain_type": "'@@rules_python+//python/uv:uv_toolchain_type'",
               "toolchain_names": [
-                "0_6_2_aarch64_apple_darwin",
-                "0_6_2_aarch64_unknown_linux_gnu",
-                "0_6_2_powerpc64_unknown_linux_gnu",
-                "0_6_2_powerpc64le_unknown_linux_gnu",
-                "0_6_2_s390x_unknown_linux_gnu",
-                "0_6_2_x86_64_apple_darwin",
-                "0_6_2_x86_64_pc_windows_msvc",
-                "0_6_2_x86_64_unknown_linux_gnu"
+                "none"
               ],
               "toolchain_implementations": {
-                "0_6_2_aarch64_apple_darwin": "@uv_0_6_2_aarch64_apple_darwin//:uv_toolchain",
-                "0_6_2_aarch64_unknown_linux_gnu": "@uv_0_6_2_aarch64_unknown_linux_gnu//:uv_toolchain",
-                "0_6_2_powerpc64_unknown_linux_gnu": "@uv_0_6_2_powerpc64_unknown_linux_gnu//:uv_toolchain",
-                "0_6_2_powerpc64le_unknown_linux_gnu": "@uv_0_6_2_powerpc64le_unknown_linux_gnu//:uv_toolchain",
-                "0_6_2_s390x_unknown_linux_gnu": "@uv_0_6_2_s390x_unknown_linux_gnu//:uv_toolchain",
-                "0_6_2_x86_64_apple_darwin": "@uv_0_6_2_x86_64_apple_darwin//:uv_toolchain",
-                "0_6_2_x86_64_pc_windows_msvc": "@uv_0_6_2_x86_64_pc_windows_msvc//:uv_toolchain",
-                "0_6_2_x86_64_unknown_linux_gnu": "@uv_0_6_2_x86_64_unknown_linux_gnu//:uv_toolchain"
+                "none": "'@@rules_python+//python:none'"
               },
               "toolchain_compatible_with": {
-                "0_6_2_aarch64_apple_darwin": [
-                  "'@@platforms//os:macos'",
-                  "'@@platforms//cpu:aarch64'"
-                ],
-                "0_6_2_aarch64_unknown_linux_gnu": [
-                  "'@@platforms//os:linux'",
-                  "'@@platforms//cpu:aarch64'"
-                ],
-                "0_6_2_powerpc64_unknown_linux_gnu": [
-                  "'@@platforms//os:linux'",
-                  "'@@platforms//cpu:ppc'"
-                ],
-                "0_6_2_powerpc64le_unknown_linux_gnu": [
-                  "'@@platforms//os:linux'",
-                  "'@@platforms//cpu:ppc64le'"
-                ],
-                "0_6_2_s390x_unknown_linux_gnu": [
-                  "'@@platforms//os:linux'",
-                  "'@@platforms//cpu:s390x'"
-                ],
-                "0_6_2_x86_64_apple_darwin": [
-                  "'@@platforms//os:macos'",
-                  "'@@platforms//cpu:x86_64'"
-                ],
-                "0_6_2_x86_64_pc_windows_msvc": [
-                  "'@@platforms//os:windows'",
-                  "'@@platforms//cpu:x86_64'"
-                ],
-                "0_6_2_x86_64_unknown_linux_gnu": [
-                  "'@@platforms//os:linux'",
-                  "'@@platforms//cpu:x86_64'"
+                "none": [
+                  "@platforms//:incompatible"
                 ]
               },
               "toolchain_target_settings": {}

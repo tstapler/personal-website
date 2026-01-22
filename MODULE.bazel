@@ -7,38 +7,31 @@ module(
 # Hugo rules
 bazel_dep(name = "build_stack_rules_hugo", version = "0.0.9")
 
-
 git_override(
     module_name = "build_stack_rules_hugo",
     remote = "https://github.com/tstapler/rules_hugo.git",
-    commit = "87b6c76f343ccafc8b66abeddf1914c8ac6b1142",
+    commit = "80b085e9d766d3c0a8a1e40df1265dbcaef85842",
 )
-
-# Hugo toolchain will be registered manually if needed
-#hugo_rules = use_extension(
-#    "@@build_stack_rules_hugo//hugo:internal/extensions.bzl",
-#    "hugo_extension",
-#)
-
-#hugo_rules.hugo(
-#    name = "hugo",
-#    version = "0.145.0",
-#    extended = True,
-#)
 
 # Other dependencies
 bazel_dep(name = "rules_pkg", version = "1.0.1")
 bazel_dep(name = "rules_oci", version = "2.2.2")
 bazel_dep(name = "rules_python", version = "1.8.1")
 
-# Override rules_foreign_cc to latest version for Bazel 9.0.0 compatibility
+# Override rules_foreign_cc to Bazel 9.0.0 compatible version
 bazel_dep(name = "rules_foreign_cc", version = "0.15.1")
 
-# Override rules_nodejs to latest version for Bazel 9.0.0 compatibility
+# Override rules_nodejs to Bazel 9.0.0 compatible version
 bazel_dep(name = "rules_nodejs", version = "6.7.3")
 
-# Override aspect_bazel_lib to latest version for Bazel 9.0.0 compatibility
+# Override aspect_bazel_lib to Bazel 9.0.0 compatible version
 bazel_dep(name = "aspect_bazel_lib", version = "2.22.5")
+
+# Add rules_playwright for native Bazel Playwright integration
+bazel_dep(name = "rules_playwright", version = "0.5.3")
+
+# Add rules_browsers for Playwright browser management
+bazel_dep(name = "rules_browsers", version = "0.3.0")
 
 # Core Bazel dependencies
 bazel_dep(name = "platforms", version = "1.0.0")
@@ -49,20 +42,16 @@ python = use_extension("@rules_python//python/extensions:python.bzl", "python")
 python.toolchain(python_version = "3.11")
 
 # Configure uv as dependency manager (dev tool)
-uv = use_extension(
-    "@rules_python//python/uv:uv.bzl",
-    "uv",
-    dev_dependency = True,
-)
-uv.configure(version = "0.6.2")
-
-# Python pip dependencies (using uv under the hood)
+# Use extension for pip repositories (rules_python 1.8.1)
 pip = use_extension("@rules_python//python/extensions:pip.bzl", "pip")
+
+# Use lock file for Python dependencies
 pip.parse(
     hub_name = "personal_website_py_deps",
     python_version = "3.11",
     requirements_lock = "//:requirements_lock.txt",
 )
+
 use_repo(pip, "personal_website_py_deps")
 
 oci = use_extension("@rules_oci//oci:extensions.bzl", "oci")

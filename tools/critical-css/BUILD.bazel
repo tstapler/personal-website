@@ -1,5 +1,7 @@
-load("@personal_website_py_deps//:requirements.bzl", "requirement")
+# Playwright browser management and critical CSS extraction
+load("@rules_playwright//playwright:defs.bzl", "playwright_browser_matrix", "unzip_browser", "select_exec")
 load("@rules_python//python:defs.bzl", "py_binary", "py_library")
+load("@personal_website_py_deps//:requirements.bzl", "requirement")
 
 py_library(
     name = "critical_css_lib",
@@ -7,24 +9,23 @@ py_library(
     visibility = ["//visibility:public"],
 )
 
-py_binary(
-    name = "install_browsers",
-    srcs = ["install_browsers.py"],
-    deps = [
-        requirement("playwright"),
-    ],
-    visibility = ["//visibility:public"],
-)
+# Playwright browser management using native rules_playwright
+# This provides browser binaries for other targets
+# The rule automatically downloads and manages browsers
+load("@@rules_playwright//:playwright_browsers.bzl", "playwright_browsers")
 
+# Playwright browser testing
 py_binary(
     name = "test_browser",
     srcs = ["test_browser.py"],
     deps = [
         requirement("playwright"),
+        requirement("beautifulsoup4"),
     ],
     visibility = ["//visibility:public"],
 )
 
+# CSS extraction with Playwright
 py_binary(
     name = "extract",
     srcs = ["extract.py"],
@@ -35,6 +36,7 @@ py_binary(
     visibility = ["//visibility:public"],
 )
 
+# CSS inlining
 py_binary(
     name = "inline",
     srcs = ["inline.py"],
