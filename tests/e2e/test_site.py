@@ -30,13 +30,28 @@ class TestSite(unittest.TestCase):
             "personal-website",
             "../personal-website",
             "site", # if mapped as site
+            "site_optimized_dir.tar", # The tarball output
         ]
         
         cls.server_dir = None
         for path in possible_roots:
-            if os.path.exists(os.path.join(path, "index.html")):
-                cls.server_dir = path
-                break
+            if os.path.exists(path):
+                if os.path.isdir(path) and os.path.exists(os.path.join(path, "index.html")):
+                    cls.server_dir = path
+                    break
+                elif path.endswith(".tar"):
+                    # Extract tarball to temp dir
+                    import tarfile
+                    import tempfile
+                    import shutil
+                    
+                    # Create a persistent temp dir for the server
+                    cls.tmp_dir = tempfile.mkdtemp()
+                    print(f"Extracting {path} to {cls.tmp_dir}")
+                    with tarfile.open(path) as tar:
+                        tar.extractall(path=cls.tmp_dir)
+                    cls.server_dir = cls.tmp_dir
+                    break
         
         # If running locally without Bazel (debug), fallback or fail
         if not cls.server_dir:
@@ -67,6 +82,10 @@ class TestSite(unittest.TestCase):
         if hasattr(cls, 'httpd'):
             cls.httpd.shutdown()
             cls.httpd.server_close()
+        # Clean up temp dir if we created one
+        if hasattr(cls, 'tmp_dir') and os.path.exists(cls.tmp_dir):
+            import shutil
+            shutil.rmtree(cls.tmp_dir)
 
     def test_sidebar_and_navigation(self):
         with sync_playwright() as p:
