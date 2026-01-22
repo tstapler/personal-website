@@ -14,9 +14,7 @@ git_override(
     commit = "87b6c76f343ccafc8b66abeddf1914c8ac6b1142",
 )
 
-# Register Hugo toolchain
-hugo_register_toolchains = use_extension("@build_stack_rules_hugo//hugo:extensions.bzl", "hugo_register_toolchains")
-use_repo(hugo_register_toolchains, "hugo")
+# Hugo toolchain will be registered manually if needed
 #hugo_rules = use_extension(
 #    "@@build_stack_rules_hugo//hugo:internal/extensions.bzl",
 #    "hugo_extension",
@@ -31,11 +29,20 @@ use_repo(hugo_register_toolchains, "hugo")
 # Other dependencies
 bazel_dep(name = "rules_pkg", version = "1.0.1")
 bazel_dep(name = "rules_oci", version = "2.2.2")
-bazel_dep(name = "rules_python", version = "0.40.0")
+bazel_dep(name = "rules_python", version = "1.8.1")
+
+# Override rules_foreign_cc to latest version for Bazel 9.0.0 compatibility
+bazel_dep(name = "rules_foreign_cc", version = "0.15.1")
+
+# Override rules_nodejs to latest version for Bazel 9.0.0 compatibility
+bazel_dep(name = "rules_nodejs", version = "6.7.3")
+
+# Override aspect_bazel_lib to latest version for Bazel 9.0.0 compatibility
+bazel_dep(name = "aspect_bazel_lib", version = "2.22.5")
 
 # Core Bazel dependencies
-bazel_dep(name = "platforms", version = "0.0.10")
-bazel_dep(name = "bazel_skylib", version = "1.7.1")
+bazel_dep(name = "platforms", version = "1.0.0")
+bazel_dep(name = "bazel_skylib", version = "1.8.2")
 
 # Python toolchain
 python = use_extension("@rules_python//python/extensions:python.bzl", "python")
