@@ -1,0 +1,51 @@
+{{ define "main" }}
+  {{ with .Site.Params.header }}
+  <div id="particles-js">
+    <div id="intro-masthead" class="ui inverted vertical masthead center aligned segment">
+      <div class="ui cards">
+        <div id="intro-header" class="ui centered card">
+          <h1>{{ .name }}</h1>
+          <h5>{{ .email }}</h5>
+          <p>{{ .description }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  {{ end }}
+  <div class="ui inverted vertical striped segment">
+    <div class="ui center aligned text container">
+      <h1 class="ui inverted icon header">
+        <i class="settings icon"></i> Technologies
+      </h1>
+      <p>In order to keep myself sharp, I'm constantly honing my skills and mastering new technologies</p>
+    </div>
+  </div>
+  <div class="ui vertical striped segment">
+    <div class="ui centered stackable cards">
+      {{ range .Site.Params.technologies }}
+      <div class="card">
+        <div class="image">
+          <img class="mini ui image" loading="lazy" src="{{ .icon_url }}" alt="{{.name}} Icon">
+        </div>
+        <div class="center aligned content">
+          <div class="header">
+            {{.name}}
+          </div>
+          {{ if .description }}
+          <div class="description">
+            <p> {{.description}}</p>
+          </div>
+          {{end}}
+        </div>
+      </div>
+      {{end}}
+    </div>
+  </div>
+{{ end }}
+{{ define "custom_pre_javascript" }}
+{{ range (resources.Match "js/homePage.bundle.js") }}
+{{ $bundle := . | resources.Minify | resources.Fingerprint "sha512"}}
+<script defer crossorigin="anonymous" src='{{ $bundle.RelPermalink }}' integrity='{{ $bundle.Data.Integrity }}'></script>
+{{end}}
+{{ end }}
+

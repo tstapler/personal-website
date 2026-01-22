@@ -1,0 +1,80 @@
+<title itemprop="name">
+  {{- if .IsHome -}}
+    {{ .Site.Title }}
+  {{- else if .Params.hide_site_title -}}
+    {{ .Title }}
+  {{- else -}}
+    {{ .Title }} | {{ .Site.Title }}
+  {{- end -}}
+</title>
+<meta property="og:title" content="{{ if .IsHome }}{{ .Site.Title }}{{ else }}{{ .Title }}{{ end }}" />
+<meta name="twitter:title" content="{{ if .IsHome }}{{ .Site.Title }}{{ else }}{{ .Title }}{{ end }}" />
+<meta itemprop="name" content="{{ if .IsHome }}{{ .Site.Title }}{{ else }}{{ .Title }}{{ end }}" />
+<meta name="application-name" content="{{ .Site.Title }}" />
+<meta property="og:site_name" content="{{ .Site.Title }}" />
+
+<!-- Description Tags -->
+<meta name="description" content="{{ .Params.description }}" />
+<meta itemprop="description" content="{{ .Params.description }}" />
+<meta property="og:description" content="{{ .Params.description }}" />
+<meta name="twitter:description" content="{{ .Params.description }}" />
+
+<!-- Link Tags -->
+<base href="{{ .RelPermalink }}">
+{{- if .Params.canonical -}}
+  <link rel="canonical" href="{{ .Params.canonical }}" itemprop="url" />
+{{- else -}}
+  <link rel="canonical" href="{{ .Permalink }}" itemprop="url" />
+{{- end -}}
+<meta name="url" content="{{ .RelPermalink }}" />
+<meta name="twitter:url" content="{{ .RelPermalink }}" />
+<meta property="og:url" content="{{ .RelPermalink }}" />
+
+<!-- Image Tags -->
+{{- $ogImage := .Site.Params.ogImage | default "/images/og-default.jpg" | relURL -}}
+{{- with .Params.image }}{{ $ogImage = . | relURL }}{{ end -}}
+<meta itemprop="image" content="{{ $ogImage }}" />
+<meta property="og:image" content="{{ $ogImage }}" />
+<meta name="twitter:image" content="{{ $ogImage }}" />
+
+{{- /* Social/OpenGraph */ -}}
+<meta property="og:locale" content="en_US" />
+{{- if .IsHome -}}
+  <meta property="og:type" content="website" />
+{{- else if eq .Type "articles" -}}
+  <meta property="og:type" content="article" />
+{{- else -}}
+  <meta property="og:type" content="website" />
+{{- end -}}
+<meta name="twitter:card" content="summary_large_image" />
+{{- with .Site.Params.social.twitter -}}
+<meta name="twitter:site" content="@{{ . }}" />
+{{- end -}}
+
+<meta property="og:updated_time" content="{{ .Lastmod.Format "2006-01-02T15:04:05-07:00" | safeHTML }}" />
+
+<!-- Sitemap & RSS Feed Tags -->
+<link rel="sitemap" type="application/xml" title="Sitemap" href="{{ .Site.BaseURL }}sitemap.xml" /> 
+
+{{ with .OutputFormats.Get "RSS" }}
+  <link href="{{ .RelPermalink }}" rel="alternate" type="application/rss+xml" title="{{ $.Site.Title }}" />
+  <link href="{{ .RelPermalink }}" rel="feed" type="application/rss+xml" title="{{ $.Site.Title }}" />
+{{ end }}
+
+<!-- Crawler Tags -->
+<meta name="robots" content="index,follow" /> 
+<meta name="googlebot" content="index,follow" />
+
+<meta name="keywords" content="" />
+<meta name="imagemode" content="force" />
+<meta name="coverage" content="Worldwide" /> 
+<meta name="distribution" content="Global" />
+<meta name="HandheldFriendly" content="True" /> 
+<meta name="msapplication-tap-highlight" content="no" />
+<meta name="apple-mobile-web-app-title" content="{{ .Site.Params.sitename }}" /> 
+<meta name="mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="apple-touch-fullscreen" content="yes" /> 
+
+{{ template "_internal/schema.html" . }}

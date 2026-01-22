@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+{{- partial "html_head" . }}
+{{- if .Site.Params.gaTag }}
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id={{- .Site.Params.gaTag }}"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+gtag('config', '{{- .Site.Params.gaTag }}');
+</script>
+{{- end }}
+{{- block "custom_head" . }}
+    <!-- The part of the page that begins to differ between templates -->
+{{- end }}
+
+{{- partial "meta" . }}
+<body>
+  {{- partial "site_sidebar" . }}
+  <div class="ui pusher">
+  {{- partial "site_nav" . }}
+  <!-- Code that all your templates share, like a header -->
+    {{- block "main" . }}
+    <!-- The part of the page that begins to differ between templates -->
+    {{- end }} 
+  </div>
+  {{- block "footer" . }}
+  <!-- More shared code, perhaps a footer but that can be overridden if need be in  -->
+    {{- partial "footer" . }} 
+  {{- end }}
+</body>
+{{- block "custom_pre_javascript" . }}
+{{- end }}
+{{- partial "javascript" . }}
+{{- block "custom_javascript" . }}
+    <!-- The part of the page that begins to differ between templates -->
+{{- end }}
+
+</html>

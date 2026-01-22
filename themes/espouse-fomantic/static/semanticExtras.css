@@ -1,0 +1,157 @@
+/* Custom CSS for personal website enhancements */
+
+/* Blog card summary truncation fix - Accessible and cross-browser compatible */
+.ui.card .card-summary-content {
+  /* Base truncation styles */
+  max-height: calc(var(--summary-line-height, 1.4) * var(--summary-max-lines, 5) * 1em);
+  overflow: hidden;
+  line-height: var(--summary-line-height, 1.4);
+  position: relative;
+  
+  /* Standard line-clamp with vendor prefixes */
+  display: -webkit-box;
+  display: -moz-box;
+  display: box;
+  -webkit-line-clamp: var(--summary-max-lines, 5);
+  line-clamp: var(--summary-max-lines, 5);
+  -webkit-box-orient: vertical;
+  -moz-box-orient: vertical;
+  box-orient: vertical;
+  
+  /* Theme integration using Semantic UI variables */
+  background: var(--white, #fff);
+  color: var(--textColor, rgba(0, 0, 0, 0.87));
+  
+  /* Performance optimization */
+  contain: content;
+  will-change: transform;
+}
+
+/* Fallback for browsers that don't support line-clamp */
+@supports not (-webkit-line-clamp: 5) {
+  .ui.card .card-summary-content {
+    max-height: calc(var(--summary-line-height, 1.4) * var(--summary-max-lines, 5) * 1em);
+    overflow: hidden;
+    position: relative;
+  }
+  
+  .ui.card .card-summary-content::after {
+    content: '...';
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    padding-left: 20px;
+    background: linear-gradient(to right, transparent, var(--white, #fff) 50%);
+    color: var(--textColor, rgba(0, 0, 0, 0.87));
+  }
+}
+
+/* Expandable content for accessibility */
+.ui.card .card-summary-content.expanded {
+  max-height: none;
+  -webkit-line-clamp: unset;
+  line-clamp: unset;
+  -webkit-box-orient: initial;
+  -moz-box-orient: initial;
+  box-orient: initial;
+}
+
+/* Expand button styling */
+.ui.card .summary-expand-btn {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  background: var(--primaryColor, #2185d0);
+  color: var(--white, #fff);
+  border: none;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 0.8em;
+  cursor: pointer;
+  z-index: 10;
+  transition: all 0.2s ease;
+}
+
+.ui.card .summary-expand-btn:hover {
+  background: var(--primaryColorHover, #1e78c4);
+  transform: translateY(-2px);
+}
+
+.ui.card .summary-expand-btn:focus {
+  outline: 2px solid var(--focusColor, #2185d0);
+  outline-offset: 2px;
+}
+
+/* Responsive adjustments */
+@media only screen and (max-width: 992px) {
+  :root {
+    --summary-max-lines: 4;
+  }
+  
+  .ui.card .card-summary-content {
+    max-height: calc(var(--summary-line-height, 1.4) * 4 * 1em);
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  :root {
+    --summary-max-lines: 3;
+  }
+  
+  .ui.card .card-summary-content {
+    max-height: calc(var(--summary-line-height, 1.4) * 3 * 1em);
+  }
+}
+
+/* Print styles */
+@media print {
+  .ui.card .card-summary-content {
+    max-height: none;
+    -webkit-line-clamp: unset;
+    line-clamp: unset;
+  }
+  
+  .ui.card .summary-expand-btn {
+    display: none;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .ui.card .card-summary-content::after {
+    background: linear-gradient(to right, transparent, var(--backgroundColor, #fff) 50%);
+  }
+  
+  .ui.card .summary-expand-btn {
+    border: 2px solid currentColor;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .ui.card .summary-expand-btn {
+    transition: none;
+  }
+  
+  .ui.card .summary-expand-btn:hover {
+    transform: none;
+  }
+}
+
+/* AI Summary Styles */
+.ai-summary {
+  background-color: var(--color-bg-tertiary, #f3f4f5);
+  border: 1px solid var(--color-border-primary);
+  padding: 1em;
+  border-radius: 0.3em;
+  margin-bottom: 1em;
+  font-style: italic;
+}
+
+.ai-summary-indicator {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  color: var(--color-text-secondary);
+  font-size: 0.85em;
+}

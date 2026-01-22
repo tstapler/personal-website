@@ -1,0 +1,41 @@
+{{ define "main" }}
+<div class="ui inverted vertical header centered segment">
+  <h1>{{ title .Title }}</h1>
+</div>
+<div class="ui hidden divider"></div>
+
+<div class="ui vertical stripe segment">
+  <div class="ui padded container">
+    <div class="ui stackable centered cards">
+      {{ range .Data.Pages }}
+      <div class="ui centered raised card">
+        <div class="content">
+          {{ if .Params.github }}
+          <a class="right floated ui image" href="{{ .Params.github }}"><i class="large github icon"></i></a>
+          {{ end }}
+          <h2 class="header"><a href="{{ .RelPermalink }}">{{ .Title }}</a></h2>
+        </div>
+        {{ if .Params.featured_image }}
+        <div class="image"><img loading="lazy" src="{{ .Params.featured_image | relURL }}" ></div>
+        {{ end }}
+         <div class="content card-summary-content {{ if .Params.ai_generated }}ai-summary{{ end }}">
+           {{ .Params.ai_summary | default .Params.summary | default .Summary }}
+         </div>
+         {{ if .Params.ai_generated }}
+         <div class="ai-summary-indicator">
+           <i class="robot icon"></i>
+           <small>AI Generated</small>
+         </div>
+         {{ end }}
+        {{ if .Truncated }}
+        <!-- This <div> includes a read more link, but only if the summary is truncated... -->
+        <div class="center aligned content">
+          <a class="ui large button" href="{{ .RelPermalink }}">Read More…</a>
+        </div>
+        {{ end }}
+      </div>
+      {{ end }}
+    </div>
+  </div>
+</div>
+{{ end }}

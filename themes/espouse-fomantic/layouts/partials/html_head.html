@@ -1,0 +1,50 @@
+<head>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5.0" charset="utf-8" />
+
+  <!-- Inline theme script to prevent FOUC (Flash of Unstyled Content) -->
+  <script>
+    (function() {
+      const storageKey = 'theme-preference';
+      const getSystemPreference = () => {
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+          return 'dark';
+        }
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) {
+          return 'light';
+        }
+        return null;
+      };
+
+      let theme;
+      try {
+        theme = localStorage.getItem(storageKey);
+      } catch (e) {
+        theme = null;
+      }
+
+      if (!theme) {
+        theme = getSystemPreference() || 'light';
+      }
+
+      document.documentElement.setAttribute('data-theme', theme);
+    })();
+  </script>
+  {{ .Scratch.Set "allStyles" (resources.GetMatch "all.css") }}
+  {{- if (eq (getenv "HUGO_ENV") "production") -}}
+    {{- .Scratch.Set "allStyles" (.Scratch.Get "allStyles" |  resources.PostCSS | fingerprint "sha512") -}}
+  {{- end -}}
+  {{- $styles := .Scratch.Get "allStyles" }}
+  <link 
+  rel="stylesheet"
+  href="{{ $styles.RelPermalink }}" integrity="{{ $styles.Data.Integrity }}">
+
+  {{ .Scratch.Set "semanticExtras" (resources.GetMatch "semanticExtras.css") }}
+  {{- if (eq (getenv "HUGO_ENV") "production") -}}
+    {{- .Scratch.Set "semanticExtras" (.Scratch.Get "semanticExtras" |  resources.PostCSS | fingerprint "sha512") -}}
+  {{- end -}}
+
+  {{- $semanticExtras := .Scratch.Get "semanticExtras" }}
+<link rel="preload" href="{{ $semanticExtras.RelPermalink }}" as="style" onload="this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="{{ $semanticExtras.RelPermalink }}"></noscript>
+</head>

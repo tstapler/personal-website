@@ -1,0 +1,9 @@
+{{ range (resources.Match "js/all.bundle.js") }}
+{{ $bundle := . | resources.Minify | resources.Fingerprint "sha512"}}
+<script defer crossorigin="anonymous" src='{{ $bundle.RelPermalink }}' integrity='{{ $bundle.Data.Integrity }}'></script>
+{{end}}
+
+{{ range (resources.Match "js/semanticExtras.bundle.js") }}
+{{ $semanticExtras := . | js.Build (dict "minify" hugo.IsProduction) | resources.Fingerprint "sha512"}}
+<script defer crossorigin="anonymous" src='{{ $semanticExtras.RelPermalink }}' integrity='{{ $semanticExtras.Data.Integrity }}'></script>
+{{end}}

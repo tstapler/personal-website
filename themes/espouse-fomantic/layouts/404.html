@@ -1,0 +1,20 @@
+{{ define "main" }}
+<div class="ui inverted vertical header centered segment">
+  <h1>Page Not Found (404)</h1>
+</div>
+<div class="ui vertical stripe segment">
+  <div class="ui text container">
+    <div class="ui warning message">
+      <div class="header">
+        The page you requested could not be found
+      </div>
+      <p>Here are some helpful links instead:</p>
+      <div class="ui list">
+        {{ range .Site.Menus.main }}
+        <a class="item" href="{{ .URL }}">{{ .Name }}</a>
+        {{ end }}
+      </div>
+    </div>
+  </div>
+</div>
+{{ end }}

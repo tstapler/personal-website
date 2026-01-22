@@ -1,0 +1,22 @@
+<footer id="footer" class="ui inverted vertical footer segment last">
+  <div class="ui center aligned container">
+    <div class="ui center aligned stackable grid">
+          <div class="four wide column">
+            <p>{{ .Site.Copyright | markdownify }}.</p> 
+            <p>
+              Powered by <a href="http://gohugo.io">Hugo</a>
+            </p>
+            {{ if .Site.Params.github_url }}
+            <p>Check out this site's source code on <a href="{{ .Site.Params.github_url }}">Github</a></p>
+            {{ end }}
+          </div>
+
+          <div class="four wide column">
+            <h4>Connect with me!</h4>
+              {{ range .Site.Params.footer.list }}
+              <a class="item" href="{{ .icon_link }}"><i class="big {{ .icon_class }}"></i></a>
+              {{ end }}
+          </div>
+    </div>
+  </div>
+</footer>
