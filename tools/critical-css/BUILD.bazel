@@ -17,6 +17,9 @@ py_binary(
         requirement("playwright"),
         requirement("beautifulsoup4"),
     ],
+    data = [
+        "@playwright//:chromium",
+    ],
     visibility = ["//visibility:public"],
 )
 
@@ -27,6 +30,9 @@ py_binary(
     deps = [
         requirement("playwright"),
         requirement("beautifulsoup4"),
+    ],
+    data = [
+        "@playwright//:chromium",
     ],
     visibility = ["//visibility:public"],
 )

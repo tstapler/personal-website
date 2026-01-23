@@ -6,8 +6,32 @@ from pathlib import Path
 from playwright.sync_api import sync_playwright
 
 
+def configure_playwright_browsers():
+    """
+    Configure PLAYWRIGHT_BROWSERS_PATH to point to the browser in runfiles.
+    """
+    import os
+    if "PLAYWRIGHT_BROWSERS_PATH" in os.environ:
+        return
+
+    runfiles_dir = Path(sys.argv[0] + ".runfiles")
+    if not runfiles_dir.exists():
+        runfiles_dir = Path(".")
+
+    # Search for chromium directory in runfiles
+    # The structure is usually: external/rules_playwright++playwright+playwright/browsers/...
+    found_browsers = list(runfiles_dir.glob("**/browsers/*/chromium-*"))
+    
+    if found_browsers:
+        browser_dir = found_browsers[0]
+        browsers_path = browser_dir.parent
+        print(f"Configuring PLAYWRIGHT_BROWSERS_PATH to: {browsers_path}")
+        os.environ["PLAYWRIGHT_BROWSERS_PATH"] = str(browsers_path)
+
+
 def test_browser_launch():
     """Test launching headless Chromium and capturing a screenshot."""
+    configure_playwright_browsers()
     print("Testing Playwright headless Chromium setup...")
 
     try:
