@@ -33,6 +33,12 @@ bazel_dep(name = "rules_playwright", version = "0.5.3")
 # Add rules_browsers for Playwright browser management
 bazel_dep(name = "rules_browsers", version = "0.3.0")
 
+playwright = use_extension("@rules_playwright//playwright:extensions.bzl", "playwright")
+playwright.install(
+    browsers = ["chromium"],
+)
+use_repo(playwright, "playwright")
+
 # Core Bazel dependencies
 bazel_dep(name = "platforms", version = "1.0.0")
 bazel_dep(name = "bazel_skylib", version = "1.8.2")

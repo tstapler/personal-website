@@ -9,16 +9,6 @@ py_library(
     visibility = ["//visibility:public"],
 )
 
-# Tool to install Playwright browsers manually
-py_binary(
-    name = "install_browsers",
-    srcs = ["install_browsers.py"],
-    deps = [
-        requirement("playwright"),
-    ],
-    visibility = ["//visibility:public"],
-)
-
 # Playwright browser testing
 py_binary(
     name = "test_browser",
