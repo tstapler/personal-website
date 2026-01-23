@@ -9,10 +9,15 @@ py_library(
     visibility = ["//visibility:public"],
 )
 
-# Playwright browser management using native rules_playwright
-# This provides browser binaries for other targets
-# The rule automatically downloads and manages browsers
-load("@@rules_playwright//:playwright_browsers.bzl", "playwright_browsers")
+# Tool to install Playwright browsers manually
+py_binary(
+    name = "install_browsers",
+    srcs = ["install_browsers.py"],
+    deps = [
+        requirement("playwright"),
+    ],
+    visibility = ["//visibility:public"],
+)
 
 # Playwright browser testing
 py_binary(
