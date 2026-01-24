@@ -438,6 +438,13 @@ def configure_playwright_browsers():
             os.environ["PLAYWRIGHT_BROWSERS_PATH"] = browsers_path
         else:
             print(f"WARNING: Could not find Playwright browsers in runfiles. Runfiles dir: {runfiles_dir}")
+            print(f"Top-level runfiles content:")
+            try:
+                for name in os.listdir(runfiles_dir):
+                    print(f"  {name}")
+            except Exception as e:
+                print(f"  Error listing directory: {e}")
+
             print(f"Walking runfiles_dir to debug:")
             for root, dirs, files in os.walk(runfiles_dir):
                 if "browsers" in root or "playwright" in root:
