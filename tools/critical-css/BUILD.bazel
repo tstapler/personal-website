@@ -16,6 +16,7 @@ py_binary(
     deps = [
         requirement("playwright"),
         requirement("beautifulsoup4"),
+        "@rules_python//python/runfiles",
     ],
     data = [
         "@playwright//:chromium-headless-shell",
@@ -33,6 +34,7 @@ py_binary(
     deps = [
         requirement("playwright"),
         requirement("beautifulsoup4"),
+        "@rules_python//python/runfiles",
     ],
     data = [
         "@playwright//:chromium-headless-shell",

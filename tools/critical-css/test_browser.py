@@ -8,9 +8,38 @@ from playwright.sync_api import sync_playwright
 
 def configure_playwright_browsers():
     """
-    Configure PLAYWRIGHT_BROWSERS_PATH to point to the browser in runfiles.
+    Configure PLAYWRIGHT_BROWSERS_PATH using Bazel runfiles.
     """
-    pass
+    import os
+    import sys
+    from python.runfiles import runfiles
+    
+    try:
+        if "RUNFILES_DIR" in os.environ:
+            runfiles_dir = os.environ["RUNFILES_DIR"]
+        elif "RUNFILES_MANIFEST_FILE" in os.environ:
+            runfiles_dir = os.environ["RUNFILES_MANIFEST_FILE"][:-9]
+        else:
+             runfiles_dir = sys.argv[0] + ".runfiles"
+             
+        found = []
+        for root, dirs, files in os.walk(runfiles_dir):
+            for d in dirs:
+                if d.startswith("chromium-") or d.startswith("chromium_headless_shell-"):
+                    found.append(os.path.join(root, d))
+        
+        if found:
+            browser_path = found[0]
+            # browser_path is .../chromium_headless_shell-1155
+            # We want the parent directory
+            browsers_path = os.path.dirname(browser_path)
+            print(f"Configuring PLAYWRIGHT_BROWSERS_PATH to: {browsers_path}")
+            os.environ["PLAYWRIGHT_BROWSERS_PATH"] = browsers_path
+        else:
+            print(f"WARNING: Could not find Playwright browsers in runfiles. Runfiles dir: {runfiles_dir}")
+            
+    except Exception as e:
+        print(f"WARNING: Error configuring Playwright browsers: {e}")
 
 
 def test_browser_launch():

@@ -382,7 +382,7 @@ def configure_playwright_browsers():
     """
     import os
     import sys
-    from bazel_tools.tools.python.runfiles import runfiles
+    from python.runfiles import runfiles
     
     # Create runfiles strategy
     r = runfiles.Create()
