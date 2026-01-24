@@ -407,51 +407,44 @@ def configure_playwright_browsers():
              runfiles_dir = sys.argv[0] + ".runfiles"
              
         import glob
-        # Search for chromium-headless-shell directory recursively in runfiles
-        # Pattern: **/browsers/*/chromium-*
-        search_path = os.path.join(runfiles_dir, "**", "browsers", "*", "chromium-*")
-        found = glob.glob(search_path, recursive=True)
+        # Search for Playwright browsers in runfiles
+        # The structure is usually:
+        # [runfiles_root]/[repo_name]/browsers/[platform]/[browser]-[version]
+        # We need to find the directory containing the browser version directory.
         
-        if found:
-            # found[0] is like .../browsers/ubuntu24.04-x64/chromium_headless_shell-1155
-            # Playwright needs the directory CONTAINING the browser version directory
-            # i.e. .../browsers/ubuntu24.04-x64
-            
-            browser_path = found[0]
-            # Go up one level to get the platform directory (e.g. ubuntu24.04-x64)
-            # Then Playwright will look for chromium-1155 inside it
-            
-            # Wait, Playwright expects PLAYWRIGHT_BROWSERS_PATH to be the root 
-            # where it looks for [browser]-[version].
-            # But rules_playwright might organize it differently.
-            
-            # Let's look at how rules_playwright references it.
-            # It seems they put it in: [repo_root]/browsers/[platform]/[browser]-[version]
-            
-            # If we set PLAYWRIGHT_BROWSERS_PATH to [repo_root]/browsers/[platform]
-            # Playwright will look for [browser]-[version] inside it.
-            
-            # So we need the parent of the browser directory.
+        found_browsers = []
+        
+        # Iterate over top-level directories to find the playwright repository
+        # This avoids issues with glob not following symlinks recursively
+        for name in os.listdir(runfiles_dir):
+            # Look for directories that might be the playwright repo
+            # e.g. 'rules_playwright++playwright+playwright' or 'playwright'
+            # Avoid the python package which also has 'playwright' in the name
+            if "playwright" in name.lower():
+                candidate_repo = os.path.join(runfiles_dir, name)
+                if not os.path.isdir(candidate_repo):
+                    continue
+                    
+                # Check if it has a 'browsers' subdirectory
+                browsers_dir = os.path.join(candidate_repo, "browsers")
+                if os.path.isdir(browsers_dir):
+                    # Search for chromium inside: browsers/[platform]/chromium-*
+                    search_path = os.path.join(browsers_dir, "*", "chromium*")
+                    found = glob.glob(search_path)
+                    if found:
+                        found_browsers = found
+                        break
+
+        if found_browsers:
+            browser_path = found_browsers[0]
+            # browser_path is .../browsers/ubuntu24.04-x64/chromium_headless_shell-1155
+            # We want the parent directory: .../browsers/ubuntu24.04-x64
             browsers_path = os.path.dirname(browser_path)
             
             print(f"Configuring PLAYWRIGHT_BROWSERS_PATH to: {browsers_path}")
             os.environ["PLAYWRIGHT_BROWSERS_PATH"] = browsers_path
         else:
             print(f"WARNING: Could not find Playwright browsers in runfiles. Runfiles dir: {runfiles_dir}")
-            print(f"Top-level runfiles content:")
-            try:
-                for name in os.listdir(runfiles_dir):
-                    print(f"  {name}")
-            except Exception as e:
-                print(f"  Error listing directory: {e}")
-
-            print(f"Walking runfiles_dir to debug:")
-            for root, dirs, files in os.walk(runfiles_dir):
-                if "browsers" in root or "playwright" in root:
-                     print(f"  {root}")
-                     for d in dirs:
-                         print(f"    {d}/")
-            
             # Fallback to env var if set
             pass
             

@@ -22,14 +22,23 @@ def configure_playwright_browsers():
         else:
              runfiles_dir = sys.argv[0] + ".runfiles"
              
-        found = []
-        for root, dirs, files in os.walk(runfiles_dir):
-            for d in dirs:
-                if d.startswith("chromium-") or d.startswith("chromium_headless_shell-"):
-                    found.append(os.path.join(root, d))
+        found_browsers = []
+        for name in os.listdir(runfiles_dir):
+            if "playwright" in name.lower():
+                candidate_repo = os.path.join(runfiles_dir, name)
+                if not os.path.isdir(candidate_repo):
+                    continue
+                browsers_dir = os.path.join(candidate_repo, "browsers")
+                if os.path.isdir(browsers_dir):
+                    search_path = os.path.join(browsers_dir, "*", "chromium*")
+                    import glob
+                    found = glob.glob(search_path)
+                    if found:
+                        found_browsers = found
+                        break
         
-        if found:
-            browser_path = found[0]
+        if found_browsers:
+            browser_path = found_browsers[0]
             # browser_path is .../chromium_headless_shell-1155
             # We want the parent directory
             browsers_path = os.path.dirname(browser_path)
