@@ -60,13 +60,16 @@ Implementing ArgoCD enables a true GitOps workflow for the personal website and 
     - Created `deployment/argocd/applications/personal-website.yaml`.
     - Applied manifest to cluster.
 
-### Task 2.2: Verify Application Sync & Health (1h)
-- **Objective**: Confirm the application is successfully synced and healthy in ArgoCD.
+### Task 2.2: Create ArgoCD Verification Script (1h)
+- **Objective**: Create a script `scripts/verify-argocd-sync.sh` to automate the verification of the application sync status.
 - **Status**: ⏳ Pending
+- **Files**:
+    - `scripts/verify-argocd-sync.sh` (create)
 - **Implementation**:
-    - Check sync status via CLI or UI.
-    - Verify website accessibility.
-    - Troubleshoot any sync errors.
+    - Use `kubectl` to check the `Application` resource status.
+    - Check `.status.sync.status` == `Synced`.
+    - Check `.status.health.status` == `Healthy`.
+    - Output clear success/failure messages.
 
 ### Task 2.3: Document GitOps Workflow (1h)
 - **Objective**: Document how to deploy changes using the new GitOps workflow.
