@@ -109,9 +109,9 @@ class SummaryGenerator:
             if line.strip() == '+++':
                 frontmatter_end = i + 1
                 break
-            elif line.strip() == '---' and i > 0:
-                content_start = i + 1
-        
+            elif line.strip() == "---" and i > 0:
+                frontmatter_end = i + 1
+                break
         # Build new content with AI summary
         new_content = []
         
@@ -119,7 +119,7 @@ class SummaryGenerator:
         new_content.extend(lines[:frontmatter_end])
         
         # Check if summary already exists
-        ai_summary_exists = any("ai_summary:" in line for line in lines[frontmatter_end:content_start])
+        ai_summary_exists = any("ai_summary:" in line for line in lines[:frontmatter_end])
         
         if not ai_summary_exists:
             # Insert AI summary fields

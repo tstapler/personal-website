@@ -23,6 +23,9 @@ bazel-bin/
 bazel-out/
 bazel-testlogs/
 
+# Bazel cache (prevent IntelliJ indexing)
+.bazel/
+
 # Development cache
 .cache/
 .pnpm-store/

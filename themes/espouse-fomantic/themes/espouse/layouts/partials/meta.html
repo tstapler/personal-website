@@ -1,0 +1,9 @@
+{{ if .IsNode }}  {{/* Check if this is any type of list page (section, home, taxonomy) */}}
+  {{ if .IsPaginated }}
+    <meta name="robots" content="noindex, follow">
+  {{ else }}
+    {{ with .Params.robots }}<meta name="robots" content="{{ . }}">{{ end }}
+  {{ end }}
+{{ else }}
+  {{ with .Params.robots }}<meta name="robots" content="{{ . }}">{{ end }}
+{{ end }}

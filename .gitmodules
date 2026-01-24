@@ -2,3 +2,6 @@
 	path = themes/espouse
 	url = git@github.com:tstapler/espouse
 	branch = master
+[submodule "tools/build-stack-rules-hugo"]
+	path = tools/build-stack-rules-hugo
+	url = https://github.com/tstapler/rules_hugo.git

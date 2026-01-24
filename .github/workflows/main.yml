@@ -28,9 +28,6 @@ jobs:
     - name: Install Bazel
       uses: bazelbuild/setup-bazelisk@v3
       
-    - name: Install Playwright Browsers
-      run: bazel run //tools/critical-css:install_browsers
-      
     - name: Build image
       run: bazel build //:nginx_image_tarball
       

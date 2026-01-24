@@ -5,7 +5,7 @@ py_test(
     name = "site_test",
     srcs = ["test_site.py"],
     main = "test_site.py",
-    data = ["//:site"],
+    data = ["//:site_optimized"],
     deps = [
         requirement("playwright"),
     ],

@@ -1,0 +1,25 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(tree:*)",
+      "Bash(npm outdated:*)",
+      "Bash(find:*)",
+      "Bash(mkdir:*)",
+      "Bash(git add:*)",
+      "Bash(git commit -m \"$(cat <<''EOF''\ndocs: Create comprehensive roadmap and atomic task breakdown\n\nCreated comprehensive documentation structure for theme modernization:\n\n1. docs/roadmap.md\n   - 6-phase improvement plan covering security, modernization, and features\n   - Addresses 29+ outdated packages and critical technical debt\n   - Defines success metrics and implementation timeline\n   - Covers security (Phase 1), build modernization (Phase 2),\n     features (Phase 3-6)\n\n2. docs/tasks/phase1-critical-updates.md\n   - Detailed atomic task breakdown for immediate priorities\n   - 7 tasks following ATOMIC-INVEST-CONTEXT framework\n   - Each task: 1-4 hours, 3-5 files, clear success criteria\n   - Includes dependency graph and execution order\n   - Tasks: Security audit, jQuery update, Babel update, node-sass→sass,\n     Gulp 3→5 migration, template fixes, integration testing\n\n3. TODO.md (updated)\n   - Reorganized with clear priority structure\n   - Links to detailed documentation\n   - Immediate priorities clearly marked\n   - Execution order and dependencies specified\n   - Success criteria for each phase\n\n4. BUILD.bazel & MODULE.bazel\n   - Bazel build configuration for Hugo theme\n   - Enables build tooling integration\n\nPhase 1 Priority: Security audit and toolchain modernization (12-16h)\nNext Action: Task 1.1 - Security Audit & Vulnerability Resolution\n\nEstimated Impact:\n- Security: 0 critical/high vulnerabilities\n- Performance: 30-50% bundle size reduction potential\n- Build time: <10s target\n- Lighthouse scores: 95+ target\nEOF\n)\")",
+      "Bash(git commit --no-gpg-sign -m \"$(cat <<''EOF''\ndocs: Create comprehensive roadmap and atomic task breakdown\n\nCreated comprehensive documentation structure for theme modernization:\n\n1. docs/roadmap.md\n   - 6-phase improvement plan covering security, modernization, and features\n   - Addresses 29+ outdated packages and critical technical debt\n   - Defines success metrics and implementation timeline\n   - Covers security (Phase 1), build modernization (Phase 2),\n     features (Phase 3-6)\n\n2. docs/tasks/phase1-critical-updates.md\n   - Detailed atomic task breakdown for immediate priorities\n   - 7 tasks following ATOMIC-INVEST-CONTEXT framework\n   - Each task: 1-4 hours, 3-5 files, clear success criteria\n   - Includes dependency graph and execution order\n   - Tasks: Security audit, jQuery update, Babel update, node-sass→sass,\n     Gulp 3→5 migration, template fixes, integration testing\n\n3. TODO.md (updated)\n   - Reorganized with clear priority structure\n   - Links to detailed documentation\n   - Immediate priorities clearly marked\n   - Execution order and dependencies specified\n   - Success criteria for each phase\n\n4. BUILD.bazel & MODULE.bazel\n   - Bazel build configuration for Hugo theme\n   - Enables build tooling integration\n\nPhase 1 Priority: Security audit and toolchain modernization (12-16h)\nNext Action: Task 1.1 - Security Audit & Vulnerability Resolution\n\nEstimated Impact:\n- Security: 0 critical/high vulnerabilities\n- Performance: 30-50% bundle size reduction potential\n- Build time: <10s target\n- Lighthouse scores: 95+ target\nEOF\n)\")",
+      "Bash(npm audit:*)",
+      "Bash(npm run build:*)",
+      "Bash(npm uninstall:*)",
+      "Bash(npm install:*)",
+      "Bash(npx gulp build)",
+      "Bash(git reset:*)",
+      "Bash(git commit:*)",
+      "Bash(npx gulp --version)",
+      "Bash(npm view:*)",
+      "Bash(node -e:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

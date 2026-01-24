@@ -1,0 +1,35 @@
+<figure{{ with .Get "class" }} class="post-image {{ . }}"{{ else }} class="post-image" {{ end }}>
+    {{- if .Get "link" -}}
+        <a href="{{ .Get "link" }}"{{ with .Get "target" }} target="{{ . }}"{{ end }}{{ with .Get "rel" }} rel="{{ . }}"{{ end }}>
+    {{- end }}
+    {{ .Scratch.Set "img" (.Page.Resources.GetMatch (.Get "src")) }}
+    {{- if (or (.Get "width") (.Get "height")) }}
+    {{ .Scratch.Set "img" ((.Scratch.Get "img").Resize (printf "%vx%v" (.Get "width") (.Get "height")))  }}
+    {{- end }}
+    {{ $img := .Scratch.Get "img" }}
+    <img src="{{ $img.RelPermalink }}"
+         class="ui {{if (.Get "img_class")}}{{.Get "img_class"}}{{else}}centered fluid{{end}} image"
+         {{- if or (.Get "alt") (.Get "caption") }}
+         alt="{{ with .Get "alt" }}{{ . }}{{ else }}{{ .Get "caption" | markdownify| plainify }}{{ end }}"
+         {{- end -}}
+         loading="lazy"
+         width="{{ $img.Width }}"
+         height="{{ $img.Height }}"
+    /> <!-- Closing img tag -->
+    {{- if .Get "link" }}</a>{{ end -}}
+    {{- if or (or (.Get "title") (.Get "caption")) (.Get "attr") -}}
+        <figcaption class="ui centered">
+            {{ with (.Get "title") -}}
+                <h4>{{ . }}</h4>
+            {{- end -}}
+            {{- if or (.Get "caption") (.Get "attr") -}}<p>
+                {{- .Get "caption" | markdownify -}}
+                {{- with .Get "attrlink" }}
+                    <a href="{{ . }}">
+                {{- end -}}
+                {{- .Get "attr" | markdownify -}}
+                {{- if .Get "attrlink" }}</a>{{ end }}</p>
+            {{- end }}
+        </figcaption>
+    {{- end }}
+</figure>

@@ -1,0 +1,89 @@
+/* Dark Mode Theme */
+@import 'dark-mode';
+
+body, html {
+  height: 100%;
+  /* Suggestions from practical typography */
+  line-height: 1.45;
+  font-size: 1rem;
+}
+
+nav {
+	z-index: 100;
+}
+
+svg {
+	height: auto;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+#intro-header {
+    display: inline-block;
+    border: 2px solid #FFF;
+    background-color: rgba(0, 0, 0, 0.3);
+    padding: 15px 25px;
+    margin: 0 auto;
+}
+
+#particles-js canvas{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+#particles-js {
+	position: relative;
+	background-color: black;
+}
+
+#intro-masthead {
+	background: transparent;
+	height: 100vh;
+	position: relative;
+	z-index: 1;
+}
+
+#particles-js .ui.cards {
+	height: 100%;
+	align-content: center;
+	align-items: center;
+}
+
+
+// Fix particle resize errors when sidebar opens
+.particles-js-canvas-el {
+height: 100vmax !important;
+z-index: 0;
+}
+
+.ui.main.menu {
+	margin-top:0;
+	margin-bottom:0;
+}
+
+// Enable scroll bars on code blocks
+pre, .highlight pre {
+   overflow: scroll;
+}
+
+// Fix for floated figures
+// https://stackoverflow.com/questions/54782294/how-to-use-floated-style-in-figure-tags-when-using-semantic-ui
+[class*="post-image left floated"] {
+	float: left;
+	margin-left: 0.25em;
+}
+
+[class*="post-image right floated"] {
+	float: right;
+	margin-right: 0.25em;
+}
+
+figcaption[class*="centered"] {
+	margin-left: auto;
+	margin-right: auto;
+	text-align: center;
+	display: block;
+}

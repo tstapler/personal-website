@@ -150,6 +150,7 @@ genrule(
 
         echo "✅ Optimized site created with PurgeCSS + Critical CSS + Gzip compression"
     """,
+    visibility = ["//visibility:public"],
 )
 
 # === End Optimization Pipeline ===
