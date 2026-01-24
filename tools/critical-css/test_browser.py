@@ -15,6 +15,7 @@ def configure_playwright_browsers():
 
 def test_browser_launch():
     """Test launching headless Chromium and capturing a screenshot."""
+    configure_playwright_browsers()
     print("Testing Playwright headless Chromium setup...")
 
     try:

@@ -378,13 +378,77 @@ def extract_critical_css_multi_viewport(
 
 def configure_playwright_browsers():
     """
-    Configure PLAYWRIGHT_BROWSERS_PATH to point to the browser in runfiles.
+    Configure PLAYWRIGHT_BROWSERS_PATH using Bazel runfiles.
     """
-    pass
+    import os
+    import sys
+    from bazel_tools.tools.python.runfiles import runfiles
+    
+    # Create runfiles strategy
+    r = runfiles.Create()
+    
+    # We need to find the directory where rules_playwright put the browsers
+    # The structure in runfiles is usually:
+    # ../rules_playwright++playwright+playwright/browsers/...
+    
+    # Let's try to find the 'playwright' external repository root in runfiles
+    # The repository name is canonical, so it includes the module extension details
+    
+    # Heuristic: search for the browsers directory directly
+    # This avoids hardcoding the exact hash-based repository name
+    
+    try:
+        # Get the runfiles directory
+        if "RUNFILES_DIR" in os.environ:
+            runfiles_dir = os.environ["RUNFILES_DIR"]
+        elif "RUNFILES_MANIFEST_FILE" in os.environ:
+            runfiles_dir = os.environ["RUNFILES_MANIFEST_FILE"][:-9] # remove _manifest
+        else:
+             runfiles_dir = sys.argv[0] + ".runfiles"
+             
+        import glob
+        # Search for chromium-headless-shell directory recursively in runfiles
+        # Pattern: **/browsers/*/chromium-*
+        search_path = os.path.join(runfiles_dir, "**", "browsers", "*", "chromium-*")
+        found = glob.glob(search_path, recursive=True)
+        
+        if found:
+            # found[0] is like .../browsers/ubuntu24.04-x64/chromium_headless_shell-1155
+            # Playwright needs the directory CONTAINING the browser version directory
+            # i.e. .../browsers/ubuntu24.04-x64
+            
+            browser_path = found[0]
+            # Go up one level to get the platform directory (e.g. ubuntu24.04-x64)
+            # Then Playwright will look for chromium-1155 inside it
+            
+            # Wait, Playwright expects PLAYWRIGHT_BROWSERS_PATH to be the root 
+            # where it looks for [browser]-[version].
+            # But rules_playwright might organize it differently.
+            
+            # Let's look at how rules_playwright references it.
+            # It seems they put it in: [repo_root]/browsers/[platform]/[browser]-[version]
+            
+            # If we set PLAYWRIGHT_BROWSERS_PATH to [repo_root]/browsers/[platform]
+            # Playwright will look for [browser]-[version] inside it.
+            
+            # So we need the parent of the browser directory.
+            browsers_path = os.path.dirname(browser_path)
+            
+            print(f"Configuring PLAYWRIGHT_BROWSERS_PATH to: {browsers_path}")
+            os.environ["PLAYWRIGHT_BROWSERS_PATH"] = browsers_path
+        else:
+            print("WARNING: Could not find Playwright browsers in runfiles")
+            # Fallback to env var if set
+            pass
+            
+    except Exception as e:
+        print(f"WARNING: Error configuring Playwright browsers: {e}")
+
 
 
 def main():
     """CLI entry point."""
+    configure_playwright_browsers()
     parser = argparse.ArgumentParser(
         description="Extract critical CSS from a URL using Playwright"
     )
