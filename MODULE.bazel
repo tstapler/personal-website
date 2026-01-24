@@ -36,7 +36,7 @@ bazel_dep(name = "rules_browsers", version = "0.3.0")
 playwright = use_extension("@rules_playwright//playwright:extensions.bzl", "playwright")
 playwright.repo(
     name = "playwright",
-    playwright_version = "1.49.1",
+    playwright_version = "1.50.0",
 )
 use_repo(playwright, "playwright")
 

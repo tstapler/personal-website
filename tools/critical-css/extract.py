@@ -380,75 +380,11 @@ def configure_playwright_browsers():
     """
     Configure PLAYWRIGHT_BROWSERS_PATH to point to the browser in runfiles.
     """
-    import os
-    if "PLAYWRIGHT_BROWSERS_PATH" in os.environ:
-        return
-
-    # Try to find the browser in runfiles
-    try:
-        from bazel_tools.tools.python.runfiles import runfiles
-        r = runfiles.Create()
-        # The browser path depends on the platform and how rules_playwright unzips it.
-        # We look for a directory that contains 'chromium-' in the playwright external repo.
-        # The repo name is something like 'rules_playwright++playwright+playwright'.
-        
-        # Heuristic: search in runfiles for a directory containing 'chromium-' 
-        # inside the external repository structure.
-        
-        # We need to find the repo name first. It usually starts with 'rules_playwright'.
-        # Since we can't easily list runfiles without the manifest, we might need to rely on
-        # the known structure or walk the runfiles if possible.
-        
-        # However, runfiles resolution is tricky.
-        # Let's try to locate the 'chromium' target's files.
-        # Since we don't know the exact path, we can search common locations.
-        
-        # Simpler approach: Look for a directory that looks like a browser installation
-        # in the current working directory or subdirectories if running in sandbox.
-        pass
-    except ImportError:
-        pass
-
-    # Alternative: Walk the runfiles directory to find the browser
-    # When running via 'bazel run', runfiles are in sys.argv[0].runfiles
-    # When running via 'bazel build', it's in the sandbox.
-    
-    # Let's use a glob to find the chromium directory in the runfiles
-    runfiles_dir = Path(sys.argv[0] + ".runfiles")
-    if not runfiles_dir.exists():
-        # Fallback for when running directly or in different context
-        runfiles_dir = Path(".")
-
-    # Search pattern: **/browsers/*/chromium-*
-    # The structure is usually: external/rules_playwright++playwright+playwright/browsers/...
-    
-    found_browsers = list(runfiles_dir.glob("**/browsers/*/chromium-*"))
-    if found_browsers:
-        # We found a chromium directory.
-        # The parent of the parent of this directory should be the browsers path?
-        # output_dir = "ubuntu22.04-x64/chromium-1148"
-        # We want the parent of "ubuntu22.04-x64" which is "browsers" (or whatever root)
-        
-        # Actually, Playwright expects:
-        # $PLAYWRIGHT_BROWSERS_PATH/chromium-1148/
-        
-        # But rules_playwright puts it in:
-        # .../ubuntu22.04-x64/chromium-1148
-        
-        # If we set PLAYWRIGHT_BROWSERS_PATH to .../ubuntu22.04-x64, 
-        # Playwright will look for chromium-1148 there.
-        
-        browser_dir = found_browsers[0]
-        # browser_dir is e.g. .../ubuntu22.04-x64/chromium-1148
-        
-        browsers_path = browser_dir.parent
-        print(f"Configuring PLAYWRIGHT_BROWSERS_PATH to: {browsers_path}")
-        os.environ["PLAYWRIGHT_BROWSERS_PATH"] = str(browsers_path)
+    pass
 
 
 def main():
     """CLI entry point."""
-    configure_playwright_browsers()
     parser = argparse.ArgumentParser(
         description="Extract critical CSS from a URL using Playwright"
     )

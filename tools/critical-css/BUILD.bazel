@@ -18,8 +18,11 @@ py_binary(
         requirement("beautifulsoup4"),
     ],
     data = [
-        "@playwright//:chromium",
+        "@playwright//:chromium-headless-shell",
     ],
+    env = {
+        "PLAYWRIGHT_BROWSERS_PATH": "$(rootpath @playwright//:chromium-headless-shell)/../",
+    },
     visibility = ["//visibility:public"],
 )
 
@@ -32,8 +35,11 @@ py_binary(
         requirement("beautifulsoup4"),
     ],
     data = [
-        "@playwright//:chromium",
+        "@playwright//:chromium-headless-shell",
     ],
+    env = {
+        "PLAYWRIGHT_BROWSERS_PATH": "$(rootpath @playwright//:chromium-headless-shell)/../",
+    },
     visibility = ["//visibility:public"],
 )
 
