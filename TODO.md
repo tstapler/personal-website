@@ -3,6 +3,15 @@
 ## Technical Tasks
 
 ### Web Design & User Experience
+- [ ] **Fomantic UI Theme Migration** <!-- id: fomantic-migration -->
+  - **Roadmap**: [themes/espouse-fomantic/docs/roadmap.md](themes/espouse-fomantic/docs/roadmap.md)
+  - **Goal**: Modernize theme with Fomantic UI, remove security vulnerabilities, and improve build system.
+  - **Status**: 🚧 IN PROGRESS
+  - **Phase 1: Critical Updates**
+    - [ ] Task 1.1: Security Audit & Dependency Updates
+    - [ ] Task 1.2: Build Toolchain Modernization
+    - [ ] Task 1.3: Template Bug Fixes
+
 - [x] Fix summary overflow issues on summary page (HIGH PRIORITY)
   - **Bug**: [docs/bugs/fixed/summary-overflow.md](docs/bugs/fixed/summary-overflow.md)
   - **Task**: [docs/tasks/web-improvements.md#task-1-summary-overflow-bug-fix](docs/tasks/web-improvements.md#task-1-summary-overflow-bug-fix)
