@@ -3,8 +3,11 @@ name: Deploy to Cloudflare Pages
 on:
   push:
     branches:
-      - master
+      - main
+    tags:
+      - 'v*'
   pull_request:
+    types: [opened, synchronize, reopened]
 
 jobs:
   deploy:
@@ -31,10 +34,8 @@ jobs:
           tar -xf bazel-bin/site_optimized_dir.tar -C dist
 
       - name: Publish to Cloudflare Pages
-        uses: cloudflare/pages-action@1
+        uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          projectName: personal-website
-          directory: dist
-          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
+          command: pages deploy dist --project-name=personal-website --commit-hash=$GITHUB_SHA --branch=$GITHUB_REF_NAME
