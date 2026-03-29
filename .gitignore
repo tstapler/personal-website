@@ -5,6 +5,8 @@ resources/_gen
 **/*.parcel-cache
 .aider*
 
+cquery_out.txt
+
 # Build artifacts and test results
 test-results/
 *.png
