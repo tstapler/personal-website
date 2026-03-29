@@ -5,6 +5,17 @@ on:
     branches:
       - master
   pull_request:
+    types: [opened, synchronize, reopened]
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Deployment target'
+        required: true
+        default: 'preview'
+        type: choice
+        options:
+          - preview
+          - production
 
 jobs:
   deploy:
@@ -15,7 +26,7 @@ jobs:
     name: Deploy to Cloudflare Pages
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           submodules: recursive
 
@@ -30,11 +41,19 @@ jobs:
           mkdir -p dist
           tar -xf bazel-bin/site_optimized_dir.tar -C dist
 
-      - name: Publish to Cloudflare Pages
-        uses: cloudflare/pages-action@1
+      - name: Set deployment branch
+        id: set-branch
+        run: |
+          if [[ "${{ github.ref }}" == "refs/heads/master" ]] || \
+             [[ "${{ github.event_name }}" == "workflow_dispatch" && "${{ github.event.inputs.environment }}" == "production" ]]; then
+            echo "branch=master" >> $GITHUB_OUTPUT
+          else
+            echo "branch=${{ github.head_ref || github.ref_name }}" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Deploy to Cloudflare Pages
+        uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          projectName: personal-website
-          directory: dist
-          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
+          command: pages deploy dist --project-name=personal-website --commit-hash=${{ github.sha }} --branch=${{ steps.set-branch.outputs.branch }}
