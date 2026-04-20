@@ -21,6 +21,12 @@ pagerSize = 12
 #disqusShortname = "yourDisqusShortname"
 pygmentsCodefences = true
 
+[markup]
+  [markup.tableOfContents]
+    startLevel = 2
+    endLevel = 3
+    ordered = false
+
 [taxonomies]
   topic = "topics"
   tag = "tags"
@@ -57,9 +63,17 @@ name = "Projects"
 identifier = "projects"
 url = "/projects/"
 pre = "keyboard icon"
+
+[[menu.main]]
+name = "Search"
+identifier = "search"
+url = "/search/"
+pre = "search icon"
+weight = 20
 [Params]
 gatag="UA-111008601-1"
 github_url="https://github.com/tstapler/personal-website"
+author_display="Tyler Stapler"
 
     #
     # Contains the main grid cell of your site (such as a picture of yourself)
@@ -110,15 +124,7 @@ github_url="https://github.com/tstapler/personal-website"
     name = "Ansible"
     icon_url = "img/tech-logos/ansible.svg"
 
-    [[Params.Technologies]]
-    name = "Angular 2"
-    icon_url = "img/tech-logos/angularjs.svg"
-
-    [[Params.Technologies]]
-    name = "Node JS"
-    icon_url = "img/tech-logos/nodejs.svg"
-
-    [[Params.Technologies]]
+[[Params.Technologies]]
     name = "Typescript"
     icon_url = "img/tech-logos/typescript.svg"
 
