@@ -41,6 +41,9 @@ jobs:
           mkdir -p dist
           tar -xf bazel-bin/site_optimized_dir.tar -C dist
 
+      - name: Index site with Pagefind
+        run: npx pagefind --site dist --output-subdir pagefind
+
       - name: Set deployment branch
         id: set-branch
         run: |
