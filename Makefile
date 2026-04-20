@@ -23,10 +23,10 @@ serve:
 	$(HUGO_SERVE)
 
 # Build site and run Pagefind indexer — required for /search to work locally
-search: SITE_URL=http://localhost
+search: SITE_URL=http://localhost/
 search:
-	hugo -D --baseURL http://localhost
-	npx pagefind --site public --output-subdir pagefind
+	$(HUGO_BUILD_SITE) -D
+	npx --yes pagefind@1 --site public --output-subdir pagefind
 
 serve-prod: SITE_URL=http://localhost
 serve-prod:
