@@ -6,7 +6,7 @@ categories = ["Software Development", "AI Tools"]
 tags = ["claude", "ai", "workflow", "productivity", "spec-driven-development", "logseq", "personal-productivity"]
 keywords = ["manifest driven development", "AI coding workflow", "Claude Code workflow", "spec-driven development", "context engineering", "AI pair programming"]
 date = "2026-04-18"
-draft = true
+draft = false
 +++
 
 ## The Blank Slate Problem
@@ -24,6 +24,8 @@ After about a year of the former, I built the latter. I call it **Manifest-Drive
 Before getting to the solution, it's worth naming the actual problems. There are four of them, and they're distinct enough to deserve individual treatment.
 
 **The Blank Slate Problem** is the obvious one: no persistence between sessions. Raw pair programming works well for small, contained problems. It falls apart for anything that takes more than one session to build.
+
+But there's a subtler version of this problem that hits even within a single session. AI agents do exactly what they're asked — and that's the issue. Without a written spec, the agent fills gaps with assumptions, and it fills them confidently. The code compiles. It passes basic checks. It addresses the surface description of the task. What it doesn't do is solve the right problem. This is the **monkey's paw problem**: the wish gets granted, not the intent. The rework cost is high, and invisible until late — a code review, a QA cycle, or a production incident.
 
 **The Planning Pollution Problem** is the one I didn't expect. When you spend an hour debating tradeoffs, weighing options, and reconsidering scope in a Claude session, that exploration *degrades the quality of code generation in the same session*. A session that planned a feature cannot implement it as well as a fresh session that only knows the finished plan. I noticed this pattern before I had a name for it. Once I started forcing myself to start a new session for implementation, code quality went up noticeably.
 
@@ -60,7 +62,7 @@ There are six phases, and each one produces a single artifact that the next phas
 | **Implementation** | Code + passing tests |
 | **QA** | Sign-off or fix plans |
 
-The fresh session gate between validation and implementation is the rule that feels most uncomfortable at first and matters the most in practice. By the time you start writing code, the planning session's context — all the exploring and second-guessing and considered-then-rejected alternatives — has been compressed into a clean plan.md. Implementation quality is better because the model isn't carrying all that noise.
+The fresh session gate between validation and implementation is the rule that feels most uncomfortable at first and matters the most in practice. By the time you start writing code, the planning session's context — all the exploring and second-guessing and considered-then-rejected alternatives — has been compressed into a clean plan.md. Implementation quality is better because the agent is reasoning over a finished decision, not a conversation.
 
 Artifacts live in `project_plans/<project>/` — outside the repo, scoped to the project, persistent across sessions. The spec outlives the session that created it.
 
@@ -143,6 +145,10 @@ None of this is magic. It's just a structured version of what good engineers alr
 
 ## Further Reading
 
-- [Logseq](https://logseq.com/) — the knowledge graph I use for Layer 3
-- [Spec-Driven Development taxonomy](https://martinfowler.com/articles/2025-spec-driven-development.html) — Martin Fowler's 2025 analysis of the SDD landscape, which helped me frame where MDD sits
-- [Logseq Zettelkasten](https://logseq.com/) — my knowledge graph setup (dedicated post coming soon)
+The industry has largely converged on this pattern over the last year. These are the sources I found most useful:
+
+- [Understanding Spec-Driven Development: Kiro, spec-kit, and Tessl](https://martinfowler.com/articles/exploring-gen-ai/sdd-3-tools.html) — Birgitta Böckeler (Thoughtworks), martinfowler.com. Defines three levels of SDD — spec-first, spec-anchored, spec-as-source — and compares the leading tools. Key distinction: a memory bank (always-loaded org context) is architecturally separate from a spec (task-scoped artifact). Conflating them is the most common implementation mistake.
+- [obra/superpowers](https://github.com/obra/superpowers) — Jesse Vincent. The most widely-adopted open-source implementation of spec-before-code for AI coding agents. Refuses to let agents write code until a spec is written and approved.
+- [github/spec-kit](https://github.com/github/spec-kit) — GitHub's official SDD toolkit. Enforces a constitution → spec → plan → task breakdown workflow where all artifacts are markdown files that live in the repo.
+- [Revenge of the Junior Developer](https://sourcegraph.com/blog/revenge-of-the-junior-developer) — Steve Yegge (Sourcegraph). Predicted the transition from chat → coding agents → agent fleets, and why structured workflows become essential as agent density increases. The engineers who thrive direct agents with written intent; they don't prompt from intuition.
+- [Logseq](https://logseq.com/) — the knowledge graph I use for Layer 3, built on a [Zettelkasten](https://en.wikipedia.org/wiki/Zettelkasten) structure (dedicated post coming soon)
