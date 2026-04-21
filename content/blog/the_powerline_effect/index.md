@@ -85,7 +85,27 @@ title="Control Plane Latency Measured By Goldpinger"
 caption="**Click on the image to seen an enlarged view**. The vertical blue dotted lines represent a light switch toggle. The first line on the left is when I turned off all lights in my apartment. The next two lines were when I turned on tack lights in the living room. The fourth line was a light switch in the master bedroom. The final line was when I turned on the office track lighting which was causing my problems."
 src="lights_experiment.png" >}}
 
-The halogen track lighting in my office was interfering with the powerline adapter.
+The halogen track lighting in my office was interfering with the powerline adapter. The interference didn't just cause slow speeds — it cascaded all the way up to Kubernetes control plane failures:
+
+```mermaid
+%%{init: {'theme': 'base', 'themeVariables': {
+  'primaryColor': '#1E293B', 'primaryTextColor': '#F1F5F9',
+  'primaryBorderColor': '#334155', 'lineColor': '#64748B',
+  'edgeLabelBackground': '#F8FAFC', 'fontFamily': 'ui-sans-serif, system-ui', 'fontSize': '14px'
+}}}%%
+flowchart LR
+  classDef cause   fill:#7C2D12,stroke:#EF4444,color:#FCA5A5
+  classDef symptom fill:#1E293B,stroke:#475569,color:#94A3B8
+  classDef effect  fill:#312E81,stroke:#4338CA,color:#C7D2FE
+
+  H["Halogen lights\nswitched on"]:::cause
+  --> N["EMI on\npowerline circuit"]:::symptom
+  --> L["100–400ms latency\nspike on link"]:::symptom
+  --> K["Kubernetes API\ncall timeout"]:::effect
+  --> HF["helm install\nfails / hangs"]:::effect
+
+  K --> GP["Goldpinger\nmesh alert fires"]:::effect
+```
 
 A [*COMPUTERWORLD*](https://www.computerworld.com/article/2541274/powerline-adapters--home-networking-without-rewiring.html?page=3) article from 2008 confirmed my suspicions.
 

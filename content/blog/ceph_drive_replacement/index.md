@@ -148,7 +148,43 @@ The SMART test showed that the drive had no remaining life and was likely the ca
 ### 4. The Long Haul: Watching Rebuild Progress
 
 This is where patience becomes a virtue. As my cluster slowly rebuilt itself, I learned to love the `ceph -s` command.
-The numbers told a story of gradual healing:
+The numbers told a story of gradual healing.
+
+Ceph moves through distinct health states as drives fail and recover. Understanding where you are in this progression helps you know whether the cluster is healing normally or needs intervention:
+
+```mermaid
+%%{init: {'theme': 'base', 'themeVariables': {
+  'primaryColor': '#312E81', 'primaryTextColor': '#E0E7FF',
+  'primaryBorderColor': '#4338CA', 'lineColor': '#818CF8',
+  'edgeLabelBackground': '#EEF2FF', 'fontFamily': 'ui-sans-serif, system-ui', 'fontSize': '13px'
+}}}%%
+stateDiagram-v2
+  [*] --> Healthy : cluster running normally
+
+  state Healthy {
+    note right of Healthy: HEALTH_OK\nAll PGs active+clean
+  }
+
+  Healthy --> Degraded : OSD goes down / drive fails
+
+  state Degraded {
+    [*] --> Undersized
+    Undersized --> Misplaced : rebalancing starts
+    Misplaced --> Backfilling : new OSD added
+    Backfilling --> [*] : recovery complete
+    note right of Undersized: HEALTH_WARN\nPGs below min_size
+  }
+
+  Degraded --> Healthy : all PGs recover
+  Degraded --> Critical : second failure during recovery
+
+  state Critical {
+    note right of Critical: HEALTH_ERR\nPGs unavailable
+  }
+
+  Critical --> Degraded : failed OSD replaced
+```
+
 Key recovery metrics observed:
 
 - Object migration rate (32 MiB/s)

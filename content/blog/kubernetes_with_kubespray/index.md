@@ -44,6 +44,36 @@ Kubernetes cluster. What I lacked was a static IP for incoming traffic. I wanted
 
 {{< image src="cluster_diagram.png" >}}
 
+```mermaid
+%%{init: {'theme': 'base', 'themeVariables': {
+  'primaryColor': '#1E293B', 'primaryTextColor': '#F1F5F9',
+  'primaryBorderColor': '#334155', 'lineColor': '#64748B',
+  'clusterBkg': '#0F172A', 'clusterBorder': '#334155',
+  'fontFamily': 'ui-sans-serif, system-ui', 'fontSize': '14px'
+}}}%%
+flowchart TB
+  classDef vps  fill:#7C3AED,stroke:#5B21B6,color:#fff
+  classDef node fill:#1E40AF,stroke:#3B82F6,color:#fff
+
+  Internet((Internet)) --> VPS
+
+  subgraph VPS["VPS — Vultr Gateway (2 core / 4 GB)"]
+    direction LR
+    NG[nginx ingress]:::vps
+    TV[tinc peer]:::vps
+  end
+
+  subgraph HOME["Home Network — Tinc Mesh VPN"]
+    direction LR
+    N1["node1\ni7 Ivy Bridge\n8 core / 32 GB"]:::node
+    N2["node2\nAMD A8-7600\n4 core / 16 GB"]:::node
+  end
+
+  TV <-->|"encrypted mesh"| N1
+  TV <-->|"encrypted mesh"| N2
+  N1 <-->|"Ceph replication"| N2
+```
+
 ## Installation - Kubespray
 
 I've used [Ansible](https://www.ansible.com/) to provision computers for long

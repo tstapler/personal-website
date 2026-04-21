@@ -29,6 +29,43 @@ The three layers:
 
 Miss the timing on any one of these, and you drop connections. Get all three right, and rolling deploys become silent.
 
+```mermaid
+%%{init: {'theme': 'base', 'themeVariables': {
+  'actorBkg': '#1E293B', 'actorBorder': '#475569', 'actorTextColor': '#F1F5F9',
+  'signalColor': '#64748B', 'noteBkgColor': '#FEF3C7', 'noteTextColor': '#92400E',
+  'activationBkgColor': '#3B82F6', 'fontFamily': 'ui-sans-serif, system-ui', 'fontSize': '14px'
+}}}%%
+sequenceDiagram
+  autonumber
+  participant K as Kubernetes
+  participant LB as Load Balancer
+  participant A as Spring Boot App
+  participant P as PgBouncer
+  participant DB as Postgres
+
+  Note over K,DB: Rolling deploy triggered
+
+  K->>A: SIGTERM (preStop: sleep 13s)
+  K-->>LB: Remove endpoint (async, 5–15s delay)
+
+  Note over K,LB: ⚠️ Race window — traffic still arrives<br/>while endpoint removal propagates
+
+  A->>A: Stop accepting new requests
+  A->>A: Drain in-flight requests (30s timeout)
+
+  K->>P: SIGTERM (PgBouncer ≥1.23)
+  P->>P: Finish active transactions
+  P->>P: Reject new connections
+  P-->>DB: Close idle connections
+
+  A-->>P: All connections released
+  P-->>DB: All connections closed
+  K->>P: SIGKILL (if timeout exceeded)
+  K->>A: SIGKILL (if timeout exceeded)
+
+  Note over K,DB: Pod fully terminated
+```
+
 ---
 
 ## Why "Just Add a preStop Sleep" Doesn't Work
@@ -65,6 +102,32 @@ Beyond the version issue, there's a genuine signal strategy choice depending on 
 | SIGINT | Database-facing connections | DB connection limits are tight; connection lifetime is unpredictable |
 
 For most Spring Boot setups in transaction pooling mode, SIGTERM is the right call — you have headroom, and you want in-flight requests to complete.
+
+```mermaid
+%%{init: {'theme': 'base', 'themeVariables': {
+  'primaryColor': '#1E293B', 'primaryTextColor': '#F1F5F9',
+  'primaryBorderColor': '#334155', 'lineColor': '#64748B',
+  'edgeLabelBackground': '#F8FAFC', 'fontFamily': 'ui-sans-serif, system-ui', 'fontSize': '14px'
+}}}%%
+flowchart LR
+  classDef signal   fill:#3B82F6,stroke:#1D4ED8,color:#fff
+  classDef graceful fill:#10B981,stroke:#065F46,color:#fff
+  classDef immediate fill:#EF4444,stroke:#991B1B,color:#fff
+
+  subgraph old["PgBouncer < 1.23"]
+    direction LR
+    S1[SIGTERM]:::signal --> I1[Immediate exit]:::immediate
+    S2[SIGINT]:::signal  --> G1[Graceful drain]:::graceful
+    S3[SIGQUIT]:::signal --> I2[Immediate exit]:::immediate
+  end
+
+  subgraph new["PgBouncer ≥ 1.23"]
+    direction LR
+    S4[SIGTERM]:::signal --> G2[Graceful drain]:::graceful
+    S5[SIGINT]:::signal  --> G3[Graceful drain]:::graceful
+    S6[SIGQUIT]:::signal --> I3[Immediate exit]:::immediate
+  end
+```
 
 ---
 
