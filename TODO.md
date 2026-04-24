@@ -3,45 +3,53 @@
 ## Technical Tasks
 
 ### Web Design & User Experience
+
 - [x] Fix summary overflow issues on summary page (HIGH PRIORITY)
   - **Bug**: [docs/bugs/fixed/summary-overflow.md](docs/bugs/fixed/summary-overflow.md)
-  - **Task**: [docs/tasks/web-improvements.md#task-1-summary-overflow-bug-fix](docs/tasks/web-improvements.md#task-1-summary-overflow-bug-fix)
-  - **Impact**: Critical user experience issue affecting blog listing pages
   - **Status**: ✅ COMPLETED 2025-01-02
 
 - [x] Implement AI-generated blog post summaries
   - **Task**: [docs/tasks/ai-summary-implementation.md](docs/tasks/ai-summary-implementation.md)
-  - **Dependencies**: Summary overflow bug fix required first
-  - **Features**: Summary generation, quality testing, template integration
   - **Status**: ✅ COMPLETED 2025-01-10
 
-- [x] **Feature: Cloudflare Deployment** <!-- id: cloudflare-deployment -->
+- [x] **Feature: Cloudflare Deployment**
   - **Task**: [docs/tasks/cloudflare-deployment.md](docs/tasks/cloudflare-deployment.md)
-  - **Goal**: Migrate to Cloudflare Pages for edge performance
   - **Status**: ✅ COMPLETED
+
+- [x] **Site UX Overhaul + Pagefind Search** (shipped via PR #17)
+  - Reading progress bar, copy-code buttons, heading anchors, TOC
+  - Blog feed redesigned as vertical list with meta (date, tags, read-time)
+  - particles.js replaced with canvas animation (saved 87 KB)
+  - Accessibility: skip link, keyboard nav, focus styles, contrast fixes
+  - Pagefind full-text search page + CI indexing step
+  - CSS custom properties (color tokens) extracted to `site-enhancements.css`
+  - **Status**: ✅ COMPLETED 2026-04-19
+
+- [ ] **Dark Mode Token Overrides**
+  - **Task**: [docs/tasks/dark-mode.md](docs/tasks/dark-mode.md)
+  - **Goal**: Add `@media (prefers-color-scheme: dark)` block to espouse theme,
+    overriding the 12 CSS custom properties already defined. No JS required.
+  - **Status**: Pending
   - **Subtasks**:
-    - [x] Task 1.1: Create Cloudflare Workflow (`.github/workflows/cloudflare.yml`)
-    - [x] Task 2.1: Configure Wrangler (`wrangler.toml`)
-    - [x] Task 3.1: Documentation & Cleanup (`README.md`, `ARCHITECTURE.md`)
+    - [ ] Task 1.1: Add dark-mode token overrides to `site-enhancements.css` (2h)
+    - [ ] Task 1.2: Bump espouse submodule pointer in parent repo (0.5h)
 
 ### Infrastructure & Deployment
+
 - [x] Container Deployment Strategy
   - **Task**: [docs/tasks/container-deployment.md](docs/tasks/container-deployment.md)
-  - **Features**: Health checks, rollback detection, blue-green deployment
-  - **Documentation**: Implementation process for blog post
-  - **Note**: Auto-updates will be implemented in separate monitoring repo
   - **Status**: ✅ COMPLETED 2025-01-11
 
 - [ ] ArgoCD Integration
   - **Task**: [docs/tasks/argocd-integration.md](docs/tasks/argocd-integration.md)
   - **Goal**: Implement GitOps for automated cluster state management
-  - **Status**: 🚧 IN PROGRESS
+  - **Status**: IN PROGRESS
   - **Subtasks**:
     - [x] Task 1.1: Install ArgoCD
     - [x] Task 1.2: Configure Access & CLI
     - [x] Task 2.1: Create Website Application Manifest
     - [x] Task 2.2: Create ArgoCD Verification Script
-    - [ ] Task 2.3: Document GitOps Workflow
+    - [ ] Task 2.3: Document GitOps Workflow (1h)
 
 ## Content Planning
 
