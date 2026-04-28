@@ -1,0 +1,10 @@
+{{- $asin := .Get "asin" -}}
+{{- $title := .Get "title" -}}
+{{- if not $asin }}{{ errorf "amazon shortcode: asin is required (in %s)" .Page.File.Path }}{{ end -}}
+{{- if not $title }}{{ errorf "amazon shortcode: title is required (in %s)" .Page.File.Path }}{{ end -}}
+{{- $tag := .Site.Params.amazon_affiliate_tag | default "" -}}
+{{- $url := printf "https://www.amazon.com/dp/%s" $asin -}}
+{{- if $tag -}}
+  {{- $url = printf "%s?tag=%s" $url ($tag | urlquery) -}}
+{{- end -}}
+<a href="{{ $url }}" target="_blank" rel="noopener noreferrer sponsored" aria-label="{{ $title }} (opens in a new tab)">{{ $title }}</a>
