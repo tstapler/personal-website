@@ -36,17 +36,17 @@ Everything else: put it in your ears and get on with your life.
 
 Before anything else, read these two back-to-back:
 
-**How to Read a Book → How to Take Smart Notes**
+**[How to Read a Book](#learning--knowledge-management) → [How to Take Smart Notes](#learning--knowledge-management)**
 
 *How to Read a Book* teaches you to read at four levels — most engineers never get past level two. *How to Take Smart Notes* gives you a system for retaining and connecting what you read. Together they change how you engage with everything else on this list. (Full context in the [Learning & Knowledge Management](#learning--knowledge-management) section below.)
 
 Then work by career stage:
 
-**Early career (1–3 years):** The Pragmatic Programmer → Clean Code → The Lean Startup → The Design of Everyday Things → Never Split the Difference → How to Win Friends & Influence People
+**Early career (1–3 years):** [The Pragmatic Programmer](#software-engineering-core-craft) → [Clean Code](#software-engineering-core-craft) → [The Lean Startup](#product--design-thinking) → [The Design of Everyday Things](#product--design-thinking) → [Never Split the Difference](#negotiation) → [How to Win Friends & Influence People](#communication)
 
-**Mid career (3–7 years):** Designing Data-Intensive Applications → Accelerate → The Five Dysfunctions of a Team → Radical Candor → The Manager's Path → Made to Stick → Good Strategy Bad Strategy
+**Mid career (3–7 years):** [Designing Data-Intensive Applications](#systems--scale) → [Accelerate](#systems--scale) → [The Five Dysfunctions of a Team](#teamwork) → [Radical Candor](#leadership--management) → [The Manager's Path](#leadership--management) → [Made to Stick](#communication) → [Good Strategy Bad Strategy](#business-fundamentals)
 
-**Senior / Staff / Lead:** High Output Management → An Elegant Puzzle → Domain-Driven Design → The Mythical Man-Month → The Effective Executive
+**Senior / Staff / Lead:** [High Output Management](#leadership--management) → [An Elegant Puzzle](#leadership--management) → [Domain-Driven Design](#systems--scale) → [The Mythical Man-Month](#systems--scale) → [The Effective Executive](#leadership--management)
 
 ---
 
