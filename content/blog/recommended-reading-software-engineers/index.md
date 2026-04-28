@@ -12,7 +12,9 @@ Every few months, someone I'm mentoring asks a version of the same question: "Wh
 
 For a long time I answered ad hoc — different books depending on what problem they were working through. But I kept recommending the same 40-odd books, and eventually I wrote them down. This is that list.
 
-It covers eleven areas: software craft, systems, DevOps and engineering culture, product design, leadership, teamwork, communication, negotiation, business fundamentals, learning how to learn, and personal effectiveness. Not all of them are written for software engineers — several aren't even about software. That's intentional. The engineers I've seen grow fastest read broadly.
+It covers eleven areas: software craft, systems, DevOps and engineering culture, product design, leadership, teamwork, communication, negotiation, business fundamentals, learning how to learn, and personal effectiveness. Not all of them are written for software engineers — several aren't even about software. That's intentional.
+
+Learning to tie knots taught me about sewing; sewing connected to crocheting; both made friction and elasticity concrete in a way I now see everywhere — in how cables route, in how distributed systems behave under load, in why certain abstractions hold and others slip. The same underlying structure, showing up in different domains. Niklas Luhmann published across law, economics, politics, and sociology not because he was a specialist in all of them, but because he kept finding the same patterns in different places. Charlie Munger called this building a *latticework of mental models* — and argued that the wider your lattice, the harder the problems you can solve. The engineers I've seen grow fastest had the widest one.
 
 The ⭐ markers are the books I'd insist on if you can only read one per section. Start with those.
 
