@@ -1,18 +1,21 @@
 {{- $scratch := .Page.Scratch -}}
-{{- if not ($scratch.Get "bib") }}
-{{- $scratch.Set "bib" slice -}}
+{{- /* Lazy-load from front matter bibliography param if not yet populated */ -}}
+{{- if not ($scratch.Get "bib") -}}
+  {{- with .Page.Params.bibliography -}}
+    {{- $bibFile := path.Join "content" $.Page.File.Dir . -}}
+    {{- $lines   := split (readFile $bibFile) "\n" -}}
+    {{- partial "load-bibliography.html" (dict "Page" $.Page "RawLines" $lines) -}}
+  {{- end -}}
 {{- end -}}
-{{- $entries := ($scratch.Get "bib") -}}
+{{- $key     := .Get 0 -}}
+{{- $entries := $scratch.Get "bib" -}}
 {{- if $entries -}}
-  {{- $entryIndex := -1 -}}
-  {{- range $idx, $entry := $entries -}}
-    {{- if eq $entry.id .Get 0 -}}
-      {{- $entryIndex = $idx -}}
-    {{- end -}}
+  {{- $idx := -1 -}}
+  {{- range $i, $entry := $entries -}}
+    {{- if eq $entry.id $key -}}{{- $idx = $i -}}{{- end -}}
   {{- end -}}
-  {{- if ge $entryIndex 0 -}}
-  <a href="#ref-{{ .Get 0 }}" class="citation" aria-label="Reference {{ .Get 0 }}">[{{ add $entryIndex 1 }}]</a>
-  {{- else -}}
-  <span class="citation-error">[Citation Error]</span>
+  {{- if ge $idx 0 -}}<a href="#ref-{{ $key }}" class="citation" aria-label="Reference {{ $key }}">[{{ add $idx 1 }}]</a>
+  {{- else -}}<span class="citation-error" title="Unknown citation key: {{ $key }}">[?]</span>
   {{- end -}}
+{{- else -}}<span class="citation-error" title="No bibliography loaded — add 'bibliography' param to front matter">[?]</span>
 {{- end -}}
