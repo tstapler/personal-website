@@ -20,6 +20,18 @@ The ⭐ markers are the books I'd insist on if you can only read one per section
 
 ---
 
+## A note on audiobooks
+
+Most of this list is available on Audible, and honestly — that's how I've gotten through the majority of it. A lot of these books are dense or dry, and cracking one open after a long day of engineering requires a kind of willpower that doesn't always show up on demand.
+
+Audiobooks change that calculus. Sixty percent retention while doing the dishes or mowing the lawn beats zero percent retention from a physical copy sitting on the nightstand. You're not going to annotate *High Output Management* in the margins anyway — but you can finish it in four commutes and walk away with the mental model that matters.
+
+The exceptions are the ones that genuinely reward slow reading and note-taking: *Designing Data-Intensive Applications*, *Domain-Driven Design*, *How to Read a Book*, and anything you're reading syntopically alongside other books on the same topic. Those deserve paper and a pen.
+
+Everything else: put it in your ears and get on with your life.
+
+---
+
 ## Where to Start: A Reading Order
 
 Before anything else, read these two back-to-back:
@@ -276,15 +288,23 @@ Mental models, multidisciplinary thinking, inversion, avoiding stupidity. Munger
 
 ## Learning & Knowledge Management
 
-How you read and retain information determines how fast you grow.
+How you read and retain information determines how fast you grow. I put these first in the reading order — before the career-stage books — because they change how you engage with everything else.
 
 **{{< amazon asin="0671212095" title="How to Read a Book" >}}** — Mortimer J. Adler & Charles Van Doren
 
-A practical system for reading with intention. Four levels: elementary, inspectional (skimming for structure), analytical (deep reading), and syntopical (comparing across multiple books on the same topic). Changes your relationship with every technical book on this list.
+Most people read the same way they learned to in school: start at page one, proceed to the end, close the cover. Adler describes four levels of reading, and most engineers never get past level two. The key insight is *syntopical reading* — reading multiple books on the same topic simultaneously and building your own synthesis across them. That's the difference between consuming knowledge and building it. Every technical book on this list benefits from being read at the analytical level with a pen in hand.
 
 **{{< amazon asin="3982438802" title="How to Take Smart Notes" >}}** — Sönke Ahrens
 
-The definitive guide to the Zettelkasten method. Atomic notes, linking ideas across domains, writing as thinking. Reading without note-taking is renting, not owning — this book teaches you to own what you read.
+This is the book that will change how you think about engineering journals, design documents, and personal wikis. Ahrens describes the Zettelkasten system developed by sociologist Niklas Luhmann — who published 70 books and 400+ papers in a career using nothing but a box of index cards connected by links. The core idea: a note that doesn't connect to anything else in your system is just storage. A note that links to other notes is thinking.
+
+For software engineers specifically, this matters because so much of our intellectual work evaporates. You debug a hard problem, understand something deep about your system, and a week later it's gone — not because you're forgetful, but because you never externalized it. A good engineering journal isn't a diary. It's a second brain: a place where your notes on distributed systems, your postmortem learnings, your half-formed ideas about architecture, and your annotations from *Designing Data-Intensive Applications* all live in the same linked graph and can surface connections you'd never find otherwise.
+
+When I left Workiva to join Google, I was intimidated — not by the technical bar, but by the writing culture. From the outside, Google felt like a place where engineers wrote documents the way academics wrote papers: precise, structured, permanent. I sat down with these two books before my first week.
+
+What they gave me wasn't a writing technique. It was a reframe: writing isn't how you record what you already know. It's how you figure out what you actually think. A design document that took a week to write will expose more holes in your architecture than a week of coding. A note that connects two ideas you thought were unrelated is the kind of thinking that makes you dangerous in a room. Luhmann published 70 books in a career without a computer. His secret was a box of cards linked to each other.
+
+Start a Zettelkasten. Write one atomic note per idea. Link it to something you already know. Do that for six months and you'll have built something more valuable than a bookshelf.
 
 ---
 
