@@ -1,0 +1,8 @@
+{{- $asin := .Get "asin" -}}
+{{- $title := .Get "title" -}}
+{{- $tag := .Site.Params.amazon_affiliate_tag | default "" -}}
+{{- $url := printf "https://www.amazon.com/dp/%s" $asin -}}
+{{- if $tag -}}
+  {{- $url = printf "%s?tag=%s" $url $tag -}}
+{{- end -}}
+<a href="{{ $url }}" target="_blank" rel="noopener noreferrer sponsored">{{ $title }}</a>
