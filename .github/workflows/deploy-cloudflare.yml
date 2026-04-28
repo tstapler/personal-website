@@ -35,7 +35,12 @@ jobs:
         uses: bazelbuild/setup-bazelisk@v3
 
       - name: Build Site
-        run: bazel build //:site_optimized
+        run: |
+          for attempt in 1 2 3; do
+            bazel build //:site_optimized && break
+            echo "Attempt $attempt failed, retrying in 15s..."
+            sleep 15
+          done
 
       - name: Prepare Deployment Directory
         run: |
