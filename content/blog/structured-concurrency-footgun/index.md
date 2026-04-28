@@ -80,9 +80,19 @@ What changed my thinking: the ecosystem split is a real, ongoing cost. A develop
 
 ## Structured Concurrency: The JVM Attempt
 
-The JVM has always had real OS threads — preemptive, parallel, expensive. For many years the answer to concurrent I/O on the JVM was "use a thread pool and blocking I/O." It works, but thread-per-request doesn't scale past a few thousand concurrent connections: OS threads carry ~1MB stack overhead by default, context switching is expensive, and the scheduler knows nothing about your application's structure.
+The JVM has always had real OS threads — preemptive, parallel, expensive. For many years the answer to concurrent I/O on the JVM was "use a thread pool and blocking I/O." It works, but thread-per-request doesn't scale past a few thousand concurrent connections: OS threads carry ~1MB stack overhead by default,{{< cite "jep425virtualthreads" >}} context switching is expensive, and the scheduler knows nothing about your application's structure.
 
 Project Reactor and RxJava brought the reactive/event-loop model to the JVM. Kotlin coroutines tried to keep synchronous-looking code while achieving M:N scheduling underneath. Both ran into variants of the colored-function problem.
+
+### Project Reactor
+
+Before cataloguing what went wrong, it's worth being precise about what Reactor gets right. Event-loop concurrency on the JVM is genuinely good at something: squeezing high throughput from a small thread count when the work is almost entirely I/O-bound.
+
+Reactor's `Flux` and `Mono` types give you a composable pipeline where each step is explicit about whether it runs on the caller, a specific scheduler, or the thread that completes the upstream operation. For services that are pure I/O fan-out — aggregate five upstream calls, merge, return — a reactive pipeline is a near-perfect fit. A handful of threads can service thousands of in-flight requests with no context switching overhead. Backpressure is built into the model: `Flux` can signal to upstream producers when it can't keep up, preventing the unbounded queue growth that kills thread-pool-based systems under load.{{< cite "reactordocs" >}}
+
+The model also enforces something by accident that turns out to be valuable: because there's no blocking allowed, every operation that reaches out to the network or disk must be explicitly modelled as a deferred value. The call graph is a declaration of what the system does, not a description of how threads move through it. For services where latency attribution matters, this is genuinely useful.
+
+The problems start when "no blocking" is a convention rather than a constraint.
 
 ### Kotlin Coroutines
 
@@ -105,7 +115,7 @@ suspend fun fetchUser(id: Long): User {
 
 I ran into this in production running a Backend for Frontend serving real-time trader traffic. Reactor's schedulers — `Schedulers.boundedElastic()` and `Schedulers.parallel()` — are application-wide singletons.{{< cite "reactorschedulers" >}} Every reactive pipeline in a shared-deployment monolith shared the same thread pools. When any single team's code blocked a thread in the shared scheduler, every team's requests slowed down — not just the team whose code was at fault.
 
-This happened five or six times, across different engineers on different teams, in different quarters. Each time it presented as general latency degradation: slow database metrics that didn't match what the database was doing, P99s climbing without a clear localized cause. Each time, diagnosis required expert-level thread dump analysis. `jstack` eventually showed Reactor scheduler threads in `BLOCKED` state — but tracing which team's code was responsible required significant investigation on top of that.
+This happened five or six times, across different engineers on different teams, in different quarters. Each time it presented as general latency degradation: slow database metrics that didn't match what the database was doing, P99s climbing without a clear localized cause. Each time, diagnosis required the Datadog JVM profiler{{< cite "datadogjvmprofiler" >}} to show Reactor scheduler threads spending the bulk of their time in `BLOCKED` state — and tracing which team's code was responsible required significant investigation on top of that.
 
 The lesson wasn't "train people better." It was: **the compiler doesn't warn you, so the knowledge has to be re-taught to every new engineer who joins.** Knowledge resets; type errors don't. Every new hire, every oncall rotation, every library upgrade that changes blocking behavior in a transitive dependency resets the clock on when the next incident happens.
 
@@ -134,7 +144,7 @@ When a virtual thread blocks on a socket, a JDBC call, a lock, or `Thread.sleep(
 
 The remaining failure mode: virtual threads can be *pinned* to their carrier when blocking inside a `synchronized` block or a native frame.{{< cite "jep444virtualthreads" >}} Pinned threads don't yield the carrier, which can cause carrier thread starvation — analogous to dispatcher starvation in coroutines. The critical difference: the JVM makes this visible. `-Djdk.tracePinnedThreads=full` logs a stack trace every time pinning occurs. JFR (Java Flight Recorder) exposes pinning events. The failure has an observable signal rather than presenting as mysterious latency.
 
-We deprecated Reactor in new code the week virtual threads hit GA. We haven't had a scheduler starvation incident since.
+We deprecated Reactor in new code the week virtual threads hit GA. We haven't had nearly as many scheduler starvation incidents since.
 
 **What virtual threads don't give you**: Java's `StructuredTaskScope` (the equivalent of `coroutineScope`) is still in preview as of Java 21-22 — not production-stable.{{< cite "jep453structuredconcurrency" >}} There's no built-in Flow equivalent. Cancellation is less ergonomic. If you're building in the Kotlin ecosystem where Flow, StateFlow, and lifecycle-aware coroutines are load-bearing, virtual threads are fighting the current.
 

@@ -109,6 +109,54 @@
                   toolable, not requiring expert manual analysis.}
 }
 
+@misc{jep425virtualthreads,
+  author       = {{OpenJDK}},
+  title        = {JEP 425: Virtual Threads (Preview)},
+  year         = {2022},
+  url          = {https://openjdk.org/jeps/425},
+  urldate      = {2026-04-28},
+  howpublished = {OpenJDK Enhancement Proposal},
+  annote       = {The initial preview JEP for Project Loom virtual threads. Documents the
+                  core motivation: platform threads map 1:1 to OS threads, which carry
+                  ~1MB default stack allocation and incur OS scheduling overhead, limiting
+                  practical concurrency to a few thousand on typical hardware. Virtual threads
+                  instead allocate on the heap and are scheduled by the JVM, enabling millions
+                  of concurrent threads at low cost.}
+}
+
+@misc{reactordocs,
+  author       = {{Project Reactor Team}},
+  title        = {Reactor Core Reference Guide},
+  year         = {2024},
+  url          = {https://projectreactor.io/docs/core/release/reference/},
+  urldate      = {2026-04-28},
+  howpublished = {Project Reactor Reference Documentation},
+  annote       = {Official reference for Project Reactor. Documents the Flux and Mono types,
+                  backpressure handling, operator composition, and the publisher/subscriber
+                  contract from the Reactive Streams specification. The backpressure model
+                  is a genuine advantage over thread-per-request: a Flux can signal upstream
+                  producers to slow down when downstream can't keep up, preventing queue
+                  growth and heap exhaustion under load. The guide also covers schedulers,
+                  error handling, and testing utilities.}
+}
+
+@misc{datadogjvmprofiler,
+  author       = {{Datadog}},
+  title        = {Java Profiler},
+  year         = {2024},
+  url          = {https://docs.datadoghq.com/profiler/enabling/java/},
+  urldate      = {2026-04-28},
+  howpublished = {Datadog Documentation},
+  annote       = {Datadog's continuous JVM profiler uses async-profiler under the hood to
+                  capture CPU, wall-clock, allocation, and lock contention profiles with low
+                  overhead in production. For diagnosing Reactor scheduler starvation, the
+                  wall-clock profile is most useful: it shows threads blocked in BLOCKED state
+                  (waiting on a monitor) rather than merely WAITING (parked on a condition).
+                  This makes it possible to identify which code paths are parking OS threads
+                  in the shared scheduler pool without resorting to manual jstack captures
+                  and thread dump analysis.}
+}
+
 @misc{jep444virtualthreads,
   author       = {{OpenJDK}},
   title        = {JEP 444: Virtual Threads},
