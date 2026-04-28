@@ -8,9 +8,11 @@ date = "2026-04-27"
 draft = false
 +++
 
-When I joined Google from Workiva, I was intimidated by the writing culture. From the outside it looked like engineers wrote documents the way academics wrote papers — precise, structured, permanent. What I came to understand is that the writing *is* the thinking. You don't write a design document to explain what you've already decided. You write it to find out where your thinking has holes.
+Three years into my career I ran into a former colleague at a conference. He asked about a distributed systems problem we'd both worked on. I couldn't remember how we'd solved it. Not the details — the whole thing. The decision, the tradeoffs, the reason we chose the approach we did. It had been two years and it was gone.
 
-The same principle applies to how you accumulate knowledge over a career. Most engineers I've met treat learning as consumption: read a book, take a course, close the tab. A year later, it's gone. Not because they're forgetful — because they never externalized the thinking in a way that connects to anything else.
+He pulled out his phone and read me the answer from a note he'd written the week the project shipped.
+
+That was the first time I understood that most engineers are treating learning as consumption: read a book, work a problem, close the tab. A year later it's gone — not because they're forgetful, but because they never externalized the thinking in a way that connects to anything else. The engineer with the note wasn't smarter. He just had a system.
 
 Zettelkasten is the alternative.
 
@@ -47,13 +49,13 @@ The other objection is tooling: it feels like a yak shave. It doesn't have to be
 
 [Logseq](https://logseq.com/) is what I use. It's local-first, open source, and built around the daily journal as the entry point — which matches how most engineers actually work. You capture in the journal, then promote ideas to permanent pages. It supports bidirectional links, graph view, and queries. Everything lives in plain Markdown on your filesystem.
 
-The daily journal workflow removes the friction of "where does this go." It goes in today's journal. Later, you link it somewhere permanent if it deserves to live past the week.
+The daily journal as the capture point is the key design choice: it removes the friction of "where does this go." It goes in today's journal. Later, you link it somewhere permanent if it deserves to live past the week. If you want to start without thinking about structure, start with Logseq.
 
 ### Obsidian
 
-[Obsidian](https://obsidian.md/) is the other serious option. It has a larger plugin ecosystem, a stronger community around Zettelkasten specifically, and a more polished graph view. It's also local-first and Markdown-based. The tradeoff vs. Logseq is that Obsidian is more freeform — better if you want fine control over structure, but more setup required to get a workflow that actually sticks.
+[Obsidian](https://obsidian.md/) has a larger plugin ecosystem, a stronger community specifically around Zettelkasten, and a more polished graph view. It's also local-first and Markdown-based. The tradeoff: Obsidian gives you a blank canvas, which means you'll spend more time deciding on structure upfront. That's the right call if you already know roughly how you want to organize your notes, or if you want fine-grained control over how your vault grows.
 
-Both are good. Pick one. The tool matters less than the practice.
+**Deciding rule**: if you've never done this before and want to start immediately, use Logseq — the journal gives you a default workflow for free. If you've tried journaling tools and found they didn't stick, or you want a plugin ecosystem and are willing to configure your own system, use Obsidian.
 
 ---
 
@@ -61,7 +63,9 @@ Both are good. Pick one. The tool matters less than the practice.
 
 One friction point with local-first tools is synchronization. Logseq and Obsidian both have paid sync options, but if you want full control over where your notes live — and as an engineer, you probably do — you need something else.
 
-I built [Stelekit](https://github.com/tstapler/stelekit) to solve this. It handles syncing my Logseq vault across machines, keeping everything in version control without fighting the tools. If you're running Logseq and want a lightweight sync approach that doesn't require a subscription or a third-party cloud, it's worth a look.
+The naive answer is "just use git." The problem is that Logseq's database is not designed for clean diffs and conflict resolution. Notes modified on two machines produce merge conflicts that git can't resolve automatically, and the Logseq sync tooling has historically been unreliable on Linux.
+
+I built [Stelekit](https://github.com/tstapler/stelekit) to handle this. It manages syncing a Logseq vault across multiple machines using a git-based approach that handles the conflict patterns Logseq actually produces. Everything stays in version control, nothing goes to a third-party cloud, and the sync is fast enough that I don't think about it. It runs on Linux and macOS. If you're running Logseq without a sync solution and want to stay local-first, it's worth a look.
 
 ---
 
@@ -84,4 +88,4 @@ Read those two first. Then start the box.
 3. For today's journal entry: write one note about one idea you encountered this week
 4. Link it to one thing you already know
 
-That's it. The compounding starts on day one.
+The failure mode isn't starting — it's the week three drop-off when you're busy and it feels like overhead. The fix is to make the bar low enough that there's no excuse: one note, one link, three minutes. If a week goes by without any notes, the practice hasn't failed — just open the journal and write one thing. The archive doesn't expire. The connections you made in month one are still there in month twelve, and they're worth more then than they were when you wrote them.

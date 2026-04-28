@@ -110,17 +110,17 @@ The reference catalog for enterprise software design. Don't read cover to cover 
 
 ---
 
-## Testing
+## DevOps & Engineering Culture
 
-Testing is not a phase — it's woven into every engineering activity. Several books above cover this deeply (Pragmatic Programmer, Accelerate, Mythical Man-Month). Two additional picks:
-
-**{{< amazon asin="0312430000" title="The Checklist Manifesto" >}}** — Atul Gawande
-
-Not a software book, but the most important book I've read about systematic verification. How checklists prevent failures in aviation, surgery, and construction. Directly applicable to deployment, incident response, and code review.
+Two books that don't fit neatly elsewhere but belong on every engineer's shelf:
 
 **{{< amazon asin="0988262592" title="The Phoenix Project" >}}** ⭐ — Gene Kim
 
 Fiction that teaches DevOps principles through the story of a struggling IT organization. One of those books engineers pass around a team. Best read before Accelerate.
+
+**{{< amazon asin="0312430000" title="The Checklist Manifesto" >}}** — Atul Gawande
+
+Not a software book, but the most important book I've read about systematic verification. How checklists prevent failures in aviation, surgery, and construction. Directly applicable to deployment runbooks, incident response, and code review checklists.
 
 ---
 
@@ -166,7 +166,7 @@ The career map for engineering leadership — from senior IC to tech lead to eng
 
 Care personally, challenge directly. The framework for giving honest feedback without being cruel. Changes how you run 1:1s and code reviews.
 
-**{{< amazon asin="0679762884" title="High Output Management" >}}** — Andrew Grove
+**{{< amazon asin="0679762884" title="High Output Management" >}}** ⭐ — Andrew Grove
 
 Andy Grove's masterwork on management as leverage. Output of a manager = output of their team. Meetings, decision-making, performance reviews. The management bible.
 
@@ -190,7 +190,7 @@ The playbook for joining a new organization or taking a new role. How to acceler
 
 ## Teamwork
 
-**{{< amazon asin="0787960756" title="The Five Dysfunctions of a Team" >}}** — Patrick Lencioni
+**{{< amazon asin="0787960756" title="The Five Dysfunctions of a Team" >}}** ⭐ — Patrick Lencioni
 
 Absence of trust → fear of conflict → lack of commitment → avoidance of accountability → inattention to results. The diagnostic pyramid for why teams fail. Written as a business fable.
 
@@ -280,7 +280,7 @@ How companies create value for shareholders — cash flow, return on invested ca
 
 Empirical research on how founding decisions determine startup outcomes. Co-founder conflicts, hiring, equity splits. Essential for engineers considering startup roles or founding a company.
 
-**{{< amazon asin="1578645018" title="Poor Charlie's Almanack" >}}** — Charlie Munger
+**{{< amazon asin="1953953212" title="Poor Charlie's Almanack" >}}** — Charlie Munger
 
 Mental models, multidisciplinary thinking, inversion, avoiding stupidity. Munger's approach to decision-making applies directly to engineering and system design tradeoffs.
 
@@ -298,9 +298,7 @@ Most people read the same way they learned to in school: start at page one, proc
 
 The book that formalizes the Zettelkasten system — developed by sociologist Niklas Luhmann, who published 70 books and 400+ papers using nothing but a box of index cards linked to each other. The core idea: a note that doesn't connect to anything else is just storage. A note that links is thinking.
 
-When I left Workiva to join Google, I was intimidated by the writing culture. I sat down with these two books before my first week and they gave me a reframe that stuck: writing isn't how you record what you already know. It's how you figure out what you actually think.
-
-I wrote a full post on putting this into practice — covering Zettelkasten for engineers, [Logseq](https://logseq.com/) and [Obsidian](https://obsidian.md/) as tools, and [Stelekit](https://github.com/tstapler/stelekit), a sync tool I built for managing my own vault: **[Building a Second Brain for Engineering Work →](/blog/second-brain-engineering/)**
+These two books are also the foundation of a practice I've written about separately: the Zettelkasten method — building a connected, permanent knowledge base where reading compounds instead of evaporates. That post covers the method itself, Logseq and Obsidian as tools, and Stelekit, a sync tool I built for managing my own vault: **[Building a Second Brain for Engineering Work →](/blog/second-brain-engineering/)**
 
 ---
 
@@ -308,13 +306,13 @@ I wrote a full post on putting this into practice — covering Zettelkasten for 
 
 Foundational habits and systems that amplify everything else.
 
-**{{< amazon asin="0735211299" title="Atomic Habits" >}}** — James Clear
-
-Systems over goals. Small improvements compound. The 1% better framework. Practical implementation of habit loops for learning and professional development.
-
 **{{< amazon asin="081298160X" title="The Power of Habit" >}}** ⭐ — Charles Duhigg
 
-The neuroscience behind habit loops: cue, routine, reward. Explains organizational habits and culture change alongside personal habits.
+The neuroscience behind habit loops: cue, routine, reward. Explains *why* habits form and how to change them at the mechanism level. Covers organizational habits too — useful for understanding why engineering teams repeat the same dysfunctions.
+
+**{{< amazon asin="0735211299" title="Atomic Habits" >}}** — James Clear
+
+The practical companion to Power of Habit. Where Duhigg explains the science, Clear gives you the implementation: identity-based change, habit stacking, environment design, the two-minute rule. Read Power of Habit first for the mental model, then Atomic Habits to act on it.
 
 ---
 
