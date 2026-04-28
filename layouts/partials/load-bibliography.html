@@ -21,7 +21,7 @@
     {{- else if and $currentEntry (strings.Contains $trimmedLine "=") -}}
       {{- $parts  := split (trim $trimmedLine " \t") "=" -}}
       {{- $key    := trim (index $parts 0) " \t" | lower -}}
-      {{- $value  := trim (trim (index $parts 1) " \t,") "\"{}"-}}
+      {{- $value  := trim (trim (trim (index $parts 1) " \t,") "{}") "\"" -}}
       {{- $value   = replace $value "{" "" -}}
       {{- $value   = replace $value "}" "" -}}
       {{- $currentEntry = merge $currentEntry (dict $key $value) -}}

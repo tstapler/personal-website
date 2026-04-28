@@ -198,4 +198,4 @@ For production JVM services with blocking I/O and mixed-experience teams, I'd re
 
 The thing I didn't understand early on: the color problem isn't a solvable API design question. It's a consequence of the execution model. You can make the colors cheap (virtual threads), make them a compile-time guarantee (IO monad), or accept them as an operational cost (async/await, coroutines). You can't make them disappear while keeping M:N scheduling and a shared mutable world.
 
-{{< bibliography file="structured-concurrency-footgun.bib" >}}
+{{< bibliography file="structured-concurrency-footgun.bib" />}}
