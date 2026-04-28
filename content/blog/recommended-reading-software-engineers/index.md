@@ -232,7 +232,7 @@ The science of why people say yes. Reciprocity, commitment, social proof, author
 
 **{{< amazon asin="189200528X" title="Nonviolent Communication" >}}** — Marshall Rosenberg
 
-Observations vs. evaluations, needs vs. strategies, requests vs. demands. A different lens for conflict resolution and engineering team dynamics.
+The best book I've read on communication — for work, relationships, and marriage. Observations vs. evaluations, needs vs. strategies, requests vs. demands. Most conflict, once you apply this framework, turns out to be two people with unmet needs talking past each other rather than a genuine disagreement. It belongs on this list as a professional book, but honestly the personal application is just as significant. Buy a second copy for your spouse.
 
 ---
 
