@@ -63,11 +63,11 @@ The daily journal as the capture point is the key design choice: it removes the 
 
 ## Syncing Across Devices: Stelekit
 
-One friction point with local-first tools is synchronization. Logseq and Obsidian both have paid sync options, but if you want full control over where your notes live — and as an engineer, you probably do — you need something else.
+Six years into using Logseq, the Android app became unusable for me. Cold boot: over 20 seconds before I could write anything. If the app got backgrounded and Android reclaimed its memory, I'd come back to another full load. The cause was architectural — the non-database version of Logseq loaded every journal file into memory on startup. Six years of daily notes is a lot of journal files.
 
-The naive answer is "just use git." The problem is that Logseq's database is not designed for clean diffs and conflict resolution. Notes modified on two machines produce merge conflicts that git can't resolve automatically, and the Logseq sync tooling has historically been unreliable on Linux.
+I looked into contributing a fix. Logseq's mobile app is written in ClojureScript, and after spending time with it I decided that wasn't the path I wanted to take. Instead I used LLMs to help me build [Stelekit](https://github.com/tstapler/stelekit) — a Logseq-compatible rewrite in Kotlin with Compose Multiplatform. The goal was straightforward: fast startup, lazy loading, and a codebase I could actually reason about across Android, desktop, and anything else I wanted to target later.
 
-I built [Stelekit](https://github.com/tstapler/stelekit) to handle this. It manages syncing a Logseq vault across multiple machines using a git-based approach that handles the conflict patterns Logseq actually produces. Everything stays in version control, nothing goes to a third-party cloud, and the sync is fast enough that I don't think about it. It runs on Linux and macOS. If you're running Logseq without a sync solution and want to stay local-first, it's worth a look.
+The sync problem came along for the ride. Logseq's vault is plain Markdown on disk, but notes modified on two machines produce merge conflicts that git can't resolve cleanly on its own. Stelekit handles the conflict patterns Logseq actually produces, keeps everything in version control, and doesn't require a subscription or a third-party cloud. If you're running Logseq and hitting the same performance wall on mobile — or just want sync that you control — it's worth a look.
 
 ---
 
