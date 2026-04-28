@@ -1,6 +1,6 @@
 +++
-title = "Why Every Engineer Should Keep a Zettelkasten"
-description = "Engineering journaling isn't a diary. It's a second brain — and the difference between engineers who compound their knowledge and engineers who start from scratch every time."
+title = "Building a Second Brain for Engineering Work"
+description = "Most engineers treat learning as consumption. A Zettelkasten turns it into something that compounds — here's how to build one with Logseq or Obsidian."
 summary = "How I use Zettelkasten, Logseq, and a custom sync tool to build a permanent, connected knowledge base from my engineering work."
 categories = ["Career Development", "Productivity"]
 tags = ["zettelkasten", "note-taking", "logseq", "obsidian", "engineering", "learning", "knowledge-management"]

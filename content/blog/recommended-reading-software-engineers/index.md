@@ -300,7 +300,7 @@ The book that formalizes the Zettelkasten system — developed by sociologist Ni
 
 When I left Workiva to join Google, I was intimidated by the writing culture. I sat down with these two books before my first week and they gave me a reframe that stuck: writing isn't how you record what you already know. It's how you figure out what you actually think.
 
-I wrote a full post on putting this into practice — covering Zettelkasten for engineers, [Logseq](https://logseq.com/) and [Obsidian](https://obsidian.md/) as tools, and [Stelekit](https://github.com/tstapler/stelekit), a sync tool I built for managing my own vault: **[Why Every Engineer Should Keep a Zettelkasten →](/blog/engineering-journaling-zettelkasten/)**
+I wrote a full post on putting this into practice — covering Zettelkasten for engineers, [Logseq](https://logseq.com/) and [Obsidian](https://obsidian.md/) as tools, and [Stelekit](https://github.com/tstapler/stelekit), a sync tool I built for managing my own vault: **[Building a Second Brain for Engineering Work →](/blog/engineering-journaling-zettelkasten/)**
 
 ---
 
