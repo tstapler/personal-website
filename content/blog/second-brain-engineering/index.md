@@ -67,7 +67,7 @@ Six years into using Logseq, the Android app became unusable for me. Cold boot: 
 
 I looked into contributing a fix. Logseq's mobile app is written in ClojureScript, and after spending time with it I decided that wasn't the path I wanted to take. Instead I used LLMs to help me build [Stelekit](https://github.com/tstapler/stelekit) — a Logseq-compatible rewrite in Kotlin with Compose Multiplatform. The goal was straightforward: fast startup, lazy loading, and a codebase I could actually reason about across Android, desktop, and anything else I wanted to target later.
 
-The sync problem came along for the ride. Logseq's vault is plain Markdown on disk, but notes modified on two machines produce merge conflicts that git can't resolve cleanly on its own. Stelekit handles the conflict patterns Logseq actually produces, keeps everything in version control, and doesn't require a subscription or a third-party cloud. If you're running Logseq and hitting the same performance wall on mobile — or just want sync that you control — it's worth a look.
+If you're running Logseq and hitting the same performance wall on mobile, it's worth a look.
 
 ---
 
