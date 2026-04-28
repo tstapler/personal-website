@@ -70,6 +70,10 @@ Companion to Clean Code. Shifts focus from the code to the person writing it —
 
 A useful counterweight to Clean Code — argues against excessive decomposition and explores complexity as the root cause of software problems. Read this after Clean Code to sharpen your judgment.
 
+**{{< amazon asin="1633439933" title="Effective Software Testing" >}}** — Mauricio Aniche
+
+A developer's guide to testing strategy: boundary analysis, structural testing, mocking, testability design, and when to apply each technique. More rigorous than the testing chapters in Pragmatic Programmer or Clean Code — read this when you want to go deeper than "write more tests."
+
 **{{< amazon asin="149207800X" title="Head First Design Patterns" >}}** — Freeman & Robson
 
 Accessible entry point to GoF design patterns. Far more readable than the original Gang of Four book.
@@ -99,6 +103,14 @@ Brooks' Law: adding people to a late project makes it later. No Silver Bullet. F
 **{{< amazon asin="0321125215" title="Domain-Driven Design" >}}** — Eric Evans
 
 Ubiquitous language, bounded contexts, aggregates. Essential for engineers building complex business software. Heavy — pair with *Implementing Domain-Driven Design* (Vernon Vaughn) as a companion.
+
+**{{< amazon asin="1492040347" title="Database Internals" >}}** — Alex Petrov
+
+Where DDIA gives you the what and why of distributed data systems, Database Internals gives you the how: B-trees, LSM trees, storage engines, consensus algorithms, and distributed system implementation details. Read after DDIA when you want to go one level deeper.
+
+**{{< amazon asin="3950307826" title="SQL Performance Explained" >}}** — Markus Winand
+
+The book behind [Use the Index, Luke](https://use-the-index-luke.com/). Explains how indexes actually work — B-tree structure, composite index column order, index scans vs. full table scans, and why ORM-generated queries are often slow. Short, dense, and more useful for day-to-day backend work than most database books.
 
 ---
 
