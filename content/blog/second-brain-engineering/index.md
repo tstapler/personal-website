@@ -8,11 +8,11 @@ date = "2026-04-27"
 draft = false
 +++
 
-Three years into my career I ran into a former colleague at a conference. He asked about a distributed systems problem we'd both worked on. I couldn't remember how we'd solved it. Not the details — the whole thing. The decision, the tradeoffs, the reason we chose the approach we did. It had been two years and it was gone.
+I run Manjaro Linux on my laptop. If you've done the same, you know the experience: occasionally, after a restart, something stops cooperating. Screen goes black. A driver disappears. The system boots slowly for no obvious reason. Before I had a note-taking system, I'd burn an hour retracing my steps — digging through browser history, re-Googling searches I'd already run, trying to reconstruct what I'd tried and what had worked last time. Most of this was pre-LLM, so eventually I'd find the right incantation, fix it, and promptly forget everything I'd just learned.
 
-He pulled out his phone and read me the answer from a note he'd written the week the project shipped.
+Now I search my vault for the laptop's name and get a chronological list of every issue I've hit and how I resolved each one. Which is how I finally noticed the pattern behind my slow boot times — not a driver problem, not a hardware failure, but LUKS encryption decrypting in software instead of using the hardware acceleration my CPU supported. Every boot, the system was doing that work in the wrong place. Upgrading to LUKS 2 and binding the key to the hardware rather than a software password at every decrypt fixed it permanently. I would not have put those dots together without the notes. I would have fixed it, forgotten it, and eventually debugged it again from scratch.
 
-That was the first time I understood that most engineers are treating learning as consumption: read a book, work a problem, close the tab. A year later it's gone — not because they're forgetful, but because they never externalized the thinking in a way that connects to anything else. The engineer with the note wasn't smarter. He just had a system.
+That's the cost of treating learning as consumption: read a book, work a problem, close the tab, fix the bug, move on. A year later it's gone — not because you're forgetful, but because you never externalized the thinking in a way that connects to anything else.
 
 Zettelkasten is the alternative.
 
