@@ -12,7 +12,7 @@ Every few months, someone I'm mentoring asks a version of the same question: "Wh
 
 For a long time I answered ad hoc — different books depending on what problem they were working through. But I kept recommending the same 40-odd books, and eventually I wrote them down. This is that list.
 
-It covers nine areas: software craft, systems thinking, product design, leadership, teamwork, communication, negotiation, business fundamentals, and learning how to learn. Not all of them are written for software engineers — several aren't even about software. That's intentional. The engineers I've seen grow fastest read broadly.
+It covers eleven areas: software craft, systems, DevOps and engineering culture, product design, leadership, teamwork, communication, negotiation, business fundamentals, learning how to learn, and personal effectiveness. Not all of them are written for software engineers — several aren't even about software. That's intentional. The engineers I've seen grow fastest read broadly.
 
 The ⭐ markers are the books I'd insist on if you can only read one per section. Start with those.
 
@@ -26,7 +26,7 @@ Most of this list is available on Audible, and honestly — that's how I've gott
 
 Audiobooks change that calculus. Sixty percent retention while doing the dishes or mowing the lawn beats zero percent retention from a physical copy sitting on the nightstand. You're not going to annotate *High Output Management* in the margins anyway — but you can finish it in four commutes and walk away with the mental model that matters.
 
-The exceptions are the ones that genuinely reward slow reading and note-taking: *Designing Data-Intensive Applications*, *Domain-Driven Design*, *How to Read a Book*, and anything you're reading syntopically alongside other books on the same topic. Those deserve paper and a pen.
+The exceptions are the ones that genuinely reward slow reading and note-taking: *Designing Data-Intensive Applications*, *Domain-Driven Design*, *How to Read a Book*, and anything you're reading syntopically alongside other books on the same topic. Those deserve dedicated focus and active note-taking — read them when you can sit down and engage, not while doing something else.
 
 Everything else: put it in your ears and get on with your life.
 
@@ -38,7 +38,7 @@ Before anything else, read these two back-to-back:
 
 **How to Read a Book → How to Take Smart Notes**
 
-They change how you engage with everything else on this list.
+*How to Read a Book* teaches you to read at four levels — most engineers never get past level two. *How to Take Smart Notes* gives you a system for retaining and connecting what you read. Together they change how you engage with everything else on this list. (Full context in the [Learning & Knowledge Management](#learning--knowledge-management) section below.)
 
 Then work by career stage:
 
@@ -46,7 +46,7 @@ Then work by career stage:
 
 **Mid career (3–7 years):** Designing Data-Intensive Applications → Accelerate → The Five Dysfunctions of a Team → Radical Candor → The Manager's Path → Made to Stick → Good Strategy Bad Strategy
 
-**Senior / Staff / Lead:** Software Engineering at Google → High Output Management → An Elegant Puzzle → Domain-Driven Design → The Mythical Man-Month → The Effective Executive → Getting to Yes
+**Senior / Staff / Lead:** High Output Management → An Elegant Puzzle → Domain-Driven Design → The Mythical Man-Month → The Effective Executive
 
 ---
 
@@ -54,7 +54,7 @@ Then work by career stage:
 
 These books shape how engineers think about their work day to day.
 
-**{{< amazon asin="0135957052" title="The Pragmatic Programmer" >}}** — Andy Hunt & David Thomas
+**{{< amazon asin="0135957052" title="The Pragmatic Programmer" >}}** ⭐ — Andy Hunt & David Thomas
 
 The single best book for early-to-mid career engineers. DRY, broken windows, tracer bullets, career investment. These principles predate Agile and have outlasted it. Start every mentee here.
 
@@ -66,13 +66,17 @@ Establishes vocabulary and discipline for code quality: naming, functions, comme
 
 Companion to Clean Code. Shifts focus from the code to the person writing it — saying no, estimating honestly, professionalism under pressure. Often overlooked; shouldn't be.
 
-**{{< amazon asin="0134757599" title="Refactoring" >}}** — Martin Fowler
-
-Systematic catalog of how to improve code without changing behavior. Required for anyone working in a real codebase. Pairs directly with Clean Code.
-
 **{{< amazon asin="173210221X" title="A Philosophy of Software Design" >}}** — John Ousterhout
 
 A useful counterweight to Clean Code — argues against excessive decomposition and explores complexity as the root cause of software problems. Read this after Clean Code to sharpen your judgment.
+
+**{{< amazon asin="149207800X" title="Head First Design Patterns" >}}** — Freeman & Robson
+
+Accessible entry point to GoF design patterns. Far more readable than the original Gang of Four book.
+
+**{{< amazon asin="0321127420" title="Patterns of Enterprise Application Architecture" >}}** — Martin Fowler
+
+The reference catalog for enterprise software design. Don't read cover to cover — reach for it when you encounter a problem it names.
 
 ---
 
@@ -83,10 +87,6 @@ For engineers moving from writing code to designing systems.
 **{{< amazon asin="1449373321" title="Designing Data-Intensive Applications" >}}** ⭐ — Martin Kleppmann
 
 "The Wild Boar Book." Definitive guide to databases, distributed systems, replication, consistency, and stream processing. Required for any backend engineer working at scale. Dense — take notes.
-
-**{{< amazon asin="1492082791" title="Software Engineering at Google" >}}** — Winters, Manshreck & Wright
-
-Available free online. Documents how Google manages 50,000+ engineers on a 2B-line codebase. The key lens shift: from writing code to maintaining software over time. Introduces Hyrum's Law.
 
 **{{< amazon asin="1942788339" title="Accelerate" >}}** — Forsgren, Humble & Kim
 
@@ -100,19 +100,11 @@ Brooks' Law: adding people to a late project makes it later. No Silver Bullet. F
 
 Ubiquitous language, bounded contexts, aggregates. Essential for engineers building complex business software. Heavy — pair with *Implementing Domain-Driven Design* (Vernon Vaughn) as a companion.
 
-**{{< amazon asin="149207800X" title="Head First Design Patterns" >}}** — Freeman & Robson
-
-Accessible entry point to GoF design patterns. Far more readable than the original Gang of Four book.
-
-**{{< amazon asin="0321127420" title="Patterns of Enterprise Application Architecture" >}}** — Martin Fowler
-
-The reference catalog for enterprise software design. Don't read cover to cover — reach for it when you encounter a problem it names.
-
 ---
 
 ## DevOps & Engineering Culture
 
-Two books that don't fit neatly elsewhere but belong on every engineer's shelf:
+The books that change how engineering teams operate — how work flows, how failures get prevented, and why the best teams move fast without breaking things.
 
 **{{< amazon asin="0988262592" title="The Phoenix Project" >}}** ⭐ — Gene Kim
 
@@ -148,10 +140,6 @@ Practical methodology for rapid design and testing. Good for learning to move fa
 
 Practical companion to Lean Startup. Detailed process for finding product-market fit. Strong framework for product discovery work.
 
-**{{< amazon asin="0875845851" title="The Innovator's Dilemma" >}}** — Clayton Christensen
-
-Why great companies fail when faced with disruptive innovation. Essential context for engineers at established companies who wonder why certain decisions get made.
-
 ---
 
 ## Leadership & Management
@@ -173,10 +161,6 @@ Andy Grove's masterwork on management as leverage. Output of a manager = output 
 **{{< amazon asin="1732265186" title="An Elegant Puzzle" >}}** — Will Larson
 
 Systems thinking applied to engineering management. Reorgs, technical debt, succession planning, organizational design. Written by someone who has managed at Digg, Uber, Stripe, and Calm.
-
-**{{< amazon asin="1680507249" title="Become an Effective Software Engineering Manager" >}}** — James Stanier
-
-Practical tactical guide for engineers transitioning into management. Published by Pragmatic Bookshelf — same audience as The Pragmatic Programmer.
 
 **{{< amazon asin="0062574345" title="The Effective Executive" >}}** — Peter F. Drucker
 
@@ -202,10 +186,6 @@ The human side of software development. Environment, team jelling, and why most 
 
 Why meetings fail and how to fix them. Short, practical, written as fiction like Five Dysfunctions.
 
-**{{< amazon asin="1101980087" title="The Right Kind of Crazy" >}}** — Adam Steltzner
-
-The NASA engineer who landed Curiosity on Mars. High-stakes teamwork, managing uncertainty, and creative problem solving under real constraints.
-
 ---
 
 ## Communication
@@ -224,7 +204,7 @@ The framework for navigating high-stakes conversations: how to stay in dialogue 
 
 Why some ideas survive and others die. Simplicity, unexpectedness, concreteness, credibility, emotions, stories. The framework for technical communication and engineering proposals.
 
-**{{< amazon asin="006124189X" title="Influence" >}}** ⭐ — Robert Cialdini
+**{{< amazon asin="006124189X" title="Influence" >}}** — Robert Cialdini
 
 The science of why people say yes. Reciprocity, commitment, social proof, authority, liking, scarcity. Equally useful for understanding how you're being influenced and how to persuade more effectively.
 
@@ -236,23 +216,11 @@ Observations vs. evaluations, needs vs. strategies, requests vs. demands. A diff
 
 ## Negotiation
 
-Negotiation is a daily activity for engineers — priorities, deadlines, scope, compensation.
+Negotiation is a daily activity for engineers — priorities, deadlines, scope, compensation. One book covers this better than any other I've found.
 
 **{{< amazon asin="0062407805" title="Never Split the Difference" >}}** ⭐ — Chris Voss
 
-Former FBI hostage negotiator. Tactical empathy, mirroring, labeling, the accusation audit. The most immediately practical negotiation book. Start here.
-
-**{{< amazon asin="0143118757" title="Getting to Yes" >}}** — Roger Fisher
-
-The Harvard Negotiation Project framework. Principled negotiation: separate people from the problem, focus on interests not positions, invent options for mutual gain.
-
-**{{< amazon asin="0553371312" title="Getting Past No" >}}** — William Ury
-
-Ury's sequel to Getting to Yes, focused specifically on negotiating with difficult people. The BATNA concept. Read alongside Getting to Yes.
-
-**{{< amazon asin="0609608002" title="Start with NO" >}}** — Jim Camp
-
-Contrarian take: the goal isn't agreement, it's the *right* agreement. Teaches you to be comfortable with "no" as an outcome, which makes you a stronger negotiator.
+Former FBI hostage negotiator. Tactical empathy, mirroring, labeling, the accusation audit. The most immediately practical negotiation book on the market.
 
 ---
 
@@ -272,7 +240,7 @@ Most strategy is "fluff" — goals masquerading as strategy. Real strategy is di
 
 How companies create new market space instead of competing in existing ones. Good for product and platform engineers thinking about differentiation.
 
-**{{< amazon asin="0470424605" title="Value: The Four Cornerstones of Corporate Finance" >}}** ⭐ — McKinsey
+**{{< amazon asin="0470424605" title="Value: The Four Cornerstones of Corporate Finance" >}}** — McKinsey
 
 How companies create value for shareholders — cash flow, return on invested capital, growth. Translates financial thinking to engineering decisions about build vs. buy, technical debt, and investment.
 
