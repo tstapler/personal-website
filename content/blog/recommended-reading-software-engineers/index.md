@@ -266,13 +266,17 @@ How companies create new market space instead of competing in existing ones. Goo
 
 How companies create value for shareholders — cash flow, return on invested capital, growth. Translates financial thinking to engineering decisions about build vs. buy, technical debt, and investment.
 
-**{{< amazon asin="0691149135" title="The Founder's Dilemmas" >}}** ⭐ — Noam Wasserman
+**{{< amazon asin="0691149135" title="The Founder's Dilemmas" >}}** — Noam Wasserman
 
 Empirical research on how founding decisions determine startup outcomes. Co-founder conflicts, hiring, equity splits. Essential for engineers considering startup roles or founding a company.
 
-**{{< amazon asin="1953953212" title="Poor Charlie's Almanack" >}}** — Charlie Munger
+**[Critical Business Skills for Success](https://shop.thegreatcourses.com/critical-business-skills-for-success)** — The Great Courses
 
-Mental models, multidisciplinary thinking, inversion, avoiding stupidity. Munger's approach to decision-making applies directly to engineering and system design tradeoffs.
+A lecture series covering strategy, finance, marketing, operations, and leadership in a format that's easier to absorb than a textbook. Good for engineers who want a structured foundation in how businesses actually function without committing to a shelf of individual books. Available as audio — works well on a commute.
+
+**{{< amazon asin="1953953212" title="Poor Charlie's Almanack" >}}** ⭐ — Charlie Munger
+
+Mental models, multidisciplinary thinking, inversion, avoiding stupidity. Wide-ranging and genuinely fun to read — Munger's collected speeches and commentary cover everything from psychology to physics to business, and the connections he draws are exactly the kind of cross-domain thinking the rest of this list is trying to build.
 
 ---
 
