@@ -106,6 +106,10 @@ Brooks' Law: adding people to a late project makes it later. No Silver Bullet. F
 
 Ubiquitous language, bounded contexts, aggregates. Essential for engineers building complex business software. Heavy — pair with *Implementing Domain-Driven Design* (Vernon Vaughn) as a companion.
 
+**{{< amazon asin="1603580557" title="Thinking in Systems" >}}** — Donella Meadows
+
+Not a software book, but the clearest explanation of how systems actually behave: stocks and flows, feedback loops, delays, and leverage points. Once you have this vocabulary you start seeing it everywhere — in distributed systems, in org design, in why software rewrites so often reproduce the problems they were meant to fix.
+
 **{{< amazon asin="1492040347" title="Database Internals" >}}** — Alex Petrov
 
 Where DDIA gives you the what and why of distributed data systems, Database Internals gives you the how: B-trees, LSM trees, storage engines, consensus algorithms, and distributed system implementation details. Read after DDIA when you want to go one level deeper.
