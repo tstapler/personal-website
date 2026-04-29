@@ -6,7 +6,7 @@ categories = ["Software Engineering"]
 tags = ["concurrency", "async", "javascript", "python", "kotlin", "java", "haskell", "virtual-threads", "coroutines", "io-monad"]
 keywords = ["colored functions async await", "python asyncio", "kotlin coroutines blocking", "java virtual threads project loom", "haskell io monad", "structured concurrency", "async runtimes comparison"]
 date = "2026-04-26"
-draft = true
+draft = false
 bibliography = "structured-concurrency-footgun.bib"
 +++
 
