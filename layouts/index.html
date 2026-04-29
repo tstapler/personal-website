@@ -1,0 +1,56 @@
+{{ define "main" }}
+  {{ with .Site.Params.header }}
+  <div id="particles-js">
+    <div id="intro-masthead" class="ui inverted vertical masthead center aligned segment">
+      <div class="ui cards">
+        <div id="intro-header" class="ui centered card">
+          <h1>{{ .name }}</h1>
+          <p class="site-email">{{ .email }}</p>
+          <p>{{ .description }}</p>
+          <div class="hero-cta">
+            <a class="ui primary button" href="/blog/">Read My Blog</a>
+            <a class="ui secondary button" href="/projects/">View Projects</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  {{ end }}
+
+  {{ $techs := .Site.Data.technologies.technologies }}
+  {{ if $techs }}
+  <div class="tech-marquee-section ui inverted vertical striped segment">
+    <div class="ui center aligned text container" style="margin-bottom:1.5rem">
+      <h2 class="ui inverted icon header">
+        <i class="settings icon"></i> Technologies
+      </h2>
+      <p>In order to keep myself sharp, I'm constantly honing my skills and mastering new technologies</p>
+    </div>
+    <div class="tech-marquee-viewport">
+      <div class="tech-marquee-track">
+        {{/* First copy */}}
+        {{ range $techs }}
+        <div class="tech-marquee-item">
+          <img src="{{ .icon_url }}" alt="{{ .name }} logo" class="tech-marquee-logo" loading="lazy">
+          <span class="tech-marquee-label">{{ .name }}</span>
+        </div>
+        {{ end }}
+        {{/* Duplicate for seamless infinite loop */}}
+        {{ range $techs }}
+        <div class="tech-marquee-item" aria-hidden="true">
+          <img src="{{ .icon_url }}" alt="" class="tech-marquee-logo" loading="lazy">
+          <span class="tech-marquee-label">{{ .name }}</span>
+        </div>
+        {{ end }}
+      </div>
+    </div>
+  </div>
+  {{ end }}
+{{ end }}
+
+{{ define "custom_pre_javascript" }}
+{{ range (resources.Match "js/homePage.bundle.js") }}
+{{ $bundle := . | resources.Minify | resources.Fingerprint "sha512"}}
+<script defer crossorigin="anonymous" src='{{ $bundle.RelPermalink }}' integrity='{{ $bundle.Data.Integrity }}'></script>
+{{end}}
+{{ end }}
