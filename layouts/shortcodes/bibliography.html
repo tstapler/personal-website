@@ -1,41 +1,11 @@
 {{- $scratch := .Page.Scratch -}}
-{{- $scratch.Delete "bib" -}}
-
-{{- $rawEntries := slice -}}
 {{- if .IsNamedParams -}}
-  {{- /* Read from file */ -}}
   {{- $bibFile := path.Join "content" .Page.File.Dir (.Get "file") -}}
-  {{- $rawEntries = split (readFile $bibFile) "\n" -}}
-{{- else -}}
-  {{- /* Parse inline bibtex */ -}}
-  {{- $rawEntries = split .Inner "\n" -}}
-{{- end -}}
-
-{{- $currentEntry := dict -}}
-{{- range $line := $rawEntries -}}
-  {{- $trimmedLine := trim $line " \t{}%" -}}
-  {{- if strings.HasPrefix $trimmedLine "@" -}}
-    {{- if gt (len $currentEntry) 0 -}}
-      {{- $scratch.Add "bib" (slice $currentEntry) -}}
-    {{- end -}}
-    {{- $parts := split $trimmedLine "{" -}}
-    {{- $typeParts := split (index $parts 0) "," -}}
-    {{- $currentEntry = dict 
-        "type" (trim (replace (index $typeParts 0) "@" "") " \t")
-        "id" (trim (index $parts 1) " ,") 
-    -}}
-  {{- else if and $currentEntry (strings.Contains $trimmedLine "=" ) -}}
-    {{- $parts := split (trim $trimmedLine " \t") "=" -}}
-    {{- $key := trim (index $parts 0) " \t" | lower -}}
-    {{- $value := trim (trim (index $parts 1) " \t,") "\"{}" -}}
-    {{- $value = replace $value "{" "" -}}
-    {{- $value = replace $value "}" "" -}}
-    {{- $currentEntry = merge $currentEntry (dict $key $value) -}}
-  {{- end -}}
-{{- end -}}
-
-{{- if gt (len $currentEntry) 0 -}}
-  {{- $scratch.Add "bib" (slice $currentEntry) -}}
+  {{- $lines   := split (readFile $bibFile) "\n" -}}
+  {{- partial "load-bibliography.html" (dict "Page" .Page "RawLines" $lines) -}}
+{{- else if .Inner -}}
+  {{- $lines := split .Inner "\n" -}}
+  {{- partial "load-bibliography.html" (dict "Page" .Page "RawLines" $lines) -}}
 {{- end -}}
 
 <div class="bibliography">
@@ -44,11 +14,13 @@
   <div id="ref-{{ $entry.id }}" class="bib-entry">
     <span class="bib-number">[{{ add $index 1 }}]</span>
     <div class="bib-content">
-      {{- if $entry.author }}<span class="bib-author">{{ $entry.author }}.</span>{{ end -}}
+      {{- if $entry.author }}<span class="bib-author">{{ $entry.author }}. </span>{{ end -}}
       <span class="bib-title">{{ $entry.title }}.</span>
-      {{- if $entry.journal }}<em class="bib-journal">{{ $entry.journal }}</em>{{ end -}}
-      {{- if $entry.year }}<span class="bib-year">({{ $entry.year }})</span>{{ end -}}
-      {{- if $entry.url }} <a href="{{ $entry.url }}" class="bib-link">↗</a>{{ end -}}
+      {{- if $entry.journal }} <em class="bib-journal">{{ $entry.journal }}.</em>{{ end -}}
+      {{- if $entry.howpublished }} <span class="bib-howpublished">{{ $entry.howpublished }}.</span>{{ end -}}
+      {{- if $entry.institution }} <span class="bib-institution">{{ $entry.institution }}.</span>{{ end -}}
+      {{- if $entry.year }} <span class="bib-year">({{ $entry.year }})</span>{{ end -}}
+      {{- if $entry.url }} <a href="{{ $entry.url }}" class="bib-link" target="_blank" rel="noopener noreferrer">↗</a>{{ end -}}
     </div>
   </div>
   {{- end -}}

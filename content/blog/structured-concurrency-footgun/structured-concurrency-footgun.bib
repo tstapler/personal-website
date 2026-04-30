@@ -1,0 +1,244 @@
+@misc{nystrom2015color,
+  author       = {Nystrom, Bob},
+  title        = {What Color is Your Function?},
+  year         = {2015},
+  url          = {https://journal.stuffwithstuff.com/2015/02/01/what-color-is-your-function/},
+  urldate      = {2026-04-26},
+  howpublished = {Personal blog},
+  annote       = {The canonical framing of the async contagion problem. Nystrom shows that
+                  async/await languages have two "colors" of functions — sync and async —
+                  and that sync callers cannot call async functions without themselves becoming
+                  async. This propagation is the core architectural cost of the async/await
+                  model. The post predates most mainstream async/await adoption and has aged
+                  well: every point applies equally to Python asyncio, Kotlin coroutines, and
+                  TypeScript. Required reading before opining on async primitives.}
+}
+
+@techreport{pep3156asyncio,
+  author       = {van Rossum, Guido},
+  title        = {PEP 3156 -- Asynchronous IO Support Rebooted: the "asyncio" Module},
+  year         = {2012},
+  institution  = {Python Software Foundation},
+  url          = {https://peps.python.org/pep-3156/},
+  urldate      = {2026-04-26},
+  annote       = {The original design document for Python's asyncio module. Establishes the
+                  event loop abstraction, coroutine protocol, and transport/protocol layering.
+                  Useful for understanding why asyncio was designed the way it was — particularly
+                  the decision to use a single-threaded event loop rather than thread-based
+                  concurrency. The compatibility concerns with the existing synchronous ecosystem
+                  are acknowledged but not fully resolved.}
+}
+
+@techreport{pep492asyncawait,
+  author       = {Selivanov, Yury},
+  title        = {PEP 492 -- Coroutines with async and await syntax},
+  year         = {2015},
+  institution  = {Python Software Foundation},
+  url          = {https://peps.python.org/pep-0492/},
+  urldate      = {2026-04-26},
+  annote       = {Introduced native coroutine syntax (async def / await) in Python 3.5,
+                  replacing the generator-based @asyncio.coroutine decorator. The PEP is
+                  notable for explicitly acknowledging that coroutines form a separate "color"
+                  of function — calling them "a new kind of generator" with distinct typing.
+                  The coloring is visible in the type system: async def functions return
+                  Coroutine objects, not their declared return type.}
+}
+
+@misc{pythongil,
+  author       = {{Python Software Foundation}},
+  title        = {GlobalInterpreterLock},
+  year         = {2023},
+  url          = {https://wiki.python.org/moin/GlobalInterpreterLock},
+  urldate      = {2026-04-26},
+  howpublished = {Python Wiki},
+  annote       = {Overview of the Global Interpreter Lock (GIL) and its implications for
+                  Python threading. The GIL prevents true parallel execution of Python
+                  bytecode across threads, which is why asyncio (single-threaded cooperative
+                  multitasking) is competitive with threading for I/O-bound workloads.
+                  Note: PEP 703 (making the GIL optional) was accepted in 2023; the
+                  implications for asyncio vs. threading tradeoffs will shift over time.}
+}
+
+@misc{reactorschedulers,
+  author       = {{Project Reactor Team}},
+  title        = {Threading and Schedulers},
+  year         = {2023},
+  url          = {https://projectreactor.io/docs/core/release/reference/apdx-reactorExtra.html},
+  urldate      = {2026-04-26},
+  howpublished = {Project Reactor Reference Documentation},
+  annote       = {Documents Reactor's scheduler model: Schedulers.parallel() (CPU-bound,
+                  fixed thread count), Schedulers.boundedElastic() (I/O-bound, bounded
+                  growth), and Schedulers.single(). The key operational risk: these are
+                  application-wide singletons by default. In a shared-deployment monolith,
+                  all reactive pipelines share the same thread pools. A single blocking
+                  call in any pipeline starves the entire application. The documentation
+                  recommends publishOn/subscribeOn for dispatcher switching but does not
+                  address the shared-singleton risk in monolithic deployments.}
+}
+
+@misc{kotlindispatchers,
+  author       = {{JetBrains}},
+  title        = {Coroutine Context and Dispatchers},
+  year         = {2023},
+  url          = {https://kotlinlang.org/docs/coroutine-context-and-dispatchers.html},
+  urldate      = {2026-04-26},
+  howpublished = {Kotlin Documentation},
+  annote       = {Official documentation for Kotlin coroutine dispatchers. Explains
+                  Dispatchers.Default (CPU-bound), Dispatchers.IO (blocking I/O, expandable
+                  pool), and Dispatchers.Main (UI thread). The critical gap not addressed
+                  here: the suspend modifier is a calling convention transformation, not an
+                  effect type. A suspend function that calls Thread.sleep() or blocking JDBC
+                  will compile without warning and will silently park the dispatcher thread.
+                  The documentation recommends withContext(Dispatchers.IO) for blocking calls
+                  but cannot enforce this at compile time.}
+}
+
+@misc{goracedetector,
+  author       = {{Go Team}},
+  title        = {Introducing the Go Race Detector},
+  year         = {2013},
+  url          = {https://go.dev/blog/race-detector},
+  urldate      = {2026-04-26},
+  howpublished = {The Go Blog},
+  annote       = {Introduces Go's built-in race detector (go test -race, go run -race).
+                  The race detector instruments memory accesses at compile time and reports
+                  data races at runtime. Relevant as a contrast to the blocking problem:
+                  Go's goroutine model makes blocking trivially safe (the runtime handles
+                  it transparently), but data races on shared mutable state remain possible.
+                  The race detector is the Go answer to that separate problem — observable,
+                  toolable, not requiring expert manual analysis.}
+}
+
+@misc{jep425virtualthreads,
+  author       = {{OpenJDK}},
+  title        = {JEP 425: Virtual Threads (Preview)},
+  year         = {2022},
+  url          = {https://openjdk.org/jeps/425},
+  urldate      = {2026-04-28},
+  howpublished = {OpenJDK Enhancement Proposal},
+  annote       = {The initial preview JEP for Project Loom virtual threads. Documents the
+                  core motivation: platform threads map 1:1 to OS threads, which carry
+                  ~1MB default stack allocation and incur OS scheduling overhead, limiting
+                  practical concurrency to a few thousand on typical hardware. Virtual threads
+                  instead allocate on the heap and are scheduled by the JVM, enabling millions
+                  of concurrent threads at low cost.}
+}
+
+@misc{reactordocs,
+  author       = {{Project Reactor Team}},
+  title        = {Reactor Core Reference Guide},
+  year         = {2024},
+  url          = {https://projectreactor.io/docs/core/release/reference/},
+  urldate      = {2026-04-28},
+  howpublished = {Project Reactor Reference Documentation},
+  annote       = {Official reference for Project Reactor. Documents the Flux and Mono types,
+                  backpressure handling, operator composition, and the publisher/subscriber
+                  contract from the Reactive Streams specification. The backpressure model
+                  is a genuine advantage over thread-per-request: a Flux can signal upstream
+                  producers to slow down when downstream can't keep up, preventing queue
+                  growth and heap exhaustion under load. The guide also covers schedulers,
+                  error handling, and testing utilities.}
+}
+
+@misc{datadogjvmprofiler,
+  author       = {{Datadog}},
+  title        = {Java Profiler},
+  year         = {2024},
+  url          = {https://docs.datadoghq.com/profiler/enabling/java/},
+  urldate      = {2026-04-28},
+  howpublished = {Datadog Documentation},
+  annote       = {Datadog's continuous JVM profiler uses async-profiler under the hood to
+                  capture CPU, wall-clock, allocation, and lock contention profiles with low
+                  overhead in production. For diagnosing Reactor scheduler starvation, the
+                  wall-clock profile is most useful: it shows threads blocked in BLOCKED state
+                  (waiting on a monitor) rather than merely WAITING (parked on a condition).
+                  This makes it possible to identify which code paths are parking OS threads
+                  in the shared scheduler pool without resorting to manual jstack captures
+                  and thread dump analysis.}
+}
+
+@misc{jep444virtualthreads,
+  author       = {{OpenJDK}},
+  title        = {JEP 444: Virtual Threads},
+  year         = {2023},
+  url          = {https://openjdk.org/jeps/444},
+  urldate      = {2026-04-26},
+  howpublished = {OpenJDK Enhancement Proposal},
+  annote       = {The specification for Java 21 virtual threads (Project Loom). Key details:
+                  virtual threads are cheap (few KB heap allocation vs ~1MB for platform
+                  threads), scheduled by the JVM rather than the OS, and unmount from their
+                  carrier thread on blocking operations. The pinning failure mode is documented:
+                  blocking inside synchronized blocks or native frames pins the virtual thread
+                  to its carrier, preventing unmounting. The JVM provides -Djdk.tracePinnedThreads=full
+                  to log pinning events with full stack traces — making the failure observable
+                  without expert jstack analysis.}
+}
+
+@misc{jep453structuredconcurrency,
+  author       = {{OpenJDK}},
+  title        = {JEP 453: Structured Concurrency (Preview)},
+  year         = {2023},
+  url          = {https://openjdk.org/jeps/453},
+  urldate      = {2026-04-26},
+  howpublished = {OpenJDK Enhancement Proposal},
+  annote       = {Preview API for structured concurrency in Java — the equivalent of Kotlin's
+                  coroutineScope. StructuredTaskScope provides a supervision tree: child tasks
+                  are cancelled when the scope closes, and exceptions propagate predictably.
+                  Still in preview as of Java 21/22, meaning the API may change and it is not
+                  recommended for production use without accepting upgrade risk. The gap between
+                  virtual threads (stable) and StructuredTaskScope (preview) means Java's
+                  virtual thread story lacks the lifecycle management ergonomics that Kotlin
+                  coroutines provide out of the box.}
+}
+
+@misc{haskellwikiio,
+  author       = {{Haskell Wiki Contributors}},
+  title        = {IO Inside},
+  year         = {2023},
+  url          = {https://wiki.haskell.org/IO_inside},
+  urldate      = {2026-04-26},
+  howpublished = {Haskell Wiki},
+  annote       = {Detailed explanation of Haskell's IO monad — what it is, how it works,
+                  and why it exists. The key insight: IO is not a special language feature
+                  but a type in the standard library. Functions that perform I/O have IO in
+                  their return type; pure functions cannot. The compiler enforces this: you
+                  cannot call an IO action from a pure context. This makes I/O boundaries
+                  permanently auditable from type signatures and eliminates an entire class
+                  of accidental side effects that would be silent runtime errors in other
+                  languages.}
+}
+
+@misc{ziodocs,
+  author       = {{ZIO Contributors}},
+  title        = {ZIO Documentation},
+  year         = {2023},
+  url          = {https://zio.dev/overview/},
+  urldate      = {2026-04-26},
+  howpublished = {ZIO Official Documentation},
+  annote       = {ZIO brings Haskell-style effect typing to Scala: ZIO[R, E, A] encodes
+                  the required environment (R), possible failure type (E), and success type
+                  (A) in the type signature. ZIO.blocking shifts execution to a blocking-aware
+                  thread pool and records the shift in the type. The result: I/O boundaries
+                  are visible in types, blocking vs non-blocking is structurally enforced,
+                  and testing pure logic requires no mocking infrastructure. The tradeoff is
+                  substantial ecosystem buy-in — ZIO has its own HTTP layer, database clients,
+                  and concurrency primitives that don't compose naturally with the broader
+                  Scala/Java ecosystem.}
+}
+
+@misc{effectts,
+  author       = {{Effect-TS Contributors}},
+  title        = {Effect: The best way to build robust apps in TypeScript},
+  year         = {2024},
+  url          = {https://effect.website/},
+  urldate      = {2026-04-26},
+  howpublished = {Effect-TS Official Website},
+  annote       = {Effect-TS ports ZIO's typed effect system to TypeScript. Effect[A, E, R]
+                  mirrors ZIO[R, E, A] — success type, error type, required services.
+                  Brings compile-time I/O boundary enforcement to the JavaScript ecosystem,
+                  where the async/await color problem is most acute. Still maturing; ecosystem
+                  coverage is narrower than ZIO's, and the learning curve is steep for
+                  TypeScript developers accustomed to async/await. Worth watching as a
+                  proof-of-concept that the IO monad framing can be applied to dynamic
+                  ecosystems.}
+}
