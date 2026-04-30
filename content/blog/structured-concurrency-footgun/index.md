@@ -1,211 +1,274 @@
 +++
-title = "The Long Road to Not Thinking About Concurrency"
-description = "From JavaScript's colored functions and Python's asyncio, through Kotlin coroutines and Reactor, to Java virtual threads and Haskell's IO monad — a decade of watching the ecosystem try to make concurrent I/O safe."
-summary = "Every language and runtime has a different answer to the same question: how do you write code that waits on I/O without wasting a thread? JavaScript gave us colored functions. Python copied that. Kotlin gave us coroutines that look synchronous but aren't. Java 21 gave us virtual threads that actually are synchronous. Haskell gave us the IO monad, which makes the whole question a type error. This is how my thinking about each of these evolved."
-categories = ["Software Engineering"]
-tags = ["concurrency", "async", "javascript", "python", "kotlin", "java", "haskell", "virtual-threads", "coroutines", "io-monad"]
-keywords = ["colored functions async await", "python asyncio", "kotlin coroutines blocking", "java virtual threads project loom", "haskell io monad", "structured concurrency", "async runtimes comparison"]
+title = "Structured Concurrency is a Footgun for Mixed-Experience Teams"
+description = "Kotlin coroutines make a promise the JVM's type system cannot enforce. For real-time web applications maintained by teams with mixed concurrency experience, that gap causes repeated, silent production failures. Java virtual threads are the safer default."
+summary = "The concurrency model you choose is an implicit contract with your entire team. Kotlin coroutines are brilliant engineering — but they make a promise the JVM's type system cannot enforce, and the failure modes are silent, gradual, and catastrophic. Here's why we deprecated Reactor the week virtual threads hit GA, and what we'd tell ourselves before we started."
+categories = ["Software Engineering", "Infrastructure"]
+tags = ["kotlin", "java", "concurrency", "virtual-threads", "coroutines", "jvm", "reactor", "project-loom", "platform-engineering"]
+keywords = ["kotlin coroutines blocking", "dispatcher starvation", "virtual threads vs coroutines", "project loom java 21", "structured concurrency risks", "reactor scheduler starvation", "blockhound", "mixed experience teams concurrency"]
 date = "2026-04-26"
-draft = false
-bibliography = "structured-concurrency-footgun.bib"
+draft = true
 +++
 
-The central problem of concurrent I/O is deceptively simple: you want to wait for the network without wasting a thread. Every language and runtime has landed on a different answer, and each answer tells you something about the tradeoffs they were willing to make, the audience they were optimizing for, and — often — what they'd do differently with hindsight.
+The concurrency model you choose is an implicit contract with your entire team. Kotlin coroutines are brilliant engineering — the M:N threading model, structured lifecycle, backpressure-aware flows, and coroutine scopes represent genuinely sophisticated thinking about asynchronous computation. But they make a promise the JVM's type system cannot enforce: that `suspend` functions are non-blocking. That promise is violated constantly in production code, the violations compile without warning, and the failure modes are silent, gradual, and catastrophic. For teams where not everyone deeply understands concurrency, this is a liability, not a feature.
 
-This is the order I encountered these ideas, and how my thinking about each one changed.
-
----
-
-## The Colored Functions Problem
-
-The best framing I know for why `async/await` is architecturally awkward comes from Bob Nystrom's 2015 post ["What Color is Your Function?"](https://journal.stuffwithstuff.com/2015/02/01/what-color-is-your-function/){{< cite "nystrom2015color" >}}. The premise: in an async/await language, functions have two colors — sync and async. The rules:
-
-- A sync function can call a sync function. Fine.
-- An async function can call either. Fine.
-- **A sync function cannot call an async function.** This is the footgun.
-
-The third rule means `async` is contagious. The moment you need to await anything, the function must be `async`. Every caller must then be `async`. Every caller's caller. You can't stop until you've recolored the entire call stack up to whatever top-level entry point accepts it. The type system didn't ask for this — it emerged as a consequence of the execution model.
-
-I ran into this in JavaScript before I had words for it. Add an `await` somewhere in a utility function and suddenly you're updating twelve callers, then their callers, wondering why a one-line change rippled through half the codebase.
-
-### JavaScript
-
-JavaScript is single-threaded. There is one call stack, one event loop, no preemption. The original concurrency model was callbacks: pass a function to `setTimeout`, `fs.readFile`, or `XMLHttpRequest` and it will be called when the operation completes. This works until you have multiple asynchronous dependencies, at which point it produces callback hell.
-
-Promises cleaned up the nesting. `async/await` made promise chains look synchronous. But the underlying model didn't change — you're still describing a continuation that will run when the event loop gets to it. The colors are still there; they're just less visible.
-
-```javascript
-// Looks like synchronous code — the color is invisible
-async function getUser(id) {
-  const row = await db.query('SELECT * FROM users WHERE id = $1', [id]);
-  return row.rows[0];
-}
-
-// Sync functions can't call it without becoming async themselves
-function computeSomething() {
-  const user = getUser(42); // Returns a Promise, not a User
-}
-```
-
-The reason JavaScript landed here is historical: there was no alternative. You cannot block the event loop — it's the only thread. M:N scheduling (many logical tasks, few OS threads) was the only model that makes sense for a single-threaded runtime. The color problem is an inherent consequence of that constraint, not a design failure.
-
-What I didn't appreciate at the time: JavaScript's constraint is also a feature. Because there's one thread, there are no data races on shared mutable state, as long as you don't yield. The model is coherent even if it's awkward to propagate.
-
-### Python
-
-Python's `asyncio` imported the JavaScript model almost directly: `async def`, `await`, a single-threaded event loop — same colors, same contagion rules. The difference is that Python already had threads and a rich synchronous ecosystem before `asyncio` arrived in 3.4.{{< cite "pep3156asyncio" >}} The friction is worse than in JavaScript, where async was the model from the start.
-
-```python
-import asyncio
-import httpx
-
-async def fetch_user(user_id: int) -> dict:
-    async with httpx.AsyncClient() as client:
-        response = await client.get(f"/users/{user_id}")
-        return response.json()
-
-# requests.get() called from async context blocks the entire event loop
-def legacy_fetch(url: str) -> str:
-    import requests
-    return requests.get(url).text  # Silent landmine in async context
-```
-
-The Python ecosystem split: `requests` vs `httpx`, `psycopg2` vs `asyncpg`, Flask vs FastAPI. Every popular library needed a rewrite or a wrapper. Code that worked in the sync world had to be audited before being called from async context — and libraries that internally used threads, blocking I/O, or `time.sleep()` became landmines that produced no warnings.
-
-The GIL complicates this further. Python threads exist, but the Global Interpreter Lock prevents true parallel execution of Python bytecode.{{< cite "pythongil" >}} `asyncio` is more efficient for I/O-bound workloads because it avoids thread context switching — but the programming model is more complex, and the async/sync divide is more painful precisely because the existing synchronous ecosystem is so large.
-
-What changed my thinking: the ecosystem split is a real, ongoing cost. A developer who reaches for `requests` inside an `asyncio` application won't get a type error or a clear runtime error — they'll get degraded performance, or in pathological cases, a hung event loop that requires knowing how the event loop works to diagnose.
+This isn't an argument against coroutines in general. It's an argument that for real-time web applications with mixed-experience teams and blocking I/O dependencies — which describes a large fraction of production JVM services — Java virtual threads have a substantially better risk profile.
 
 ---
 
-## Structured Concurrency: The JVM Attempt
+## A Real Production Failure Pattern
 
-The JVM has always had real OS threads — preemptive, parallel, expensive. For many years the answer to concurrent I/O on the JVM was "use a thread pool and blocking I/O." It works, but thread-per-request doesn't scale past a few thousand concurrent connections: OS threads carry ~1MB stack overhead by default,{{< cite "jep425virtualthreads" >}} context switching is expensive, and the scheduler knows nothing about your application's structure.
+We ran a Backend for Frontend serving real-time trader traffic. Latency-sensitive, always-on, and shared across multiple teams — each team owned their slice of the BFF, but the service was a monolith and the deployment was shared. On the frontend, RxJS. On the backend, Project Reactor on the JVM.
 
-Project Reactor and RxJava brought the reactive/event-loop model to the JVM. Kotlin coroutines tried to keep synchronous-looking code while achieving M:N scheduling underneath. Both ran into variants of the colored-function problem.
+Reactor promised us M:N scheduling: lightweight reactive pipelines, non-blocking I/O, the ability to handle thousands of concurrent in-flight requests on a handful of threads. That promise held in the happy path. What it didn't tell us was what would happen when any single team introduced a blocking call into their slice of the reactive pipeline.
 
-### Project Reactor
+Here's the specific mechanism: Reactor's schedulers — `Schedulers.boundedElastic()` and `Schedulers.parallel()` — are application-wide singletons by default. They're not owned by a team, they're not scoped to a request type, they're not namespaced to a feature. Every reactive pipeline in the entire application shares them. When a blocking call occupies a thread in `boundedElastic()`, that thread isn't available to handle any other team's request. When enough blocking calls pile up simultaneously, the scheduler saturates. Every request in the system slows down — not just the ones touching the team's code.
 
-Before cataloguing what went wrong, it's worth being precise about what Reactor gets right. Event-loop concurrency on the JVM is genuinely good at something: squeezing high throughput from a small thread count when the work is almost entirely I/O-bound.
+That's how it presented in production. General latency degradation. Slow database metrics that didn't match what the database was actually doing. P99s climbing without a clear localized cause. The first instinct was to look at the database, the downstream services, the network. Thread dumps eventually showed the real picture: Reactor scheduler threads sitting in `BLOCKED` state. But tracing which team's code was responsible required significant investigation — reading the thread dump was only the beginning, because identifying the call site in a shared reactive pipeline under load is not a one-step process.
 
-Reactor's `Flux` and `Mono` types give you a composable pipeline where each step is explicit about whether it runs on the caller, a specific scheduler, or the thread that completes the upstream operation. For services that are pure I/O fan-out — aggregate five upstream calls, merge, return — a reactive pipeline is a near-perfect fit. A handful of threads can service thousands of in-flight requests with no context switching overhead. Backpressure is built into the model: `Flux` can signal to upstream producers when it can't keep up, preventing the unbounded queue growth that kills thread-pool-based systems under load.{{< cite "reactordocs" >}}
+This happened five or six times. Not once, where you postmortem it and fix it. Repeatedly, across different engineers on different teams, across different quarters. The reason it kept happening is simple: **the compiler doesn't warn you.** An engineer joining one team had no way to know that calling a blocking API in the wrong scheduler context was a cross-team incident waiting to happen. It wasn't in the onboarding docs. Code review caught it sometimes — when the reviewer knew to look for it. Not always. The test suite didn't catch it, because the problematic load pattern didn't materialize under test.
 
-The model also enforces something by accident that turns out to be valuable: because there's no blocking allowed, every operation that reaches out to the network or disk must be explicitly modelled as a deferred value. The call graph is a declaration of what the system does, not a description of how threads move through it. For services where latency attribution matters, this is genuinely useful.
+Every engineer who introduced a block was competent. They were doing the obvious thing — using the synchronous client for a library they'd just integrated, or wrapping a legacy API call they didn't control. The tools gave them nothing. No compiler error. No IDE warning. No test failure. The first signal was production latency.
 
-The problems start when "no blocking" is a convention rather than a constraint.
+The fix was to deprecate Reactor and RxJS in new code the week virtual threads hit GA in Java 21. Old code was migrated incrementally. We haven't had a scheduler starvation incident since.
 
-### Kotlin Coroutines
+The lesson isn't "your engineers need better training." The lesson is that **this is a type system problem masquerading as a knowledge problem.** You cannot train your way out of a failure mode the compiler refuses to surface. Every new engineer who joins, every team that rotates oncall, every library upgrade that changes blocking behavior in a transitive dependency — they all reset the clock on when the next incident happens. The knowledge has to be re-taught because the tools don't encode it.
 
-Coroutines recolor functions with `suspend`. A `suspend` function can yield the underlying thread while waiting for I/O. Non-`suspend` functions cannot call `suspend` functions directly. The same contagion rules apply — though the color is explicit in the type signature rather than being a naming convention, which is arguably better than Python's runtime-only enforcement.
+---
 
-The model is genuinely elegant. `coroutineScope` gives you a supervision tree: child coroutines are cancelled if the parent is cancelled, exceptions propagate predictably, there are no fire-and-forget tasks leaking beyond their scope. `Flow` gives reactive stream semantics that read like sequential code. For teams that fully internalize it, it's powerful.
+## What Structured Concurrency Promises
 
-The problem is the contract the type system cannot actually enforce.
+The M:N threading model is the core pitch: map many logical concurrent tasks (coroutines) onto a smaller number of OS threads, eliminating the one-thread-per-request overhead that limits platform thread scalability. A server with 200 platform threads can run hundreds of thousands of coroutines simultaneously, because coroutines suspend at I/O boundaries instead of blocking their underlying thread. The thread goes back to the pool while the coroutine waits for the network, database, or disk.
+
+Structured concurrency extends this with a lifecycle guarantee: coroutines launched within a scope are children of that scope. If a parent coroutine is cancelled, all children are cancelled. If any child fails, the parent and siblings can be cancelled. This creates a supervision tree with predictable cleanup semantics — no leaked goroutines, no fire-and-forget futures floating in the void. In theory, it's exactly what you want for request handling.
+
+`suspend` functions compose cleanly. They look like synchronous code. They're testable with `runTest`. The Flow API brings reactive stream semantics to sequential code without RxJava's callback hell. For Kotlin-native teams that have fully bought in, coroutines are genuinely excellent tools. The problem is the gap between the model's promises and what the type system enforces.
+
+---
+
+## The Contract the Type System Cannot Enforce
+
+Here is the contract you sign when you write a `suspend` function: "I will not block my underlying thread." Here is what the Kotlin compiler checks: nothing.
 
 ```kotlin
-// The suspend modifier promises: "I will not block my underlying thread."
-// The Kotlin compiler does not check this promise.
 suspend fun fetchUser(id: Long): User {
-    Thread.sleep(500)                   // Parks the OS thread. Compiles fine.
-    return userRepository.findById(id)  // Blocking JDBC. Compiles fine.
+    Thread.sleep(500) // Blocks the dispatcher thread. Compiles fine.
+    return userRepository.findById(id) // JDBC blocking call. Compiles fine.
 }
 ```
 
-`suspend` is a calling convention, not an effect marker.{{< cite "kotlindispatchers" >}} It tells the compiler how to transform the function into a state machine. It does not encode "this function performs only non-blocking work." A `suspend` function that calls `Thread.sleep()` or a blocking JDBC driver parks the underlying dispatcher thread without suspending the coroutine. The scheduler doesn't know. The thread doesn't return to the pool.
+This function suspends in name only. `Thread.sleep()` parks the OS thread. A blocking JDBC call parks the OS thread. The function has the `suspend` marker, so it can be called from coroutines — but it behaves identically to a regular blocking function from the runtime's perspective. The coroutine scheduler does not know the thread is blocked. The thread does not return to the pool. Nothing is logged. No exception is thrown.
 
-I ran into this in production running a Backend for Frontend serving real-time trader traffic. Reactor's schedulers — `Schedulers.boundedElastic()` and `Schedulers.parallel()` — are application-wide singletons.{{< cite "reactorschedulers" >}} Every reactive pipeline in a shared-deployment monolith shared the same thread pools. When any single team's code blocked a thread in the shared scheduler, every team's requests slowed down — not just the team whose code was at fault.
+The fix is to wrap blocking calls in `withContext(Dispatchers.IO)`, which moves execution to a thread pool designed for blocking work. But the language doesn't require it. The compiler doesn't enforce it. The programmer has to know to do it — and has to correctly identify every blocking call, including those buried in third-party libraries.
 
-This happened five or six times, across different engineers on different teams, in different quarters. Each time it presented as general latency degradation: slow database metrics that didn't match what the database was doing, P99s climbing without a clear localized cause. Each time, diagnosis required the Datadog JVM profiler{{< cite "datadogjvmprofiler" >}} to show Reactor scheduler threads spending the bulk of their time in `BLOCKED` state — and tracing which team's code was responsible required significant investigation on top of that.
-
-The lesson wasn't "train people better." It was: **the compiler doesn't warn you, so the knowledge has to be re-taught to every new engineer who joins.** Knowledge resets; type errors don't. Every new hire, every oncall rotation, every library upgrade that changes blocking behavior in a transitive dependency resets the clock on when the next incident happens.
-
-### The Go Model (for contrast)
-
-Go goroutines look entirely synchronous — no `async`, no `await`, no color. `go fetchUser()` launches a goroutine; inside, you write blocking code. The Go runtime intercepts standard library blocking calls — network I/O, file I/O, `time.Sleep` — and parks the goroutine transparently when they block, freeing the underlying OS thread for other goroutines.
-
-The color problem doesn't exist because there's only one color. The tradeoff: code that goes through Go's standard library gets transparent scheduling. Code that calls into C via cgo, or uses raw `syscall` directly, can pin OS threads — and the boundaries are mostly invisible. Go's `-race` flag detects data races at test time,{{< cite "goracedetector" >}} but data races are a separate problem from blocking; in Go, blocking in any context is fine by design.
+Languages with typed effects solve this. In Haskell, `IO` is a type-level marker — a function that performs I/O cannot masquerade as pure. In Scala, ZIO encodes effects in the type signature: `ZIO[R, E, A]` explicitly declares its requirements and failure modes. Calling a blocking operation in the wrong context is a type error, not a runtime surprise. Kotlin has no equivalent. The `suspend` modifier is a calling convention, not an effect contract.
 
 ---
 
-## Java Virtual Threads: Eliminating the Constraint
+## The Failure Modes, Ranked by Severity
 
-Java 21's virtual threads ([Project Loom](https://openjdk.org/jeps/444)) take Go's approach and apply it to the full JVM. Virtual threads are cheap (~few KB heap vs ~1MB stack for platform threads), and they write exactly like platform threads — blocking code, no annotations, no color.
+### 1. Dispatcher Starvation (Silent, Gradual, Lethal)
+
+Every coroutine runs on a dispatcher. Dispatchers map coroutines to thread pools. The defaults:
+
+| Dispatcher | Thread Pool Size | Intended For |
+|---|---|---|
+| `Dispatchers.Default` | `max(2, CPU cores)` | CPU-bound computation |
+| `Dispatchers.IO` | `max(64, CPU cores)` | Blocking I/O |
+| `Dispatchers.Main` | 1 (Android UI thread) | UI updates |
+
+An 8-core server has 8 `Default` dispatcher threads. If 8 coroutines simultaneously block those threads — `Thread.sleep()`, blocking JDBC, blocking file I/O, anything — the dispatcher is starved. Every other coroutine waiting to run on `Default` blocks. The application doesn't crash. It doesn't throw. It slows down asymptotically.
+
+What does this look like in production? The database appears slow. The service latency climbs. P99s spike. Your monitoring shows the database query time is fine; your service latency is not. You add more instances. The same thing happens at a lower request rate. You're in the wrong dispatcher thread pool and the runtime is not telling you.
+
+Diagnosis requires knowing what to look for in a thread dump. `jstack` or async-profiler will show your `Default` dispatcher threads in `TIMED_WAITING` or `WAITING` state inside blocking calls — but only if you know to look at `DefaultDispatcher-worker-*` threads and understand that these threads should not be parked.
+
+### 2. `runBlocking` Inside a Coroutine (Immediate, Deadlock Risk)
+
+`runBlocking` is the bridge from synchronous to coroutine code. It creates a coroutine and blocks the current thread until it completes. The documentation says not to use it inside coroutines. Engineers of varying experience will use it anyway — it's the obvious solution when you're in a suspend context and need to call a suspending function from a Java callback, a test, or a synchronous entry point.
+
+The deadlock scenario:
+
+```kotlin
+// On Dispatchers.Default with 8 threads. All 8 are running request handlers.
+suspend fun handleRequest() {
+    val result = runBlocking { // Blocks thread 1
+        someOtherSuspendFun() // Needs a Default dispatcher thread to run
+    }
+}
+```
+
+`runBlocking` parks thread 1 waiting for `someOtherSuspendFun()` to complete. `someOtherSuspendFun()` needs a `Default` dispatcher thread to execute. If threads 2-8 are also blocked in `runBlocking`, there are no threads available. Deadlock. The server stops responding. No exception. No log entry. Timeouts, eventually.
+
+The transitive risk makes this worse: libraries that internally use `runBlocking` carry the same risk. Retrofit's blocking adapter, some legacy OkHttp interceptors, synchronous gRPC stubs — if a library you're using internally calls `runBlocking` and you're running on a dispatcher with limited threads, you have the same problem without having written a single line of blocking code yourself.
+
+### 3. Silent Cancellation Propagation (Surprising at Scale)
+
+`coroutineScope` provides structured concurrency with a specific semantic: if any child coroutine fails with a non-cancellation exception, all sibling coroutines are immediately cancelled, and the scope propagates the exception upward.
+
+`CancellationException` is the mechanism. It's thrown at every suspension point in a cancelled coroutine. Critically, it's supposed to be re-thrown, not caught — catching it silently is a bug. But it extends `Exception`, not `Error`, so any `catch (e: Exception)` block that doesn't explicitly re-throw `CancellationException` swallows it.
+
+```kotlin
+coroutineScope {
+    launch { fetchFromDatabase() }      // coroutine A
+    launch {
+        try {
+            fetchFromSlowService()       // coroutine B — throws after timeout
+        } catch (e: Exception) {
+            logger.error("Failed", e)   // Swallows CancellationException
+            // coroutine A is already cancelled. This log entry is the only evidence.
+        }
+    }
+}
+```
+
+At request-handling scale, one consistently flaky downstream service generates a steady stream of cancellations that silently terminate legitimate in-flight work. If the catch block doesn't re-throw `CancellationException`, the failure disappears from your error metrics entirely. You may observe higher-than-expected cache miss rates or incomplete response data without ever seeing an exception in your logs.
+
+### 4. The Library Ecosystem Trap
+
+The JVM ecosystem is enormous and predominantly blocking. JDBC is blocking. Most HTTP clients default to blocking mode. File I/O is blocking. Libraries written before coroutines existed are blocking. Libraries written by developers unfamiliar with coroutines are blocking.
+
+`Dispatchers.IO` exists precisely because blocking I/O is unavoidable. The pattern is correct: wrap blocking calls in `withContext(Dispatchers.IO)`. The problem is that this requires every engineer who introduces a new dependency to audit that dependency for blocking calls, understand which dispatcher it's running on, and apply the wrapper correctly. It requires the same audit for every upgrade of existing dependencies, because a library can introduce blocking calls in a minor version.
+
+A junior engineer adding a new third-party API client will use whatever Java API the library exposes. If the library's synchronous client is the obvious entry point, they'll use it. They will not receive a compiler warning. They will cause a production incident — possibly not immediately, possibly not under normal load, possibly only during a traffic spike when the `Default` dispatcher saturates.
+
+---
+
+## Why the Type System and Static Analysis Cannot Save You — Yet
+
+The obvious fix is to make the tools detect this — much like Go's race detector makes data races detectable. That's the right instinct. Here's why we're not there yet.
+
+There are three levels at which this problem can be solved, and each language or runtime picks a different one.
+
+### Level 1: The Type System (Compile-Time — Strongest)
+
+The theoretically ideal solution encodes "blocking vs. non-blocking" in the type signature. If calling a blocking function in a non-blocking context is a type error, the compiler catches it before it compiles, let alone reaches production.
+
+Two ecosystems actually do this. Haskell's `IO` monad makes effects explicit in the type — a pure function cannot perform I/O, and the compiler enforces it. Scala's ZIO encodes effects in the type signature: `ZIO[R, E, A]` explicitly declares requirements and failure modes; blocking work must be wrapped in `ZIO.blocking`, which shifts it to a blocking-aware thread pool. Effect-TS does the same in TypeScript.
+
+Why doesn't Kotlin have this? Kotlin has no effect system. Adding one would be a major language redesign, not an incremental improvement. And that's just the language — the JVM ecosystem is enormous. Every JDBC driver, every Apache HTTP client, every `Thread.sleep()` call in the entire library graph would need annotation for the type system to actually catch violations. This option is not available to JVM teams today.
+
+### Level 2: Runtime Instrumentation (Test-Time — Strong)
+
+The next best thing is to detect violations at runtime during test execution. This is what Go's race detector does for data races.
+
+Go's `-race` flag instruments memory accesses at runtime to detect concurrent reads and writes without synchronization. It doesn't prevent races at compile time — it detects them when the racy code path is actually exercised during a test run. Crucially, Go ships this as a first-class, blessed tool with a strong community norm: run with `-race` in CI by default.
+
+**BlockHound** is the JVM's closest equivalent for blocking detection. It instruments the JVM to throw `BlockingOperationError` when a blocking call occurs on a thread registered as non-blocking. `kotlinx-coroutines-core` ships a `CoroutinesBlockHoundIntegration` — first-class support, not bolted on. But it's not part of the standard toolchain. There's no community norm of "run with BlockHound in CI." Teams have to discover it, configure it, and maintain it themselves.
+
+The gap between Go's race detector and BlockHound is not technical. It's cultural. The race detector ships with the language and has a blessed, visible community norm. BlockHound requires you to already know what the problem is before you can configure the solution.
+
+### Level 3: Discipline and Code Review (Production — Weakest)
+
+This is what most Reactor and coroutine teams actually rely on. It fails when: new engineers join, code reviews have gaps, the blocking call is inside a third-party JAR, or the team is under deadline pressure. This is not a knowledge problem you can train your way out of permanently. Knowledge resets with every new hire.
+
+### A Note on How Go Goroutines Actually Work
+
+There's a subtlety worth naming. Go goroutines avoid the blocking problem not through a type system but through the runtime: Go intercepts standard library blocking calls — network I/O, file I/O, `time.Sleep` — and parks the goroutine transparently. The goroutine suspends; the OS thread is reused. This is exactly what Java virtual threads do. Neither is a type-level solution; both are runtime scheduling solutions that make blocking safe without requiring programmer annotation. Go's `-race` flag detects data races — a separate problem entirely.
+
+The conclusion: virtual threads solve the blocking problem by **eliminating the constraint** rather than detecting violations of it. There's nothing to detect because blocking is safe by design.
+
+---
+
+## The Team Experience Dimension
+
+This isn't hypothetical. We saw this pattern five or six times in a shared BFF serving real-time trader traffic — each time caused by a different engineer on a different team, each time presenting as generalized latency rather than a localized failure, each time requiring expert-level thread dump analysis to diagnose.
+
+Senior engineers who have internalized the coroutine model write correct coroutine code. The model is powerful for them. Junior and mid-level engineers will write blocking code in coroutines — not because they're careless or incompetent, but because the language does not prevent it, the mental model isn't obvious from the syntax, the blocking version of an API they already know is right there, and the test passes because it doesn't exercise the problematic load pattern.
+
+The oncall dimension makes this worse. When your service stops responding at 3am, the engineer who gets paged needs to diagnose the problem with a thread dump. A traditional thread dump showing platform threads in `BLOCKED` state on a JDBC connection is readable — you know what's happening and where. A coroutine dispatcher thread dump showing `DefaultDispatcher-worker-*` threads in `WAITING` state requires knowing the coroutine threading model to interpret correctly. The engineers most likely to introduce the bug are often the engineers least equipped to diagnose it under pressure.
+
+The knowledge asymmetry compounds over time. The senior engineers who understand coroutines deeply are also the engineers consulted to fix production incidents they didn't cause. The pattern is: junior engineer introduces blocking call in coroutine → production incident → senior engineer diagnoses and fixes → no systemic change because the solution requires significant concurrency background to teach effectively. The cycle repeats.
+
+---
+
+## What Virtual Threads Actually Trade Off
+
+Java virtual threads (Project Loom, stable in Java 21) address the scalability problem from a different direction: instead of suspending at logical checkpoints, the JVM unmounts virtual threads from their carrier OS threads when they block. Blocking code becomes non-blocking at the platform level without requiring programmer annotation.
 
 ```java
 // This blocking JDBC call unmounts the virtual thread when waiting for the DB.
-// The carrier OS thread is freed to run other virtual threads.
-// No withContext. No dispatcher. No suspend modifier.
+// The carrier thread is free to execute other virtual threads.
 User user = jdbcTemplate.queryForObject(
     "SELECT * FROM users WHERE id = ?", userRowMapper, id
 );
 ```
 
-When a virtual thread blocks on a socket, a JDBC call, a lock, or `Thread.sleep()`, the JVM unmounts it from its carrier OS thread. The carrier becomes available for other virtual threads. When the blocking operation completes, the virtual thread is rescheduled. No programmer annotation required.
+No `withContext`. No dispatcher selection. The blocking call works exactly as it always has, but the JVM handles the scheduling. JDBC, blocking HTTP clients, file I/O — all safe on virtual threads without modification.
 
-The remaining failure mode: virtual threads can be *pinned* to their carrier when blocking inside a `synchronized` block or a native frame.{{< cite "jep444virtualthreads" >}} Pinned threads don't yield the carrier, which can cause carrier thread starvation — analogous to dispatcher starvation in coroutines. The critical difference: the JVM makes this visible. `-Djdk.tracePinnedThreads=full` logs a stack trace every time pinning occurs. JFR (Java Flight Recorder) exposes pinning events. The failure has an observable signal rather than presenting as mysterious latency.
+**The visible failure mode**: Virtual threads can be *pinned* to their carrier thread when blocking inside a `synchronized` block or native frame. Pinned threads don't yield the carrier thread, which can cause carrier thread starvation analogous to dispatcher starvation in coroutines. The critical difference: the JVM makes this visible. `-Djdk.tracePinnedThreads=full` logs a stack trace every time a virtual thread pins. JFR events expose pinning. The failure mode has an observable signal.
 
-We deprecated Reactor in new code the week virtual threads hit GA. We haven't had nearly as many scheduler starvation incidents since.
+**What you lose compared to coroutines**:
 
-**What virtual threads don't give you**: Java's `StructuredTaskScope` (the equivalent of `coroutineScope`) is still in preview as of Java 21-22 — not production-stable.{{< cite "jep453structuredconcurrency" >}} There's no built-in Flow equivalent. Cancellation is less ergonomic. If you're building in the Kotlin ecosystem where Flow, StateFlow, and lifecycle-aware coroutines are load-bearing, virtual threads are fighting the current.
+- No built-in Flow/reactive streams equivalent — you'd use something else (RxJava, Reactor, or CompletableFuture chains)
+- `StructuredTaskScope` (the Java equivalent of coroutine scopes) is still in preview as of Java 21-22 — not production-stable
+- No Android support — Kotlin coroutines are the only option there
+- Less ergonomic cancellation and lifecycle management
+- The Kotlin ecosystem (Flow, StateFlow, SharedFlow, lifecycle-aware coroutines in Compose) assumes coroutines throughout — if you're building in that ecosystem, virtual threads are fighting the current
+
+For a Kotlin-first microservice using Ktor or Spring WebFlux, coroutines are the natural fit. For a Java or Kotlin service using Spring MVC with blocking JDBC and third-party REST clients, virtual threads give you the same M:N scalability with substantially safer failure modes.
 
 ---
 
-## The Type System Answer: Haskell's IO Monad
+## What You Can Do Today (And Why It's Not Enough)
 
-Every approach so far is a runtime scheduling solution. They make blocking I/O cheaper, or they make violations of non-blocking contracts detectable. None of them make the violation impossible.
+The obvious response is: just add tooling. That's the right instinct. There are real tools and they're worth using. Here's an honest picture of what each one catches — and where each one stops.
 
-Haskell does something categorically different. It makes I/O a type.
+### BlockHound
 
-In Haskell, every function that performs I/O has `IO` in its return type.{{< cite "haskellwikiio" >}} A pure function — one that takes inputs and returns an output with no side effects — cannot perform I/O. Not at runtime, not in tests, not behind a flag. The compiler refuses to compile code that performs I/O in a pure context.
-
-```haskell
--- Pure function. Cannot do IO. The compiler enforces this.
-double :: Int -> Int
-double x = x * 2
-
--- IO action. The IO in the return type is the compiler's proof this does IO.
-fetchUser :: Int -> IO User
-fetchUser userId = do
-  conn <- getConnection
-  query conn "SELECT * FROM users WHERE id = ?" (Only userId)
-
--- Type error. Pure functions cannot use IO actions.
--- broken :: Int -> Int
--- broken x = fetchUser x  -- Won't compile: IO User is not User
+```kotlin
+// build.gradle.kts
+testImplementation("io.projectreactor.tools:blockhound:1.0.9.RELEASE")
 ```
 
-The `IO` monad is the description of an action that will be performed when the runtime executes it. `<-` in `do` notation binds its result inside another `IO` context. You can't extract a value from `IO User` except inside another `IO` context — so the "color" propagates, but unlike `async/await`, the propagation is a type guarantee, not a convention.
+```kotlin
+BlockHound.install(
+    CoroutinesBlockHoundIntegration()
+)
+```
 
-This is the thing the colored functions post gestures at but doesn't quite land: the problem isn't that async propagates — all the models require some form of propagation. The problem is whether the propagation is enforced. In JavaScript and Python, it's a naming convention (`async def`) that the runtime validates at call time. In Kotlin, it's a compiler marker that enforces calling convention but not the contract behind it. In Haskell, it's a type — and the entire type system enforces it.
+Instruments the JVM to throw `BlockingOperationError` when a blocking call is made on a coroutine dispatcher thread. Catches `Thread.sleep()`, `Object.wait()`, blocking socket and file I/O, JDBC calls — if your test exercises the code path. Misses blocking calls your test suite doesn't exercise, and blocking calls inside third-party JARs that aren't on BlockHound's known-blocking list.
 
-What this means in practice:
+I've been in codebases where BlockHound was added to a TODO comment in the test setup file and never actually configured.
 
-- **Testing pure functions requires no mocking.** A function with no `IO` in its signature provably cannot touch the database, the network, or the filesystem. You don't need a test double because there's nothing to double.
-- **I/O boundaries are auditable from the type signature.** You can look at a function's type and know whether it touches the outside world. In Kotlin or Python, you cannot.
-- **Blocking vs. non-blocking is derivable.** If a function is `IO`, it might block. If it's pure, it definitely won't. The information is in the type, not in documentation you have to remember to read.
+### Detekt Coroutine Rules
 
-Scala's ZIO extends this: `ZIO[R, E, A]` says "to run this, you need environment `R`, it might fail with `E`, and it produces `A`." Blocking I/O wrapped with `ZIO.blocking` shifts to a blocking-aware thread pool — and the type system records that the shift happened.{{< cite "ziodocs" >}} [Effect-TS](https://effect.website/) brings the same ideas to TypeScript.
+```yaml
+coroutines:
+  active: true
+  GlobalCoroutineUsage:
+    active: true
+  InjectDispatcher:
+    active: true   # most operationally valuable
+  SuspendFunWithFlowReturnType:
+    active: true
+```
 
-The tradeoff is real. Haskell's purity is a substantial upfront investment. Reasoning about how to thread `IO` through a large codebase is non-trivial. The JVM doesn't have this, and retrofitting it would require annotating the entire library ecosystem — every JDBC driver, every `Thread.sleep()`, every Apache HTTP client call. ZIO exists and gets you most of the way, but it requires buying into a specific library ecosystem rather than the platform standard.
+`InjectDispatcher` is the most useful rule: bans hardcoded dispatchers, forces them to be injected, makes dispatcher choice visible at call sites and testable. Catches structural antipatterns; cannot see inside third-party JARs.
+
+### IntelliJ's `BlockingMethodInNonBlockingContext` Inspection
+
+Zero configuration. Covers a list of known stdlib blocking methods inside `suspend` functions. A senior engineer reading that list could name five real-world blocking patterns it won't catch. It's a per-engineer IDE guardrail, not a CI enforcement mechanism.
+
+### The Honest Assessment
+
+Even with all three active, coverage is bounded by your test suite. The configuration surface drifts — BlockHound integrations fall out of date, Detekt suppressions accumulate, IDE inspections aren't uniformly enabled. The underlying problem remains: you're adding detectors next to a footgun, not removing the footgun.
+
+Compare this to virtual threads: there is no configuration. Blocking is safe. The only thing to configure is `Executors.newVirtualThreadPerTaskExecutor()`.
+
+The mitigation stack is real, it helps, and you should use it if you're committed to coroutines. But it's defense-in-depth for a problem virtual threads don't have.
 
 ---
 
-## Where I Landed
+## The Recommendation
 
-The progression I see across these models:
+**Real-time web applications** with blocking I/O dependencies and **mixed-experience teams**: Java 21+ virtual threads. The failure modes are visible. Blocking code works without modification. The oncall engineer at 3am gets a readable signal.
 
-1. **JavaScript/Python async/await**: M:N scheduling on a single-threaded runtime where blocking is impossible. Forces color onto every function that touches I/O. Correct given the constraints; painful as the codebase and ecosystem grow.
+**Android**: Kotlin coroutines. There is no alternative. Invest in deep team education on dispatchers and lifecycle-aware coroutine APIs.
 
-2. **Kotlin coroutines**: M:N scheduling on the JVM with real parallelism. `suspend` makes the color explicit in the type signature, but doesn't enforce the contract behind it. Silent failure modes when blocking calls slip into the wrong dispatcher context.
+**Kotlin-first teams building event-driven systems** where the entire team understands coroutines, has BlockHound in CI, and has audited their dependency surface: coroutines and Flow. You're getting real value from the model and your team can defend it operationally.
 
-3. **Java virtual threads**: sidesteps the problem by making blocking cheap. No color. Failure modes are visible (pinning logs) rather than silent (dispatcher starvation). Gives up structured lifecycle management and reactive stream ergonomics.
+The test I'd apply: can your most junior engineer write safe concurrent code in a production service without a senior engineer reviewing every coroutine boundary? With virtual threads, probably yes — blocking code works, pinning is visible, nothing is silent. With Kotlin coroutines, probably not.
 
-4. **Haskell IO monad / ZIO**: encodes the distinction between I/O-performing and pure code in the type system. The color is a type guarantee, not a convention. The compiler enforces it. High upfront cost; I/O boundaries are permanently visible and auditable.
+We deprecated Reactor in new code the week virtual threads hit GA in Java 21. We haven't had a scheduler starvation incident since.
 
-The question I now ask about a concurrency model: does the failure mode require expert knowledge to diagnose, or does it leave a trace in the type system or the logs? Kotlin coroutines fail silently and require expert thread dump analysis. Java virtual threads leave a log entry and a stack trace. Haskell's IO monad fails at compile time. The earlier in the cycle you catch the violation, the less it matters how well the whole team understands the concurrency model.
-
-For production JVM services with blocking I/O and mixed-experience teams, I'd reach for virtual threads before coroutines. For code where I/O boundary discipline matters — data pipelines, security-sensitive paths, anything where testability of pure logic is valuable — the IO monad framing is worth the overhead.
-
-The thing I didn't understand early on: the color problem isn't a solvable API design question. It's a consequence of the execution model. You can make the colors cheap (virtual threads), make them a compile-time guarantee (IO monad), or accept them as an operational cost (async/await, coroutines). You can't make them disappear while keeping M:N scheduling and a shared mutable world.
-
-{{< bibliography file="structured-concurrency-footgun.bib" />}}
+Choose the model your whole team can operate safely, not just the model your best engineers can use brilliantly.

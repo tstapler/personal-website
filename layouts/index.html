@@ -8,8 +8,8 @@
           <p class="site-email">{{ .email }}</p>
           <p>{{ .description }}</p>
           <div class="hero-cta">
-            <a class="ui primary button" href="/blog/">Read My Blog</a>
-            <a class="ui secondary button" href="/projects/">View Projects</a>
+            <a class="ui primary button" href="{{ "/blog/" | relURL }}">Read My Blog</a>
+            <a class="ui secondary button" href="{{ "/projects/" | relURL }}">View Projects</a>
           </div>
         </div>
       </div>
@@ -31,7 +31,7 @@
         {{/* First copy */}}
         {{ range $techs }}
         <div class="tech-marquee-item">
-          <img src="{{ .icon_url }}" alt="{{ .name }} logo" class="tech-marquee-logo" loading="lazy">
+          <img src="{{ .icon_url | relURL }}" alt="{{ .name }} logo" class="tech-marquee-logo" loading="lazy">
           <span class="tech-marquee-label">{{ .name }}</span>
         </div>
         {{ end }}

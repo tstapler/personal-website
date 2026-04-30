@@ -2,19 +2,16 @@
 """
 Regenerates data/technologies.yaml from three sources:
   - Blog post frontmatter tags (content/blog/**/index.md)
-  - GitHub API (public repos via `gh auth token`)
+  - GitHub API (public repos via `gh` CLI — paginated, includes topics)
   - Personal wiki (~/Documents/personal-wiki/logseq/pages/)
 
 Run from the repo root:
     python3 scripts/sync-technologies.py
 """
 
-import os
 import re
 import json
 import subprocess
-import urllib.request
-import urllib.error
 from pathlib import Path
 from collections import defaultdict
 
@@ -23,8 +20,6 @@ CONTENT_DIR = REPO_ROOT / "content" / "blog"
 WIKI_PAGES = Path.home() / "Documents" / "personal-wiki" / "logseq" / "pages"
 DATA_OUT = REPO_ROOT / "data" / "technologies.yaml"
 
-# Canonical tech definitions — name, slug, icon, category, plus which blog tags map to it
-# and which github languages/topics map to it.
 TECH_CATALOG = [
     dict(name="Kubernetes",  slug="kubernetes",   icon="img/tech-logos/kubernetes.svg",       category="Infrastructure",
          blog_tags=["kubernetes","kubeadm","kubespray","gke"],
@@ -85,7 +80,6 @@ def get_blog_tag_counts() -> dict[str, int]:
     counts: dict[str, int] = defaultdict(int)
     for md in CONTENT_DIR.rglob("*.md"):
         text = md.read_text(errors="replace")
-        # Match TOML frontmatter tags = ["a","b"] or YAML tags: [a, b]
         m = re.search(r'tags\s*[=:]\s*\[([^\]]*)\]', text, re.IGNORECASE)
         if m:
             raw = m.group(1)
@@ -95,50 +89,50 @@ def get_blog_tag_counts() -> dict[str, int]:
     return counts
 
 
-def get_github_data() -> tuple[set[str], set[str]]:
-    """Return (languages, topics) seen across user's GitHub repos."""
+def get_github_username() -> str:
     try:
-        token = subprocess.check_output(["gh", "auth", "token"], text=True).strip()
+        return subprocess.check_output(
+            ["gh", "api", "user", "--jq", ".login"], text=True
+        ).strip()
     except Exception:
-        print("  ⚠  gh auth token failed — skipping GitHub")
+        return ""
+
+
+def get_github_data() -> tuple[set[str], set[str]]:
+    """Return (languages, topics) across all user repos via gh CLI (paginated, single call)."""
+    username = get_github_username()
+    if not username:
+        print("  ⚠  Could not resolve GitHub username — skipping GitHub")
         return set(), set()
 
     try:
-        req = urllib.request.Request(
-            "https://api.github.com/users/tstapler/repos?per_page=100",
-            headers={"Authorization": f"token {token}", "Accept": "application/vnd.github.v3+json"},
+        raw = subprocess.check_output(
+            [
+                "gh", "repo", "list", username,
+                "--limit", "200",
+                "--json", "name,primaryLanguage,repositoryTopics",
+            ],
+            text=True,
         )
-        with urllib.request.urlopen(req, timeout=10) as resp:
-            repos = json.loads(resp.read())
+        repos = json.loads(raw)
     except Exception as e:
-        print(f"  ⚠  GitHub repos fetch failed: {e}")
+        print(f"  ⚠  gh repo list failed: {e}")
         return set(), set()
 
     languages: set[str] = set()
     topics: set[str] = set()
-
     for repo in repos:
-        if lang := repo.get("language"):
+        if lang := (repo.get("primaryLanguage") or {}).get("name"):
             languages.add(lang)
-        # Fetch per-repo topics (they're not in the list endpoint by default)
-        try:
-            treq = urllib.request.Request(
-                f"https://api.github.com/repos/tstapler/{repo['name']}/topics",
-                headers={
-                    "Authorization": f"token {token}",
-                    "Accept": "application/vnd.github.mercy-preview+json",
-                },
-            )
-            with urllib.request.urlopen(treq, timeout=5) as tr:
-                topics.update(json.loads(tr.read()).get("names", []))
-        except Exception:
-            pass
+        for t in repo.get("repositoryTopics") or []:
+            if name := t.get("name"):
+                topics.add(name)
 
     return languages, topics
 
 
 def get_wiki_page_names() -> set[str]:
-    """Return lowercased stems of all Logseq page files."""
+    """Return exact lowercased stems of all Logseq page files."""
     if not WIKI_PAGES.exists():
         print("  ⚠  Wiki not found at", WIKI_PAGES)
         return set()
@@ -151,7 +145,10 @@ def build_entry(tech: dict, blog_counts: dict, gh_langs: set, gh_topics: set, wi
         any(l in gh_langs for l in tech["github_langs"])
         or any(t in gh_topics for t in tech["github_topics"])
     )
-    wiki = any(tech["slug"] in n or tech["name"].lower() in n for n in wiki_names)
+    # Exact match against page stem — avoids "go" matching "ongoing", etc.
+    slug_lower = tech["slug"].lower()
+    name_lower = tech["name"].lower()
+    wiki = any(n == slug_lower or n == name_lower for n in wiki_names)
     return {
         "name": tech["name"],
         "slug": tech["slug"],
@@ -192,8 +189,6 @@ def main():
     print(f"   {len(wiki_names)} pages")
 
     entries = [build_entry(t, blog_counts, gh_langs, gh_topics, wiki_names) for t in TECH_CATALOG]
-
-    # Sort: most blog posts first, then alphabetically
     entries.sort(key=lambda e: (-e["blog_count"], e["name"].lower()))
 
     lines = [
