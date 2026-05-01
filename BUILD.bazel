@@ -4,8 +4,9 @@ load("@rules_oci//oci:defs.bzl", "oci_image", "oci_load", "oci_push")
 
 hugo_site(
     name = "site",
-    config = "config.toml", 
+    config = "config.toml",
     content = glob(["content/**"]),
+    data = glob(["data/**"]),
     layouts = glob(["layouts/**"]),
     static = glob(["static/**"]),
     theme = "//themes/espouse",
