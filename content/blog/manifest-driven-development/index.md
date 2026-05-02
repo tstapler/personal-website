@@ -94,7 +94,7 @@ flowchart TD
   PM --> V[Validation]:::phase
   V --> VM[validation.md]:::artifact
 
-  VM --> G{"⚡ Fresh session\nrequired"}:::gate
+  VM --> G{"⚡ Fresh session required"}:::gate
 
   G --> Im[Implementation]:::phase
   Im --> QA[QA / Review]:::phase
