@@ -6,7 +6,7 @@ categories = ["Software Engineering", "Infrastructure"]
 tags = ["kotlin", "java", "concurrency", "virtual-threads", "coroutines", "jvm", "reactor", "project-loom", "platform-engineering"]
 keywords = ["kotlin coroutines blocking", "dispatcher starvation", "virtual threads vs coroutines", "project loom java 21", "structured concurrency risks", "reactor scheduler starvation", "blockhound", "mixed experience teams concurrency"]
 date = "2026-04-26"
-draft = true
+draft = false
 +++
 
 The concurrency model you choose is an implicit contract with your entire team. Kotlin coroutines are brilliant engineering — the M:N threading model, structured lifecycle, backpressure-aware flows, and coroutine scopes represent genuinely sophisticated thinking about asynchronous computation. But they make a promise the JVM's type system cannot enforce: that `suspend` functions are non-blocking. That promise is violated constantly in production code, the violations compile without warning, and the failure modes are silent, gradual, and catastrophic. For teams where not everyone deeply understands concurrency, this is a liability, not a feature.
