@@ -2,10 +2,10 @@
 # Set baseURL from command line
 languageCode = "en-us"
 title = "Tyler Stapler's Personal Website"
-theme = "espouse"
+theme = "espouse-fomantic"
 copyright = "Copyright &#169; by Tyler Stapler"
 
-assetDir="themes/espouse/static"
+assetDir="themes/espouse-fomantic/static"
 enableEmoji = true
 ignoreLogs = ['warning-goldmark-raw-html']
 enableGitInfo = false

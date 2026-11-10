@@ -4,7 +4,7 @@
   {{- else if .Params.hide_site_title -}}
     {{ .Title }}
   {{- else -}}
-    {{ .Title }} | {{ .Site.Title }}
+    {{ .Title }} | {{ .Site.Params.author_display | default .Site.Title }}
   {{- end -}}
 </title>
 <meta property="og:title" content="{{ if .IsHome }}{{ .Site.Title }}{{ else }}{{ .Title }}{{ end }}" />

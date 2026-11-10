@@ -47,4 +47,7 @@
   {{- $semanticExtras := .Scratch.Get "semanticExtras" }}
 <link rel="preload" href="{{ $semanticExtras.RelPermalink }}" as="style" onload="this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="{{ $semanticExtras.RelPermalink }}"></noscript>
+  {{ with resources.GetMatch "site-enhancements.css" }}
+  <link rel="stylesheet" href="{{ .RelPermalink }}">
+  {{ end }}
 </head>
