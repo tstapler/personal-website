@@ -1,10 +1,18 @@
-load("@rules_python//python:defs.bzl", "py_binary")
+load("@rules_python//python:defs.bzl", "py_binary", "py_test")
 
 py_binary(
     name = "analyze",
     srcs = ["analyze.py"],
     main = "analyze.py",
     visibility = ["//visibility:public"],
+)
+
+py_test(
+    name = "test_analyze",
+    srcs = ["test_analyze.py"],
+    deps = [
+        ":analyze",
+    ],
 )
 
 py_binary(
