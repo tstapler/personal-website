@@ -9,7 +9,7 @@ hugo_site(
     data = glob(["data/**"]),
     layouts = glob(["layouts/**"]),
     static = glob(["static/**"]),
-    theme = "//themes/espouse",
+    theme = "//themes/espouse-fomantic",
     quiet = False,
     visibility = ["//visibility:public"],
 )

@@ -1,0 +1,21 @@
+{{ define "main" }}
+<div class="ui inverted vertical header centered segment">
+  <h1>Search</h1>
+</div>
+<div class="ui hidden divider"></div>
+<div class="search-container">
+  <div id="pagefind-search"></div>
+</div>
+<link href="/pagefind/pagefind-ui.css" rel="stylesheet">
+<script src="/pagefind/pagefind-ui.js"></script>
+<script>
+  window.addEventListener('DOMContentLoaded', function() {
+    new PagefindUI({
+      element: '#pagefind-search',
+      showImages: false,
+      excerptLength: 30,
+      resetStyles: false,
+    })
+  })
+</script>
+{{ end }}

@@ -1,10 +1,18 @@
+<a href="#main" class="skip-link">Skip to main content</a>
 <nav class="ui top main menu">
-  <a id="menuButton" class="item" >
+  <a id="menuButton" class="item" role="button" tabindex="0" aria-expanded="false" aria-label="Open navigation menu">
     <i class="content icon"></i> Menu</a>
   <div class="header borderless item">
     {{ .Site.Title }}
   </div>
   <div class="right menu">
+    <div class="nav-desktop-links">
+      {{ range .Site.Menus.main }}
+      {{ if ne .Identifier "/" }}
+      <a class="item" href="{{ .URL }}">{{ .Name }}</a>
+      {{ end }}
+      {{ end }}
+    </div>
     <button class="theme-toggle item"
             aria-label="Toggle dark mode"
             title="Toggle dark/light theme">
