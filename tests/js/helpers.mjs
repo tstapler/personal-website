@@ -30,7 +30,9 @@ export async function startSite() {
   await new Promise((r) => server.listen(0, '127.0.0.1', r))
   const url = `http://127.0.0.1:${server.address().port}`
 
-  execFileSync('hugo', ['--quiet', '--destination', dir, '--baseURL', url], { cwd: ROOT, stdio: 'inherit' })
+  // Set the HUGO_THEME env var to run this suite against the alternate Fomantic theme.
+  const theme = process.env.HUGO_THEME ? ['--theme', process.env.HUGO_THEME] : []
+  execFileSync('hugo', ['--quiet', '--destination', dir, '--baseURL', url, ...theme], { cwd: ROOT, stdio: 'inherit' })
   return {
     url,
     close: async () => { server.close(); fs.rmSync(dir, { recursive: true, force: true }) },
