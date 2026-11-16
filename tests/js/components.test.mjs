@@ -82,7 +82,7 @@ describe('navigation', () => {
     const btn = page.locator('#menuButton')
     assert.equal(await btn.getAttribute('aria-expanded'), 'false')
     await btn.click()
-    await page.locator('.ui.sidebar').waitFor({ state: 'visible' })
+    await page.locator('.ui.sidebar.visible').waitFor()
     assert.equal(await btn.getAttribute('aria-expanded'), 'true')
     await context.close()
   })
@@ -90,11 +90,11 @@ describe('navigation', () => {
   it('closing the sidebar by clicking where the menu button is resets aria-expanded', { todo: BUG_ARIA_STALE }, async () => {
     const { page, context } = await open('/')
     await page.click('#menuButton')
-    await page.locator('.ui.sidebar').waitFor({ state: 'visible' })
+    await page.locator('.ui.sidebar.visible').waitFor()
     await page.waitForTimeout(600) // let the push animation settle so the click lands on the dimmer
     const box = await page.locator('#menuButton').boundingBox()
     await page.mouse.click(box.x + box.width / 2, box.y + box.height / 2)
-    await page.locator('.ui.sidebar').waitFor({ state: 'hidden' })
+    await page.locator('.ui.sidebar.visible').waitFor({ state: 'detached' })
     assert.equal(await page.getAttribute('#menuButton', 'aria-expanded'), 'false')
     await context.close()
   })
@@ -103,9 +103,9 @@ describe('navigation', () => {
     const { page, context } = await open('/')
     await page.focus('#menuButton')
     await page.keyboard.press('Enter')
-    await page.locator('.ui.sidebar').waitFor({ state: 'visible' })
+    await page.locator('.ui.sidebar.visible').waitFor()
     await page.keyboard.press('Space')
-    await page.locator('.ui.sidebar').waitFor({ state: 'hidden' })
+    await page.locator('.ui.sidebar.visible').waitFor({ state: 'detached' })
     await context.close()
   })
 
@@ -175,20 +175,20 @@ describe('post enhancements', () => {
     await context.close()
   })
 
-  it('lightbox opens a modal with the full image and removes it on close', async () => {
+  it('lightbox opens the full image in an overlay and removes it on close', async () => {
     const { page, context, errors } = await open(IMAGE_POST)
+    const overlay = '.ui.modal, dialog.lightbox'
     const fig = page.locator('.post-image').first()
     await fig.scrollIntoViewIfNeeded()
-    const src = await fig.locator('img').getAttribute('src')
+    const src = await fig.locator('img').evaluate((i) => i.src)
     await fig.locator('img').click()
 
-    const modal = page.locator('.ui.modal')
-    await modal.waitFor({ state: 'visible' })
-    assert.equal(await modal.locator('img').getAttribute('src'), src)
+    await page.locator(overlay).first().waitFor({ state: 'visible' })
+    assert.equal(await page.locator(overlay).first().locator('img').evaluate((i) => i.src), src)
 
     await page.waitForTimeout(600) // Semantic ignores Escape until its show transition finishes
     await page.keyboard.press('Escape')
-    await page.waitForFunction(() => document.querySelectorAll('.ui.modal').length === 0, null, { timeout: 5000 })
+    await page.waitForFunction((sel) => document.querySelectorAll(sel).length === 0, overlay, { timeout: 5000 })
     assert.deepEqual(errors, [])
     await context.close()
   })

@@ -1,6 +1,6 @@
 // Shared harness: build the site with Hugo, serve it statically, drive system Chrome.
 import { chromium } from 'playwright-core'
-import { execFileSync } from 'node:child_process'
+import { spawn } from 'node:child_process'
 import fs from 'node:fs'
 import http from 'node:http'
 import os from 'node:os'
@@ -15,10 +15,8 @@ const MIME = {
   '.ttf': 'font/ttf', '.ico': 'image/x-icon', '.txt': 'text/plain',
 }
 
-/** Serve BASE_URL if set, otherwise build with Hugo into a temp dir and serve that. */
-export async function startSite() {
-  if (process.env.BASE_URL) return { url: process.env.BASE_URL.replace(/\/$/, ''), close: async () => {} }
-
+/** Build the site with Hugo into a temp dir and serve it. `env` overrides process.env (e.g. HUGO_ENV). */
+export async function buildAndServe(env = {}) {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'site-test-'))
   const server = http.createServer((req, res) => {
     let p = path.join(dir, decodeURIComponent(new URL(req.url, 'http://x').pathname))
@@ -31,12 +29,29 @@ export async function startSite() {
   const url = `http://127.0.0.1:${server.address().port}`
 
   // Set the HUGO_THEME env var to run this suite against the alternate Fomantic theme.
-  const theme = process.env.HUGO_THEME ? ['--theme', process.env.HUGO_THEME] : []
-  execFileSync('hugo', ['--quiet', '--destination', dir, '--baseURL', url, ...theme], { cwd: ROOT, stdio: 'inherit' })
-  return {
-    url,
-    close: async () => { server.close(); fs.rmSync(dir, { recursive: true, force: true }) },
+  // config.toml pins assetDir to the espouse theme, so the theme's JS/CSS bundles must be redirected too.
+  const theme = process.env.HUGO_THEME
+  const args = ['--quiet', '--destination', dir, '--baseURL', url, ...(theme ? ['--theme', theme] : [])]
+  const full = { ...process.env, ...(theme ? { HUGO_ASSETDIR: `themes/${theme}/static` } : {}), ...env }
+  // Async on purpose: a blocking exec would starve the in-process server that Hugo's PostCSS may fetch from.
+  const close = async () => { server.close(); fs.rmSync(dir, { recursive: true, force: true }) }
+  try {
+    await new Promise((resolve, reject) => {
+      const child = spawn('hugo', args, { cwd: ROOT, stdio: 'inherit', env: full })
+      child.on('error', reject)
+      child.on('close', (code) => (code === 0 ? resolve() : reject(new Error(`hugo exited with ${code}`))))
+    })
+  } catch (e) {
+    await close() // a leaked listener would keep the test process alive until its timeout
+    throw e
   }
+  return { url, close }
+}
+
+/** Serve BASE_URL if set, otherwise build the site (honours HUGO_ENV / HUGO_THEME) and serve that. */
+export async function startSite() {
+  if (process.env.BASE_URL) return { url: process.env.BASE_URL.replace(/\/$/, ''), close: async () => {} }
+  return buildAndServe()
 }
 
 function chromePath() {
