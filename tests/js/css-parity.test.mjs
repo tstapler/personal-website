@@ -47,12 +47,20 @@ async function snapshot(page) {
   }, PROPS)
 }
 
+// cssnano rewrites colours into shorter equivalents that can differ by up to 2/255 per channel.
+const rgbChannels = (v) => (typeof v === 'string' && v.startsWith('rgb') ? v.match(/[\d.]+/g)?.map(Number) : null)
+function sameValue(x, y) {
+  if (x === y) return true
+  const [p, q] = [rgbChannels(x), rgbChannels(y)]
+  return !!p && !!q && p.length === q.length && p.every((n, i) => Math.abs(n - q[i]) <= (i < 3 ? 2 : 0.011))
+}
+
 function diff(a, b, props) {
   const out = []
   if (a.length !== b.length) out.push(`element count differs: dev=${a.length} prod=${b.length}`)
   for (let k = 0; k < Math.min(a.length, b.length) && out.length < 12; k++) {
     props.forEach((p, j) => {
-      if (a[k].s[j] !== b[k].s[j] && out.length < 12) {
+      if (!sameValue(a[k].s[j], b[k].s[j]) && out.length < 12) {
         out.push(`${a[k].label} [${a[k].i}] ${p}: dev=${JSON.stringify(a[k].s[j])} prod=${JSON.stringify(b[k].s[j])}`)
       }
     })

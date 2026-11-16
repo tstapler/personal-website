@@ -1,3 +1,6 @@
+{{ with resources.GetMatch "js/vendors.bundle.js" }}
+<script defer src="{{ (. | resources.Minify | resources.Fingerprint "sha512").RelPermalink }}"></script>
+{{ end }}
 {{ range (resources.Match "js/all.bundle.js") }}
 {{ $bundle := . | resources.Minify | resources.Fingerprint "sha512"}}
 <script defer crossorigin="anonymous" src='{{ $bundle.RelPermalink }}' integrity='{{ $bundle.Data.Integrity }}'></script>
@@ -8,9 +11,6 @@
 <script defer crossorigin="anonymous" src='{{ $semanticExtras.RelPermalink }}' integrity='{{ $semanticExtras.Data.Integrity }}'></script>
 {{end}}
 
-{{ with resources.GetMatch "js/theme-manager.js" }}
-<script defer src="{{ (. | resources.Minify | resources.Fingerprint "sha512").RelPermalink }}"></script>
-{{ end }}
 {{ with resources.GetMatch "js/site-enhancements.js" }}
 <script defer src="{{ (. | resources.Minify | resources.Fingerprint "sha512").RelPermalink }}"></script>
 {{ end }}
