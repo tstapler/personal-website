@@ -28,7 +28,12 @@ const PROPS = ['display', 'position', 'color', 'backgroundColor', 'backgroundIma
 
 /** Computed styles for every element, in document order, after fonts settle. */
 async function snapshot(page) {
+  // semanticExtras.css is preloaded and swapped to rel=stylesheet by onload, so it can land after `load`
+  await page.waitForFunction(() => !document.querySelector('link[rel=preload][as=style]') &&
+    [...document.querySelectorAll('link[rel=stylesheet]')].every((l) => l.sheet))
   await page.evaluate(() => document.fonts.ready)
+  // Freeze in-flight hover/theme transitions so timing noise can't masquerade as a CSS difference
+  await page.addStyleTag({ content: '*, *::before, *::after { transition: none !important }' })
   await page.waitForTimeout(500)
   return page.evaluate((props) => {
     const skip = 'canvas, .mermaid, #particles-js, [class*="marquee"] *'
@@ -73,7 +78,7 @@ async function compare(path, ctxOpts, interact) {
   for (const site of [dev, prod]) {
     const context = await browser.newContext(ctxOpts)
     const page = await context.newPage()
-    await page.goto(site.url + path, { waitUntil: 'load' })
+    await page.goto(site.url + path, { waitUntil: 'networkidle' })
     if (interact) await interact(page)
     shots.push(await snapshot(page))
     await context.close()

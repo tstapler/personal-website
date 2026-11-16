@@ -9,11 +9,6 @@ const POST = '/blog/manifest-driven-development/'
 const IMAGE_POST = '/blog/the_powerline_effect/'
 const CODE_POST = '/blog/structured-concurrency-footgun/'
 
-// Real bugs found by this suite. `todo` keeps them visible in the report without failing the run;
-// delete the option once the bug is fixed so the test guards against regression.
-const BUG_BODY_SCROLLS = 'body (not window) is the scroll container: html,body{overflow-x:hidden} + height:100% forces overflow-y:auto, so scroll listeners on window never fire'
-const BUG_ARIA_STALE = 'menu button sits under the sidebar dimmer; closing via the dimmer leaves aria-expanded="true"'
-
 let site, browser
 
 before(async () => { site = await startSite(); browser = await launch() })
@@ -87,7 +82,7 @@ describe('navigation', () => {
     await context.close()
   })
 
-  it('closing the sidebar by clicking where the menu button is resets aria-expanded', { todo: BUG_ARIA_STALE }, async () => {
+  it('closing the sidebar by clicking where the menu button is resets aria-expanded', async () => {
     const { page, context } = await open('/')
     await page.click('#menuButton')
     await page.locator('.ui.sidebar.visible').waitFor()
@@ -109,7 +104,7 @@ describe('navigation', () => {
     await context.close()
   })
 
-  it('sticky menu stays pinned to the top while scrolling a long post', { todo: BUG_BODY_SCROLLS }, async () => {
+  it('sticky menu stays pinned to the top while scrolling a long post', async () => {
     const { page, context } = await open(POST)
     await page.mouse.wheel(0, 2500)
     await page.waitForTimeout(400)
@@ -145,7 +140,7 @@ describe('post enhancements', () => {
     await context.close()
   })
 
-  it('reading progress bar grows with scroll', { todo: BUG_BODY_SCROLLS }, async () => {
+  it('reading progress bar grows with scroll', async () => {
     const { page, context } = await open(POST)
     const scale = () => page.evaluate(() => new DOMMatrix(getComputedStyle(document.getElementById('reading-progress')).transform).a)
     assert.equal(await scale(), 0)
@@ -155,7 +150,7 @@ describe('post enhancements', () => {
     await context.close()
   })
 
-  it('TOC highlights the section currently in view', { todo: BUG_BODY_SCROLLS }, async () => {
+  it('TOC highlights the section currently in view', async () => {
     const { page, context } = await open(POST)
     const headings = await page.$$eval('#content h2[id]', (hs) => hs.map((h) => h.id))
     assert.ok(headings.length >= 3)

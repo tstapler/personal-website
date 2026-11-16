@@ -84,7 +84,7 @@ describe('device matrix (CDP emulation)', () => {
   }
 
   for (const name of ['iPhone 13', 'Pixel 7']) {
-    it(`${name}: top bar (incl. theme toggle) fits inside the viewport`, { todo: 'top bar is ~29px wider than a 412px phone viewport, pushing the theme toggle off-screen' }, async () => {
+    it(`${name}: top bar (incl. theme toggle) fits inside the viewport`, async () => {
       const context = await browser.newContext(devices[name])
       const page = await context.newPage()
       await page.goto(site.url + '/', { waitUntil: 'load' })
