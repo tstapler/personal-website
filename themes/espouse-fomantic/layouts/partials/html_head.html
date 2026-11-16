@@ -30,21 +30,5 @@
       document.documentElement.setAttribute('data-theme', theme);
     })();
   </script>
-  {{ .Scratch.Set "allStyles" (resources.GetMatch "all.css") }}
-  {{- if (eq (getenv "HUGO_ENV") "production") -}}
-    {{- .Scratch.Set "allStyles" (.Scratch.Get "allStyles" |  resources.PostCSS | fingerprint "sha512") -}}
-  {{- end -}}
-  {{- $styles := .Scratch.Get "allStyles" }}
-  <link 
-  rel="stylesheet"
-  href="{{ $styles.RelPermalink }}" integrity="{{ $styles.Data.Integrity }}">
-
-  {{ .Scratch.Set "semanticExtras" (resources.GetMatch "semanticExtras.css") }}
-  {{- if (eq (getenv "HUGO_ENV") "production") -}}
-    {{- .Scratch.Set "semanticExtras" (.Scratch.Get "semanticExtras" |  resources.PostCSS | fingerprint "sha512") -}}
-  {{- end -}}
-
-  {{- $semanticExtras := .Scratch.Get "semanticExtras" }}
-<link rel="preload" href="{{ $semanticExtras.RelPermalink }}" as="style" onload="this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="{{ $semanticExtras.RelPermalink }}"></noscript>
+  {{ partial "styles.html" . }}
 </head>

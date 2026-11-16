@@ -1,0 +1,14 @@
+{{- /*
+  One stylesheet instead of four requests (and no preload/onload hack):
+  Fomantic base + extras + compiled theme SCSS (shared with espouse) + site overrides.
+  Production adds PurgeCSS + minification; see ../../postcss.config.js.
+*/ -}}
+{{- $fomantic := resources.Get "all.css" -}}
+{{- $extras := resources.Get "semanticExtras.css" -}}
+{{- $app := resources.Get "sass/espouse.scss" | css.Sass (dict "transpiler" "libsass") -}}
+{{- $overrides := resources.Get "site-enhancements.css" -}}
+{{- $bundle := slice $fomantic $extras $app $overrides | resources.Concat "css/site.css" -}}
+{{- if eq (getenv "HUGO_ENV") "production" -}}
+  {{- $bundle = $bundle | css.PostCSS (dict "config" "themes/espouse-fomantic") | fingerprint "sha512" -}}
+{{- end -}}
+<link rel="stylesheet" href="{{ $bundle.RelPermalink }}"{{ with $bundle.Data.Integrity }} integrity="{{ . }}"{{ end }}>

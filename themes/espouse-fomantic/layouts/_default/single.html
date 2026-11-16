@@ -1,46 +1,20 @@
 {{ define "main" }}
 <div class="ui inverted vertical masthead center aligned segment">
   <h1>{{ title .Title }}</h1>
-<div class="ui hidden divider"></div>
-    {{ if or .Params.featured_image .Params.image }}
-    <img loading="lazy" class="ui large centered image" src='{{ .Params.featured_image | default .Params.image }}'></img>
-<div class="ui hidden divider"></div>
-    {{ end }}
-    {{ if .PrevInSection }}
-    {{ with .PrevInSection }}
-    <a class="ui secondary right attached labeled icon button" href="{{.RelPermalink}}"><i class="arrow left icon"></i> {{.Title}}</a>
-    {{ end }}
-    {{ end }}
-    {{ if .NextInSection }}
-    {{ with .NextInSection }}
-    <a class="ui secondary left attached right labeled icon button" href="{{.RelPermalink}}">{{.Title}} <i class="arrow right icon"></i></a>
-    {{ end }}
-    {{ end }}
-</div>
-<div class="ui center aligned three column divided padded grid">
-  <div class="ui column ">
-    <h3 class="ui dividing header">Metadata</h3>
-    {{ if ne .Date.IsZero true }}
-    <p id="date">Published: {{ .Date.Format "Mon Jan 2, 2006" }} </p>
-    {{ end }}
-    <p id="wordcount"> {{ .WordCount }} Words </p>
-    <p><i class="hourglass start icon"></i> {{.ReadingTime}} minutes<p>
-  </div>
-  <div class="ui column">
-    <h3 class="ui dividing header">Tags</h3>
-    <div class="ui list">
-      {{ with .Params.tags }}
-      {{ range . }}
-      <div class="item">
-        <a class="item" href="{{ "tags" | relURL }}/{{ . | urlize }}">{{ . }}</a> 
-      </div>
-      {{ end }}
-      {{ end }}
-    </div>
-  </div>
+  <div class="ui hidden divider"></div>
+  {{ if or .Params.featured_image .Params.image }}
+  <img loading="lazy" class="ui large centered image" src='{{ .Params.featured_image | default .Params.image }}' alt="{{ .Params.image_alt | default .Title }}">
+  <div class="ui hidden divider"></div>
+  {{ end }}
 </div>
 <section id="main" class="ui container">
-  <article id="content" class="ui text container">
+  <article id="content" class="ui text container" data-pagefind-body>
+    {{ if .TableOfContents }}
+    <div class="toc-wrapper">
+      <h4>Contents</h4>
+      {{ .TableOfContents }}
+    </div>
+    {{ end }}
     {{ if .Params.ai_generated }}
     <div class="ai-summary-header">
       <i class="robot icon"></i>
@@ -49,7 +23,44 @@
     </div>
     {{ end }}
     {{ .Content }}
+    {{ if or .PrevInSection .NextInSection }}
+    <div class="ui hidden divider"></div>
+    <div class="article-prevnext">
+      {{ if .PrevInSection }}
+      {{ with .PrevInSection }}
+      <a class="ui secondary right attached labeled icon button prevnext-btn" href="{{.RelPermalink}}"><i class="arrow left icon"></i> {{.Title}}</a>
+      {{ end }}
+      {{ end }}
+      {{ if .NextInSection }}
+      {{ with .NextInSection }}
+      <a class="ui secondary left attached right labeled icon button prevnext-btn" href="{{.RelPermalink}}">{{.Title}} <i class="arrow right icon"></i></a>
+      {{ end }}
+      {{ end }}
+    </div>
+    {{ end }}
   </article>
 </section>
-<div class="ui hidden divider"> </div>
+<div class="ui center aligned two column divided padded grid article-metadata">
+  <div class="ui column">
+    <h3 class="ui dividing header">Metadata</h3>
+    {{ if ne .Date.IsZero true }}
+    <p>Published: <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "Mon Jan 2, 2006" }}</time></p>
+    {{ end }}
+    <p>{{ .WordCount }} Words</p>
+    <p><i class="hourglass start icon"></i> {{.ReadingTime}} minutes</p>
+  </div>
+  <div class="ui column">
+    <h3 class="ui dividing header">Tags</h3>
+    <div class="ui list">
+      {{ with .Params.tags }}
+      {{ range . }}
+      <div class="item">
+        <a class="item tag-link" href="{{ "tags" | relURL }}/{{ . | urlize }}">{{ . }}</a>
+      </div>
+      {{ end }}
+      {{ end }}
+    </div>
+  </div>
+</div>
+<div class="ui hidden divider"></div>
 {{ end }}

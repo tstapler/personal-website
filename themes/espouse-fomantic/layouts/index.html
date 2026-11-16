@@ -5,8 +5,12 @@
       <div class="ui cards">
         <div id="intro-header" class="ui centered card">
           <h1>{{ .name }}</h1>
-          <h5>{{ .email }}</h5>
+          <p class="site-email">{{ .email }}</p>
           <p>{{ .description }}</p>
+          <div class="hero-cta">
+            <a class="ui primary button" href="/blog/">Read My Blog</a>
+            <a class="ui secondary button" href="/projects/">View Projects</a>
+          </div>
         </div>
       </div>
     </div>
@@ -14,9 +18,9 @@
   {{ end }}
   <div class="ui inverted vertical striped segment">
     <div class="ui center aligned text container">
-      <h1 class="ui inverted icon header">
+      <h2 class="ui inverted icon header">
         <i class="settings icon"></i> Technologies
-      </h1>
+      </h2>
       <p>In order to keep myself sharp, I'm constantly honing my skills and mastering new technologies</p>
     </div>
   </div>

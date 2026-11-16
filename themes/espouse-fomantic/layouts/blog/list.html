@@ -1,0 +1,24 @@
+{{ define "main" }}
+<div class="ui inverted vertical header centered segment">
+  <h1>{{ title .Title }}</h1>
+</div>
+<div class="ui hidden divider"></div>
+<div class="blog-feed-container">
+  {{ range .Data.Pages }}
+  <article class="blog-feed-item">
+    <div class="blog-feed-meta">
+      {{ if ne .Date.IsZero true }}
+      <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "Jan 2, 2006" }}</time>
+      {{ end }}
+      <span>{{ .ReadingTime }} min read</span>
+      {{ with .Params.tags }}{{ range first 3 . }}
+      <a class="tag-link" href="{{ "tags" | relURL }}/{{ . | urlize }}">{{ . }}</a>
+      {{ end }}{{ end }}
+    </div>
+    <h2 class="blog-feed-title"><a href="{{ .RelPermalink }}">{{ .Title }}</a></h2>
+    <p class="blog-feed-summary">{{ (.Params.ai_summary | default .Params.summary | default .Summary) | truncate 220 " …" }}</p>
+    <a class="blog-feed-readmore" href="{{ .RelPermalink }}">Read more →</a>
+  </article>
+  {{ end }}
+</div>
+{{ end }}

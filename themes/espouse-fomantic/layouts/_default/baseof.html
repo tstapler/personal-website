@@ -18,6 +18,7 @@ gtag('config', '{{- .Site.Params.gaTag }}');
 
 {{- partial "meta" . }}
 <body>
+  <div id="reading-progress" role="progressbar" aria-hidden="true"></div>
   {{- partial "site_sidebar" . }}
   <div class="ui pusher">
   {{- partial "site_nav" . }}
