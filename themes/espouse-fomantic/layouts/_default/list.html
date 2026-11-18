@@ -19,7 +19,7 @@
         <div class="image"><img loading="lazy" src="{{ .Params.featured_image | relURL }}" ></div>
         {{ end }}
          <div class="content card-summary-content {{ if .Params.ai_generated }}ai-summary{{ end }}">
-           {{ (.Params.ai_summary | default .Params.summary | default .Summary) | truncate 300 " …" }}
+           {{ (.Params.ai_summary | default .RawSummary | default .Summary) | truncate 300 " …" }}
          </div>
          {{ if .Params.ai_generated }}
          <div class="ai-summary-indicator">

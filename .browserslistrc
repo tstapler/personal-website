@@ -1,0 +1,2 @@
+# Explicit so browserslist stops here instead of walking parent dirs (blocked by Hugo 0.170 Node permissions)
+defaults

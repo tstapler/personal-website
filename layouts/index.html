@@ -17,7 +17,7 @@
   </div>
   {{ end }}
 
-  {{ $techs := .Site.Data.technologies.technologies }}
+  {{ $techs := hugo.Data.technologies.technologies }}
   {{ if $techs }}
   <div class="tech-marquee-section ui inverted vertical striped segment">
     <div class="ui center aligned text container" style="margin-bottom:1.5rem">

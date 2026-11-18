@@ -1,6 +1,6 @@
 # Site settings (baseurl must end with a trailing slash!)
 # Set baseURL from command line
-languageCode = "en-us"
+locale = "en-us"
 title = "Tyler Stapler's Personal Website"
 theme = "espouse"
 copyright = "Copyright &#169; by Tyler Stapler"
