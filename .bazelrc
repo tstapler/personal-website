@@ -1,0 +1,3 @@
+# Convenience symlinks point outside the repo, which Hugo >= 0.170 rejects when running PostCSS.
+# Use `bazel info bazel-bin` to locate outputs.
+build --experimental_convenience_symlinks=ignore

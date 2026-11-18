@@ -40,7 +40,7 @@ jobs:
       - name: Prepare Deployment Directory
         run: |
           mkdir -p dist
-          tar -xf bazel-bin/site_optimized_dir.tar -C dist
+          tar -xf "$(bazel info bazel-bin)/site_optimized_dir.tar" -C dist
 
       - name: Index site with Pagefind
         run: npx --yes pagefind@1 --site dist --output-subdir pagefind

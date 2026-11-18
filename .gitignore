@@ -21,9 +21,7 @@ screenshots/
 dist/
 
 # Hugo build artifacts
-bazel-bin/
-bazel-out/
-bazel-testlogs/
+bazel-*
 
 # Bazel cache (prevent IntelliJ indexing)
 .bazel/

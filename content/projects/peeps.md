@@ -5,7 +5,6 @@ summary = "Outlook-integrated learning tool that helps teams master colleague na
 categories = ["Professional Projects"]
 tags = ["microsoft-graph", "nodejs", "angular", "hackathon", "express", "redux"]
 keywords = ["employee onboarding tool", "outlook contacts integration", "name recognition quiz", "microsoft hackathon project", "team building software"]
-featured_image = "/img/peeps-screenshot.jpg"
 +++
 
 Peeps solves a common workplace challenge - remembering colleagues' names and roles. Our Microsoft One Week Hackathon team built this Outlook-integrated solution using Microsoft Graph API to:
