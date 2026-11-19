@@ -10,7 +10,7 @@ bazel_dep(name = "build_stack_rules_hugo", version = "0.0.9")
 git_override(
     module_name = "build_stack_rules_hugo",
     remote = "https://github.com/tstapler/rules_hugo.git",
-    commit = "80b085e9d766d3c0a8a1e40df1265dbcaef85842",
+    commit = "e201bdbad6dc1d3fd434eb59726b699560b32138",
 )
 
 # Other dependencies

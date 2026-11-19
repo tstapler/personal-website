@@ -378,8 +378,8 @@
     },
     "@@build_stack_rules_hugo+//hugo/internal:extensions.bzl%hugo_extension": {
       "general": {
-        "bzlTransitiveDigest": "mSbrRr6rJf+NRJeNnuUcrvIHMOuVnrc9vkXQWAxfmZE=",
-        "usagesDigest": "jK284kGAZdFlURyym8l/rBsahCNkHFZspIN/iELVJQM=",
+        "bzlTransitiveDigest": "8XGZQ5nc+eaMBZSHhRKXFTwBa1nUB/cvjICpRPCtaIo=",
+        "usagesDigest": "Hy7LbtjjmA+69MWVe1bMZ0CW8Nw7eIuHkPQj5JfjzMI=",
         "recordedInputs": [
           "REPO_MAPPING:build_stack_rules_hugo+,bazel_tools bazel_tools"
         ],
@@ -387,8 +387,14 @@
           "hugo": {
             "repoRuleId": "@@build_stack_rules_hugo+//hugo/internal:hugo_repository.bzl%hugo_repository",
             "attributes": {
-              "version": "0.146.0",
-              "extended": true
+              "version": "0.170.1",
+              "extended": true,
+              "sha256": "",
+              "from_source": false,
+              "binary": "",
+              "use_system": false,
+              "url": "",
+              "build_tags": []
             }
           },
           "com_github_alex_shpak_hugo_book": {
