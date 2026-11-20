@@ -2,12 +2,15 @@
   One stylesheet instead of four requests (and no preload/onload hack):
   Fomantic base (includes the theme SCSS, compiled by webpack) + extras + site overrides.
   Production adds PurgeCSS + minification; see ../../postcss.config.js.
+  Every build fingerprints the file, so a changed stylesheet gets a new URL instead of waiting out the
+  browser cache (the Bazel/Cloudflare build is not "production" because Hugo's PostCSS can't run in its sandbox).
 */ -}}
 {{- $fomantic := resources.Get "all.css" -}}
 {{- $extras := resources.Get "semanticExtras.css" -}}
 {{- $overrides := resources.Get "site-enhancements.css" -}}
 {{- $bundle := slice $fomantic $extras $overrides | resources.Concat "css/site.css" -}}
 {{- if eq (getenv "HUGO_ENV") "production" -}}
-  {{- $bundle = $bundle | css.PostCSS (dict "config" "themes/espouse-fomantic") | fingerprint "sha512" -}}
+  {{- $bundle = $bundle | css.PostCSS (dict "config" "themes/espouse-fomantic") -}}
 {{- end -}}
+{{- $bundle = $bundle | fingerprint "sha512" -}}
 <link rel="stylesheet" href="{{ $bundle.RelPermalink }}"{{ with $bundle.Data.Integrity }} integrity="{{ . }}"{{ end }}>
