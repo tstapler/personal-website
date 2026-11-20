@@ -61,6 +61,17 @@ describe('theme toggle', () => {
     await context.close()
   })
 
+  it('masthead title stays readable in the light theme', async () => {
+    const { page, context } = await open(POST, { colorScheme: 'light' })
+    const [fg, bg] = await page.evaluate(() => {
+      const h = document.querySelector('.masthead h1, .ui.inverted.vertical.segment h1')
+      return [getComputedStyle(h).color, getComputedStyle(h.closest('.segment')).backgroundColor]
+    })
+    const lum = (c) => c.match(/[\d.]+/g).slice(0, 3).map(Number).reduce((a, v) => a + v, 0) / 3
+    assert.ok(Math.abs(lum(fg) - lum(bg)) > 100, `title ${fg} on ${bg}`)
+    await context.close()
+  })
+
   it('actually changes rendered colors', async () => {
     const { page, context } = await open(POST)
     const bg = () => page.evaluate(() => getComputedStyle(document.body).backgroundColor)
@@ -91,6 +102,19 @@ describe('navigation', () => {
     await page.mouse.click(box.x + box.width / 2, box.y + box.height / 2)
     await page.locator('.ui.sidebar.visible').waitFor({ state: 'detached' })
     assert.equal(await page.getAttribute('#menuButton', 'aria-expanded'), 'false')
+    await context.close()
+  })
+
+  it('pushes the page by exactly the sidebar width (no blank gap)', async () => {
+    const { page, context } = await open('/')
+    await page.click('#menuButton')
+    await page.locator('.ui.sidebar.visible').waitFor()
+    await page.waitForTimeout(800)
+    const r = await page.evaluate(() => ({
+      width: document.querySelector('.ui.sidebar').getBoundingClientRect().width,
+      push: new DOMMatrix(getComputedStyle(document.querySelector('.pusher')).transform).e,
+    }))
+    assert.equal(r.push, r.width)
     await context.close()
   })
 

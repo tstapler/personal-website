@@ -440,3 +440,11 @@ body, h1, h2, h3, h4, h5, h6,
 dialog.lightbox { border: 0; padding: 0; background: transparent; max-width: 95vw; max-height: 95vh; overflow: visible; }
 dialog.lightbox::backdrop { background: rgba(0, 0, 0, .85); }
 dialog.lightbox img { display: block; max-width: 95vw; max-height: 95vh; margin: auto; cursor: zoom-out; }
+
+/* === Fixes found on the live site === */
+/* The labeled-icon sidebar is 96px wide, but the generic 260px push rule won and left a blank gap */
+.ui.visible.left.labeled.icon.sidebar ~ .fixed,
+.ui.visible.left.labeled.icon.sidebar ~ .pusher { transform: translate3d(96px, 0, 0); }
+
+/* Light theme: the global h1 colour was dark text on the always-dark masthead */
+.ui.inverted.vertical.segment h1 { color: #fff; }
