@@ -29,7 +29,7 @@ jobs:
       uses: bazelbuild/setup-bazelisk@v3
       
     - name: Build image
-      run: bazel build //:nginx_image_tarball
+      run: bazel build --experimental_convenience_symlinks=normal //:nginx_image_tarball
       
     - name: Load and push image
-      run: bazel run //:docker_push
+      run: bazel run --experimental_convenience_symlinks=normal //:docker_push
