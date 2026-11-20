@@ -2,6 +2,6 @@ package(default_visibility = ["//visibility:public"])
 load("@build_stack_rules_hugo//hugo:rules.bzl", "hugo_theme")
 
 hugo_theme(
-    name = "espouse",
+    name = "espouse-fomantic",
     srcs = glob(["static/**", "archetypes/**", "layouts/**"]),
 )
