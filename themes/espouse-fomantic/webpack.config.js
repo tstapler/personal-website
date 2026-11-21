@@ -54,6 +54,7 @@ const config = {
             loader: 'postcss-loader',
             options: {
               postcssOptions: {
+                config: false, // postcss.config.js purges, and purging belongs after Hugo (see the .css rule)
                 plugins: [
                   ['autoprefixer'],
                   ['cssnano', { preset: 'default' }],

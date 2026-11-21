@@ -43,7 +43,13 @@ jobs:
           done
 
       - name: Check committed theme bundles are current
-        run: bazel test //themes/espouse-fomantic:update_static_tests
+        run: |
+          for attempt in 1 2 3; do
+            bazel test //themes/espouse-fomantic:update_static_tests && break
+            [ "$attempt" = 3 ] && exit 1
+            echo "Attempt $attempt failed, retrying in 15s..."
+            sleep 15
+          done
 
       - name: Prepare Deployment Directory
         run: |

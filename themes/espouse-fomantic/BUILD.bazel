@@ -62,7 +62,6 @@ webpack.webpack(
     srcs = glob([
         "src/**",
         "sass/**",
-        "layouts/**",  # postcss.config.js's PurgeCSS reads ./layouts relative to the working directory
     ]) + [
         "app.js",
         "webpack.config.js",
