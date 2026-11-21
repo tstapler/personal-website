@@ -1,7 +1,90 @@
 package(default_visibility = ["//visibility:public"])
 load("@build_stack_rules_hugo//hugo:rules.bzl", "hugo_theme")
 
+exports_files(["package.json", "package-lock.json", "pnpm-lock.yaml", "pnpm-workspace.yaml"])
+
 hugo_theme(
     name = "espouse-fomantic",
     srcs = glob(["static/**", "archetypes/**", "layouts/**"]),
+)
+
+load("@aspect_rules_js//js:defs.bzl", "js_run_binary")
+load("@npm_theme//:defs.bzl", "npm_link_all_packages")
+load("@npm_theme//themes/espouse-fomantic:gulp/package_json.bzl", gulp = "bin")
+
+npm_link_all_packages(name = "node_modules")
+
+# Fomantic LESS/JS -> dist/ (the fork's gulp build, on Bazel's hermetic Node)
+gulp.gulp(
+    name = "fomantic_dist",
+    srcs = glob([
+        "src/**",
+        "tasks/**",
+    ]) + [
+        "gulpfile.js",
+        "semantic.json",
+        "package.json",
+        ":node_modules",
+    ],
+    args = ["build"],
+    out_dirs = ["dist"],
+    chdir = package_name(),
+)
+
+load("@aspect_bazel_lib//lib:write_source_files.bzl", "write_source_files")
+load("@npm_theme//themes/espouse-fomantic:webpack/package_json.bzl", webpack = "bin")
+
+# What webpack emits into static/ (the committed copies are checked against these by :update_static_tests)
+BUNDLE_FILES = [
+    "all.css",
+    "semanticExtras.css",
+    "brand-icons.woff2",
+    "icons.woff2",
+    "Lato-Bold.woff2",
+    "Lato-BoldItalic.woff2",
+    "Lato-Italic.woff2",
+    "Lato-Regular.woff2",
+    "LatoLatin-Bold.woff2",
+    "LatoLatin-BoldItalic.woff2",
+    "LatoLatin-Italic.woff2",
+    "LatoLatin-Regular.woff2",
+    "js/all.bundle.js",
+    "js/homePage.bundle.js",
+    "js/homePage.bundle.js.LICENSE.txt",
+    "js/semanticExtras.bundle.js",
+    "js/semanticExtras.bundle.js.LICENSE.txt",
+    "js/vendors.bundle.js",
+    "js/vendors.bundle.js.LICENSE.txt",
+]
+
+webpack.webpack(
+    name = "bundles",
+    srcs = glob([
+        "src/**",
+        "sass/**",
+        "layouts/**",  # postcss.config.js's PurgeCSS reads ./layouts relative to the working directory
+    ]) + [
+        "app.js",
+        "webpack.config.js",
+        "postcss.config.js",
+        "package.json",
+        ":fomantic_dist",
+        ":node_modules",
+    ],
+    args = [
+        "--mode",
+        "production",
+        "--no-cache",
+        "--output-path",
+        "built",
+    ],
+    outs = ["built/" + f for f in BUNDLE_FILES],
+    chdir = package_name(),
+)
+
+# `bazel run //themes/espouse-fomantic:update_static` refreshes static/ from the hermetic build;
+# `bazel test //themes/espouse-fomantic:update_static_tests` fails if the committed copies are stale.
+write_source_files(
+    name = "update_static",
+    files = {"static/" + f: "built/" + f for f in BUNDLE_FILES},
 )

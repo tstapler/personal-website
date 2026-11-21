@@ -22,7 +22,28 @@ bazel_dep(name = "rules_python", version = "1.8.1")
 bazel_dep(name = "rules_foreign_cc", version = "0.15.1")
 
 # Override rules_nodejs to Bazel 9.0.0 compatible version
-bazel_dep(name = "rules_nodejs", version = "6.7.3")
+bazel_dep(name = "rules_nodejs", version = "6.7.7")
+
+# Hermetic Node.js + npm packages for the theme's gulp/webpack build (no host Node needed)
+bazel_dep(name = "aspect_rules_js", version = "3.6.1")
+
+node = use_extension("@rules_nodejs//nodejs:extensions.bzl", "node")
+node.toolchain(node_version = "22.20.0")
+
+npm = use_extension("@aspect_rules_js//npm:extensions.bzl", "npm")
+npm.npm_translate_lock(
+    name = "npm_theme",
+    pnpm_lock = "//themes/espouse-fomantic:pnpm-lock.yaml",
+    data = [
+        "//themes/espouse-fomantic:package.json",
+        "//themes/espouse-fomantic:pnpm-workspace.yaml",
+    ],
+    verify_node_modules_ignored = "//:.bazelignore",
+)
+use_repo(npm, "npm_theme")
+
+pnpm = use_extension("@aspect_rules_js//npm:extensions.bzl", "pnpm")
+use_repo(pnpm, "pnpm")
 
 # Override aspect_bazel_lib to Bazel 9.0.0 compatible version
 bazel_dep(name = "aspect_bazel_lib", version = "2.22.5")
