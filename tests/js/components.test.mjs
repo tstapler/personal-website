@@ -72,6 +72,28 @@ describe('theme toggle', () => {
     await context.close()
   })
 
+  it('footer and masthead headings are readable in the light theme', async () => {
+    const { page, context } = await open(POST, { colorScheme: 'light' })
+    const lum = (c) => c.match(/[\d.]+/g).slice(0, 3).map(Number).reduce((a, v) => a + v, 0) / 3
+    const pairs = await page.evaluate(() => ['.masthead h1, .ui.inverted.vertical.segment h1', 'footer h4'].map((sel) => {
+      const h = document.querySelector(sel)
+      return [sel, getComputedStyle(h).color, getComputedStyle(h.closest('.segment')).backgroundColor]
+    }))
+    for (const [sel, fg, bg] of pairs) assert.ok(Math.abs(lum(fg) - lum(bg)) > 100, `${sel}: ${fg} on ${bg}`)
+    await context.close()
+  })
+
+  it('every icon renders a glyph (none purged away)', async () => {
+    const { page, context } = await open('/')
+    await page.click('#menuButton') // sidebar icons live in the menu
+    await page.locator('.ui.sidebar.visible').waitFor()
+    const blank = await page.evaluate(() => [...document.querySelectorAll('i.icon')]
+      .filter((i) => getComputedStyle(i, '::before').content === 'none')
+      .map((i) => i.className))
+    assert.deepEqual(blank, [])
+    await context.close()
+  })
+
   it('actually changes rendered colors', async () => {
     const { page, context } = await open(POST)
     const bg = () => page.evaluate(() => getComputedStyle(document.body).backgroundColor)

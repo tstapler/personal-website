@@ -117,7 +117,7 @@ genrule(
 
         # Gzip text files (HTML, CSS, JS, XML, JSON)
         find "$$TEMP_DIR" -type f \\( -name "*.html" -o -name "*.css" -o -name "*.js" -o -name "*.xml" -o -name "*.json" \\) \
-            -exec sh -c 'gzip -k -9 "$$1"' _ {} \\;
+            -exec sh -c 'gzip -kf -9 "$$1"' _ {} \\;
 
         # Package as uncompressed tar that pkg_tar can extract
         tar -cf $@ -C "$$TEMP_DIR" .
@@ -129,12 +129,12 @@ genrule(
 
 # === End Optimization Pipeline ===
 
-# Package site files for nginx (unoptimized)
+# Package site files for nginx (purged stylesheet; the bundled CSS is ~380KB before purging)
 pkg_tar(
     name = "static_assets",
-    srcs = [":site"],
+    srcs = [":site_css_optimized"],
     package_dir = "/usr/share/nginx/html",
-    strip_prefix = "/site",
+    strip_prefix = "/site_css_optimized",
 )
 
 # Create final optimized assets layer with proper structure for OCI

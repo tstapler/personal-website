@@ -415,7 +415,7 @@ h3:hover .heading-anchor { opacity: 1; }
 /* One type family: semantic UI mixes Open Sans (body/headers) and Lato (p, links) */
 body, h1, h2, h3, h4, h5, h6,
 .ui.header, .ui.menu, .ui.button, time, p, a {
-  font-family: Lato, "Helvetica Neue", Arial, Helvetica, sans-serif;
+  font-family: "Open Sans", Lato, "Helvetica Neue", Arial, Helvetica, sans-serif; /* the fork ships Lato under the family name "Open Sans" */
 }
 
 /* Post body: ~66 characters per line, looser leading for light-on-dark text */
@@ -442,5 +442,5 @@ dialog.lightbox::backdrop { background: rgba(0, 0, 0, .85); }
 dialog.lightbox img { display: block; max-width: 95vw; max-height: 95vh; margin: auto; cursor: zoom-out; }
 
 /* === Fixes found on the live site === */
-/* Light theme: the global h1 colour was dark text on the always-dark masthead */
-.ui.inverted.vertical.segment h1 { color: #fff; }
+/* Light theme: the global heading colour was dark text on the always-dark masthead and footer */
+.ui.inverted.vertical.segment :is(h1, h2, h3, h4, h5, h6) { color: #fff; }

@@ -1,11 +1,11 @@
 package(default_visibility = ["//visibility:public"])
 load("@build_stack_rules_hugo//hugo:rules.bzl", "hugo_theme")
 
-exports_files(["package.json", "package-lock.json", "pnpm-lock.yaml", "pnpm-workspace.yaml"])
+exports_files(["package.json", "pnpm-lock.yaml", "pnpm-workspace.yaml"])
 
 hugo_theme(
     name = "espouse-fomantic",
-    srcs = glob(["static/**", "archetypes/**", "layouts/**"]),
+    srcs = glob(["static/**", "archetypes/**", "layouts/**"], exclude = ["**/*.gz"]),  # *.gz are stale local build leftovers
 )
 
 load("@aspect_rules_js//js:defs.bzl", "js_binary")

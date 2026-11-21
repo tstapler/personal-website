@@ -42,6 +42,9 @@ jobs:
             sleep 15
           done
 
+      - name: Check committed theme bundles are current
+        run: bazel test //themes/espouse-fomantic:update_static_tests
+
       - name: Prepare Deployment Directory
         run: |
           mkdir -p dist

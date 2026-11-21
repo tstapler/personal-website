@@ -14,8 +14,8 @@ const { purgeOptions } = require('./postcss.shared.js')
 
 // Under Bazel, paths are relative to the execroot (rules_js starts the tool inside a sandbox-relative cwd).
 const base = process.env.JS_BINARY__EXECROOT || process.cwd()
+if (process.argv.length < 4) throw new Error('usage: optimize_site.mjs <site dir> <out dir>')
 const [siteDir, outDir] = process.argv.slice(2).map((p) => path.resolve(base, p))
-if (!process.argv[3]) throw new Error('usage: optimize_site.mjs <site dir> <out dir>')
 
 fs.rmSync(outDir, { recursive: true, force: true })
 // Real copies (not symlinks or hardlinks into the read-only Bazel inputs), so they can be rewritten.
@@ -25,8 +25,10 @@ for (const f of walk(siteDir)) {
   fs.writeFileSync(dest, fs.readFileSync(f))
 }
 
-const cssPath = walk(outDir).find((f) => /\/css\/site\.[0-9a-f]+\.css$/.test(f))
-if (!cssPath) throw new Error(`no css/site.<hash>.css under ${outDir}`)
+// Exactly one fingerprinted stylesheet is expected; a second would ship unpurged.
+const cssFiles = walk(outDir).filter((f) => /\/css\/site\.[0-9a-f]+\.css$/.test(f))
+if (cssFiles.length !== 1) throw new Error(`expected one css/site.<hash>.css under ${outDir}, found ${cssFiles.length}`)
+const [cssPath] = cssFiles
 
 const result = await postcss([
   autoprefixer(),

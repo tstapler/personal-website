@@ -76,8 +76,9 @@ before(async () => {
     prod = process.env.PARITY_PROD_DIR ? await serveDir(process.env.PARITY_PROD_DIR) : await buildAndServe({ HUGO_ENV: 'production' })
     browser = await launch()
   } catch (e) {
-    // e.g. the espouse theme's html_head still calls resources.PostCSS, which Hugo >= 0.128 removed.
-    skipReason = `production build unavailable for this theme: ${e.message}`
+    // The legacy espouse theme can't run a production build; for any other theme a build failure is a real failure.
+    if (process.env.HUGO_THEME === 'espouse') skipReason = `production build unavailable for this theme: ${e.message}`
+    else throw e
   }
 })
 after(async () => { await browser?.close(); await dev?.close(); await prod?.close() })

@@ -78,7 +78,12 @@ const config = {
         use: [
           MiniCssExtractPlugin.loader,
           'css-loader',
-          'postcss-loader',
+          // No PurgeCSS here: classes such as the icons in config.toml only exist in rendered pages,
+          // so purging happens after Hugo (optimize_site.mjs, or css.PostCSS in a production Hugo build).
+          {
+            loader: 'postcss-loader',
+            options: { postcssOptions: { config: false, plugins: [['autoprefixer'], ['cssnano', { preset: 'default' }]] } },
+          },
         ],
       },
       // Webpack 5 asset modules (replaces file-loader/url-loader)

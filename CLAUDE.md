@@ -29,8 +29,8 @@ bazel run //:nginx_test_optimized             # builds + runs nginx container on
 The Bazel pipeline in `BUILD.bazel` runs Hugo then applies a multi-step optimization:
 
 1. **`:site`** — Hugo build (via `@build_stack_rules_hugo`)
-2. **`:site_purgecss`** — removes unused CSS (`tools/purgecss/prune.py`)
-3. **`:site_with_pruned_css`** — replaces `all.css` with pruned version
+2. **`:site_css_optimized`** — purges and minifies the stylesheet against the rendered pages, using hermetic Node via rules_js (`themes/espouse-fomantic/optimize_site.mjs`)
+3. **`:site_with_pruned_css`** — tarball of the optimized site
 4. **`:critical_css`** — extracts above-fold CSS via headless browser (`tools/critical-css/extract.py`)
 5. **`:site_with_critical_css`** — inlines critical CSS into all HTML files
 6. **`:site_optimized`** — gzips all text files; this is what CI deploys
@@ -57,7 +57,6 @@ Always clone with `git clone --recurse-submodules` or run `git submodule update 
 
 ### Tools
 
-- `tools/purgecss/prune.py` — Python script to remove unused CSS selectors
 - `tools/critical-css/extract.py` — extracts critical CSS using headless browser
 - `tools/critical-css/inline.py` — inlines extracted critical CSS into HTML files
 - `gulpfile.js` — legacy Gulp tasks (`critical`, `compress`) used by Earthfile/Docker path but not the Bazel path
