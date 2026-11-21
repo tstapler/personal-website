@@ -20,7 +20,7 @@
 @fieldsMargin: 0 -(@gutterWidth / 2) @rowDistance;
 
 /* Form Label */
-@labelDistance: @4px;
+@labelDistance: @absolute4px;
 @labelMargin: 0 0 @labelDistance 0;
 @labelFontSize: @relativeSmall;
 @labelFontWeight: @bold;
@@ -107,8 +107,8 @@
 @transparentPadding: @inputPadding;
 
 /* Loading Dimmer */
-@loaderDimmerColor: rgba(255, 255, 255, 0.8);
-@loaderInvertedDimmerColor: rgba(0, 0, 0, 0.85);
+@loaderDimmerColor: rgb(255 255 255 / 0.8);
+@loaderInvertedDimmerColor: rgb(0 0 0 / 0.85);
 @loaderDimmerZIndex: 100;
 
 /* Loading Spinner */
@@ -129,7 +129,6 @@
 /* Inverted */
 @invertedInputBackground: @inputBackground;
 @invertedInputBorderColor: @whiteBorderColor;
-@invertedInputBoxShadow: @inputBoxShadow;
 @invertedInputColor: @inputColor;
 @invertedLabelColor: @invertedTextColor;
 @invertedInputBoxShadow: none;

@@ -442,9 +442,5 @@ dialog.lightbox::backdrop { background: rgba(0, 0, 0, .85); }
 dialog.lightbox img { display: block; max-width: 95vw; max-height: 95vh; margin: auto; cursor: zoom-out; }
 
 /* === Fixes found on the live site === */
-/* The labeled-icon sidebar is 96px wide, but the generic 260px push rule won and left a blank gap */
-.ui.visible.left.labeled.icon.sidebar ~ .fixed,
-.ui.visible.left.labeled.icon.sidebar ~ .pusher { transform: translate3d(96px, 0, 0); }
-
 /* Light theme: the global h1 colour was dark text on the always-dark masthead */
 .ui.inverted.vertical.segment h1 { color: #fff; }

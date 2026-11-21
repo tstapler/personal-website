@@ -2,30 +2,29 @@
  *           Set-up
  *******************************/
 
-const
-    gulp   = require('gulp'),
+const gulp = require('gulp');
 
-    // read user config to know what task to load
-    config = require('./tasks/config/user'), // eslint-disable-line import/extensions
+// read user config to know what task to load
+const config = require('./tasks/config/user');
 
-    rtl = require('./tasks/collections/rtl') // eslint-disable-line import/extensions
-;
+const admin = require('./tasks/collections/admin');
+const rtl = require('./tasks/collections/rtl');
 
 /*******************************
  *            Tasks
  *******************************/
 
-require('./tasks/collections/build')(gulp); // eslint-disable-line import/extensions
-require('./tasks/collections/various')(gulp); // eslint-disable-line import/extensions
-require('./tasks/collections/install')(gulp); // eslint-disable-line import/extensions
+require('./tasks/collections/build')(gulp);
+require('./tasks/collections/various')(gulp);
+require('./tasks/collections/install')(gulp);
 
-gulp.task('default', gulp.series('watch'));
+gulp.task('default', gulp.series('check-install'));
 
 /* --------------
       Docs
 --------------- */
 
-require('./tasks/collections/docs')(gulp); // eslint-disable-line import/extensions
+require('./tasks/collections/docs')(gulp);
 
 /* --------------
       RTL
@@ -33,4 +32,9 @@ require('./tasks/collections/docs')(gulp); // eslint-disable-line import/extensi
 
 if (config.rtl) {
     rtl(gulp);
+}
+
+/* Admin Tasks */
+if (config.admin) {
+    admin(gulp);
 }
