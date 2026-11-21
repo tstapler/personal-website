@@ -1,4 +1,5 @@
 load("@build_stack_rules_hugo//hugo:rules.bzl", "hugo_site", "hugo_serve")
+load("@aspect_rules_js//js:defs.bzl", "js_run_binary")
 load("@rules_pkg//pkg:tar.bzl", "pkg_tar")
 load("@rules_oci//oci:defs.bzl", "oci_image", "oci_load", "oci_push")
 
@@ -21,52 +22,24 @@ hugo_serve(
 
 # === Optimization Pipeline ===
 
-# Step 1: PurgeCSS - Remove unused CSS
-genrule(
-    name = "site_purgecss",
+# Step 1: purge + minify the stylesheet against the rendered pages (hermetic Node via rules_js)
+js_run_binary(
+    name = "site_css_optimized",
     srcs = [":site"],
-    outs = ["site_optimized/all.css"],
-    cmd = """
-        # The :site rule outputs to a directory
-        SITE_DIR="$(location :site)"
-        CSS_INPUT="$$SITE_DIR/all.css"
-        CSS_OUTPUT=$@
-
-        if [ ! -f "$$CSS_INPUT" ]; then
-            echo "Error: CSS file not found at $$CSS_INPUT"
-            exit 1
-        fi
-
-        python3 $(location //tools/purgecss:prune) \
-            "$$SITE_DIR" \
-            "$$CSS_INPUT" \
-            "$$CSS_OUTPUT"
-    """,
-    tools = ["//tools/purgecss:prune"],
+    args = [
+        "$(location :site)",
+        "$(RULEDIR)/site_css_optimized",
+    ],
+    out_dirs = ["site_css_optimized"],
+    tool = "//themes/espouse-fomantic:optimize_site",
 )
 
-# Step 2: Copy site files and replace CSS with pruned version
+# Step 2: tarball of the purged site for the following steps
 genrule(
     name = "site_with_pruned_css",
-    srcs = [
-        ":site",
-        ":site_purgecss",
-    ],
+    srcs = [":site_css_optimized"],
     outs = ["site_pruned.tar"],
-    cmd = """
-        SITE_DIR="$(location :site)"
-        TEMP_DIR=$$(mktemp -d)
-
-        # Copy entire site to temp directory using tar (dereference symlinks with -h)
-        tar -C "$$SITE_DIR" -chf - . | tar -C "$$TEMP_DIR" -xf -
-
-        # Remove original all.css and copy pruned version
-        rm -f "$$TEMP_DIR/all.css"
-        cp $(location :site_purgecss) "$$TEMP_DIR/all.css"
-
-        # Create tarball
-        tar -czf $@ -C "$$TEMP_DIR" .
-    """,
+    cmd = "tar -czhf $@ -C $(location :site_css_optimized) .",  # -h: dereference the symlinks Bazel puts in tree artifacts
 )
 
 # Step 3: Extract critical CSS from homepage

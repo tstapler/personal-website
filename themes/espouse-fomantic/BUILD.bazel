@@ -8,7 +8,7 @@ hugo_theme(
     srcs = glob(["static/**", "archetypes/**", "layouts/**"]),
 )
 
-load("@aspect_rules_js//js:defs.bzl", "js_run_binary")
+load("@aspect_rules_js//js:defs.bzl", "js_binary")
 load("@npm_theme//:defs.bzl", "npm_link_all_packages")
 load("@npm_theme//themes/espouse-fomantic:gulp/package_json.bzl", gulp = "bin")
 
@@ -67,6 +67,7 @@ webpack.webpack(
         "app.js",
         "webpack.config.js",
         "postcss.config.js",
+        "postcss.shared.js",
         "package.json",
         ":fomantic_dist",
         ":node_modules",
@@ -87,4 +88,15 @@ webpack.webpack(
 write_source_files(
     name = "update_static",
     files = {"static/" + f: "built/" + f for f in BUNDLE_FILES},
+)
+
+# Purges and minifies the finished site's stylesheet (replaces Hugo's PostCSS, which can't run inside Bazel's Hugo action)
+js_binary(
+    name = "optimize_site",
+    data = [
+        "postcss.shared.js",
+        ":node_modules",
+    ],
+    entry_point = "optimize_site.mjs",
+    visibility = ["//visibility:public"],
 )
