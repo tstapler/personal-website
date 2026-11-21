@@ -15,9 +15,8 @@ const MIME = {
   '.ttf': 'font/ttf', '.ico': 'image/x-icon', '.txt': 'text/plain',
 }
 
-/** Build the site with Hugo into a temp dir and serve it. `env` overrides process.env (e.g. HUGO_ENV). */
-export async function buildAndServe(env = {}) {
-  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'site-test-'))
+/** Serve an already-built site directory (e.g. Bazel's output) and return its URL. */
+export async function serveDir(dir) {
   const server = http.createServer((req, res) => {
     let p = path.join(dir, decodeURIComponent(new URL(req.url, 'http://x').pathname))
     if (fs.existsSync(p) && fs.statSync(p).isDirectory()) p = path.join(p, 'index.html')
@@ -26,7 +25,13 @@ export async function buildAndServe(env = {}) {
     fs.createReadStream(p).pipe(res)
   })
   await new Promise((r) => server.listen(0, '127.0.0.1', r))
-  const url = `http://127.0.0.1:${server.address().port}`
+  return { server, url: `http://127.0.0.1:${server.address().port}`, close: async () => { server.close() } }
+}
+
+/** Build the site with Hugo into a temp dir and serve it. `env` overrides process.env (e.g. HUGO_ENV). */
+export async function buildAndServe(env = {}) {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'site-test-'))
+  const { server, url } = await serveDir(dir)
 
   // Set the HUGO_THEME env var to run this suite against the alternate Fomantic theme.
   // config.toml pins assetDir to the espouse theme, so the theme's JS/CSS bundles must be redirected too.
